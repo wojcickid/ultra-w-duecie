@@ -2,7 +2,7 @@
 
 ## Status
 
-review
+done
 
 ## Owner
 
@@ -58,6 +58,7 @@ DEC-007 (licznik tylko biegi ukończone wspólnie), DEC-008 (bieg wycofany). Dan
 ### Review
 
 - Lead (2026-09-20): diff w zakresie (schemat, logika, komponenty, panel, dokumentacja; dane rzeczywiste nietknięte); przejrzane: schemat wyniku (outcome, reguły), isCompletedTogether (ta sama data, dzień w Europe/Warsaw), build (17 stron), lint, format:check, astro check bez błędów; na danych rzeczywistych licznik 2 z 10, Bieg 7 Dolin ma oba znaczniki na `/`, `/biegi` i `/biegi/bieg-7-dolin`; procesy agenta zatrzymane po PID. Do potwierdzenia przez właściciela na produkcji: zapis pola outcome w panelu (Sveltia), przykłady SGS i Grań Tatr.
+- Właściciel (2026-09-20, produkcja): zapis outcome w panelu potwierdzony (SGS: Damian finished, Grzegorz dns; Grań Tatr: obaj dnf z notatkami); znaczniki DNF/DNS widoczne na `/`, `/biegi/sgs`, `/biegi/ultra-grania-tatr`; licznik nadal 2 z 10. Zaakceptowane.
 
 ## Outcome
 
@@ -67,4 +68,4 @@ Complete this section before moving the task to `done`.
 - Tests: check/build/lint/format:check bez błędów; scenariusze na danych tymczasowych (patrz Validation); Chrome headless 360/1280 px.
 - Important files: `src/content.config.ts`, `src/lib/{progress,runs,format}.ts`, `src/components/{StatusBadge,Timeline,RunCard,Icon}.astro`, `src/pages/{index,biegi/index,biegi/[id],styleguide}.astro`, `src/styles/global.css`, `public/admin/config.yml`, `scripts/validate-content.mjs`, `docs/{decisions,requirements,architecture,ui}.md`.
 - Commit: gałąź `agent/frontend/TASK-017-status-fixes` (4 commity: logika, znaczniki i panel, widoki, dokumentacja).
-- Follow-up tasks:
+- Follow-up tasks: weryfikacja i czyszczenie danych orientacyjnych biegów (notatki „wymagają weryfikacji” widoczne publicznie); przy północy — ręczne wpisanie tej samej daty (DEC-010).
