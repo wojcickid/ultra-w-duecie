@@ -36,6 +36,7 @@ M2 — Strona działa publicznie na https://korona.damianwojcicki.com (Worker + 
 
 ## Do zrobienia po stronie użytkownika
 
+- Przeczytać instrukcję dla autorów `docs/authors-guide.md` (TASK-011) i wykonać w praktyce jej kroki: logowanie, wpis ze zdjęciem, zmiana statusu i wyniku biegu, cofnięcie zmiany.
 - Wybrać nazwę subdomeny (propozycja: `korona.damianwojcicki.com`).
 - Wdrożenie w Cloudflare jako Worker ze static assets (nie Pages) wg `docs/cms-setup.md`: kreator Workera (Project name `ultra-w-duecie`, Build `npm run build`, Deploy `npx wrangler deploy`, Non-production `npx wrangler versions upload`, Root `/`), Custom domain `korona.damianwojcicki.com`, aplikacja OAuth w GitHubie (callback `https://korona.damianwojcicki.com/api/callback`), dwa Secrets `GITHUB_CLIENT_ID` i `GITHUB_CLIENT_SECRET` w Workerze (Settings → Variables and Secrets) po pierwszym wdrożeniu oraz Web Analytics dla domeny (bez wpisywania czegokolwiek w repozytorium).
 - Dostarczyć daty, czasy i linki do wyników ukończonych biegów (przed TASK-013).
