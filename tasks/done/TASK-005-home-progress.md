@@ -2,7 +2,7 @@
 
 ## Status
 
-in-progress
+done
 
 ## Owner
 
@@ -53,7 +53,7 @@ FR-1, FR-2 z `docs/requirements.md`. Dane z kolekcji `biegi` i `wpisy`. Status n
 
 ### Review
 
-- Not reviewed
+- Lead (2026-09-20): diff tylko w zakresie; build (3 strony), lint, format:check i astro check uruchomione niezależnie, bez błędów; licznik na danych rzeczywistych: 0 z 10. Logika licznika zgodna z DEC-007/DEC-008. Zaakceptowane. Uwagi do dokumentacji (ProgressBar, Timeline, progress.ts) — Lead uzupełni po scaleniu.
 
 ## Outcome
 
@@ -62,5 +62,5 @@ Complete this section before moving the task to `done`.
 - Summary: Strona główna: wstęp, licznik X/10 z paskiem postępu, oś czasu biegów, wyniki indywidualne, ostatnie wpisy.
 - Tests: build, lint, format:check, check OK; logika i render sprawdzone na danych tymczasowych (patrz Validation).
 - Important files: `src/pages/index.astro`, `src/lib/progress.ts`, `src/components/ProgressBar.astro`, `src/components/Timeline.astro`
-- Commit:
-- Follow-up tasks:
+- Commit: a2bd0f9 (gałąź agent/frontend/TASK-005-home-progress)
+- Follow-up tasks: wpis testowy widoczny na stronie głównej do usunięcia przed publikacją (TASK-010); przy decyzji o slocie po 7 Dolinach zweryfikować licznik (pytanie otwarte 2).
