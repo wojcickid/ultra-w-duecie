@@ -31,7 +31,7 @@ Brak własnego backendu, bazy danych i serwera do utrzymania.
   - `/biegi` i `/biegi/<id>` — lista biegów i szczegóły biegu (wyniki per osoba, powiązane wpisy),
   - `/blog` (strona 1), `/blog/strona/<n>` (od 2, po 10 wpisów) i `/blog/<id>` — lista z paginacją i wpis; unikać identyfikatora wpisu `strona`,
   - `/rss.xml` — kanał RSS (zależność `@astrojs/rss`, adres z `site` w `astro.config.mjs`),
-  - `/404`, pomocniczy `/styleguide` (do usunięcia przed publikacją, TASK-010), panel `/admin` (TASK-008).
+  - `/404`, panel `/admin` (TASK-008). Strona pomocnicza `/styleguide` (podgląd wariantów komponentów) została usunięta w TASK-010; jej ostatnia wersja jest w historii Git (`git log -- src/pages/styleguide.astro`).
 - Wspólny kod w `src/lib/`: `format.ts` (`formatDate` i `toDayKey`, strefa Europe/Warsaw — daty z kolekcji są parsowane jako UTC), `progress.ts` (licznik, sortowanie po `order`, wyniki autora), `runs.ts` (`getRunBadges` — jedno źródło znaczników biegu dla osi czasu, listy i strony biegu; dane biegu i opisy wyników osób), `blog.ts` (pomocnicze funkcje wpisów).
 - Brak stanu po stronie klienta poza samym panelem CMS.
 

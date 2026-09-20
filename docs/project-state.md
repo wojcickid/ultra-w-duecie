@@ -12,7 +12,7 @@ M2 — Strona działa publicznie na https://korona.damianwojcicki.com (Worker + 
 - TASK-001 (panel Sveltia CMS + logowanie OAuth GitHub, DEC-009) i TASK-016 (przeniesienie logiki OAuth z Pages Functions do Workera ze static assets: `wrangler.jsonc`, `worker/`) scalone; instrukcja `docs/cms-setup.md`; weryfikacja na żywo po wdrożeniu.
 - Zdalne repo (publiczne): `git@github.com:wojcickid/ultra-w-duecie.git`. Push tylko na polecenie użytkownika.
 - Wspólny kod: `src/lib/` (`format.ts`, `progress.ts`, `runs.ts`, `blog.ts`).
-- Strony: `/`, `/biegi`, `/biegi/<id>`, `/blog`, `/blog/strona/<n>`, `/blog/<id>`, `/rss.xml`, `/404`, pomocniczy `/styleguide`.
+- Strony: `/`, `/biegi`, `/biegi/<id>`, `/blog`, `/blog/strona/<n>`, `/blog/<id>`, `/rss.xml`, `/404`. Strona pomocnicza `/styleguide` usunięta w TASK-010 (podgląd wariantów komponentów: historia Git).
 
 ## Aktywne zadania
 
@@ -43,9 +43,9 @@ M2 — Strona działa publicznie na https://korona.damianwojcicki.com (Worker + 
 - Ewentualnie podać lokalizacje biegów (pole `location` jest puste).
 - Opcjonalnie: wskazówki co do palety kolorów (TASK-015).
 
-## Do usunięcia przed publikacją (TASK-010)
+## Sprzątanie przed publikacją (TASK-010)
 
-- Strona pomocnicza `/styleguide` i wpis testowy `src/content/posts/testowy-wpis.md`.
+- Wykonane w TASK-010: usunięto stronę pomocniczą `/styleguide` i wpis testowy `src/content/posts/testowy-wpis.md`.
 
 ## Ostatnia walidacja
 

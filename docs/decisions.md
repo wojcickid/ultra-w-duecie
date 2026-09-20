@@ -232,7 +232,7 @@ DEC-001 przewiduje CMS oparty na Git. Na Cloudflare Pages nie ma wbudowanego dos
 - Kod funkcji jest nasz: przy zmianach protokołu w Sveltia trzeba go dostosować; zmiany wersji panelu wymagają świadomej aktualizacji numeru wersji i SRI (`docs/cms-setup.md`).
 - Zakres `public_repo` wystarcza do zapisu w publicznym repozytorium i nie daje dostępu do prywatnych repozytoriów konta; przy zmianie repozytorium na prywatne potrzebny jest zakres `repo`.
 - Panel działa tylko na domenie z `ALLOWED_ORIGIN` (produkcyjna subdomena); podglądy `*.pages.dev` służą do sprawdzania strony, nie panelu.
-- Układ wpisów jako pakiet katalogu (`<slug>/index.md`): identyfikator wpisu w Astro to `<slug>` (przyrostek `/index` jest pomijany), a obrazy leżą obok wpisu i są wskazywane samą nazwą pliku (Astro `image()` przyjmuje taką ścieżkę). Istniejący płaski plik `testowy-wpis.md` nie jest widoczny w panelu (do usunięcia przed publikacją).
+- Układ wpisów jako pakiet katalogu (`<slug>/index.md`): identyfikator wpisu w Astro to `<slug>` (przyrostek `/index` jest pomijany), a obrazy leżą obok wpisu i są wskazywane samą nazwą pliku (Astro `image()` przyjmuje taką ścieżkę). Stary płaski plik `testowy-wpis.md` nie był widoczny w panelu; został usunięty w TASK-010.
 - Instrukcja dla właściciela: `docs/cms-setup.md`. Weryfikacja logowania i zapisu na żywo oraz odmowy zapisu dla osoby bez uprawnień pozostaje do wykonania po wdrożeniu (TASK-001), pełną konfigurację kolekcji robi TASK-008.
 
 ### Aktualizacja: wdrożenie jako Worker ze static assets, nie Pages

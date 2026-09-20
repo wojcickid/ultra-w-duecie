@@ -1,6 +1,6 @@
 # Wytyczne UI — Ultra w duecie
 
-> Brak gotowego szablonu. Kierunek wizualny (tokeny, komponenty) zaproponowano w TASK-004; wymaga akceptacji użytkownika (podgląd: strona `/styleguide`).
+> Brak gotowego szablonu. Kierunek wizualny (tokeny, komponenty) zaproponowano w TASK-004; wymaga akceptacji użytkownika (podgląd wariantów komponentów był na stronie pomocniczej `/styleguide`, usuniętej w TASK-010; jej wersja jest w historii Git).
 
 ## Źródło prawdy
 
@@ -66,7 +66,7 @@ Motyw: tylko jasny (`color-scheme: light`). Motyw ciemny — poza zakresem MVP.
 
 ## Komponenty
 
-Wszystkie w `src/components/`; podgląd wszystkich wariantów na `/styleguide` (strona pomocnicza, `noindex` — usunąć lub ukryć przed publikacją).
+Wszystkie w `src/components/`. Strona pomocnicza `/styleguide` z podglądem wszystkich wariantów została usunięta w TASK-010 (przed oficjalnym startem); jej ostatnia wersja jest w historii Git (`git log -- src/pages/styleguide.astro`). Warianty można oglądać na stronach docelowych (`/`, `/biegi`, `/biegi/<id>`).
 
 - **`BaseLayout`** (`src/layouts/`): `<html lang="pl">`, link „Przejdź do treści” (pierwszy element fokusowalny), `SiteHeader`, `<main id="main">` w kontenerze, `SiteFooter`. Właściwości: `title`, `description`, `noindex`.
 - **`SiteHeader`**: logo + nawigacja (Start / Biegi / Blog), aktywna pozycja oznaczona `aria-current="page"` i podkreśleniem. Bez JS: na telefonie logo i linki w dwóch rzędach, od `sm` w jednym. Trzy krótkie pozycje mieszczą się od 320 px, więc menu „hamburger” nie jest potrzebne; jeśli pozycji przybędzie, trzeba dodać zwijanie.
