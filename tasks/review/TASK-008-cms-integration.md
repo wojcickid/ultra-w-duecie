@@ -2,7 +2,7 @@
 
 ## Status
 
-in-progress
+review
 
 ## Owner
 
@@ -72,7 +72,7 @@ Stan: konfiguracja gotowa i sprawdzona lokalnie (tryb „Work with Local Reposit
 
 ### Review
 
-- Not reviewed
+- Lead (2026-09-20): diff w zakresie (config.yml, dokumentacja, zadanie); build (18 stron), lint, astro check i format (poza src/content, który Prettier pomija) bez błędów; config przejrzany w całości; poprawka podpowiedzi `retired` (DEC-008) i domyślna data wpisu sprawdzone; brak procesów po testach agenta. Do potwierdzenia na żywo (właściciel): zapis wpisu i zmiana statusu biegu w panelu na produkcji, zdjęcie w pakiecie wpisu, odmowa zapisu bez uprawnień.
 
 ## Outcome
 
