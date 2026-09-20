@@ -1,12 +1,11 @@
 {
   "name": "Supermaraton Gór Stołowych (SGS)",
-  "distanceKm": 54.7,
-  "location": "Karłów",
+  "distanceKm": 55,
+  "location": "Karłów (Góry Stołowe)",
   "typicalMonth": "czerwiec",
   "status": "unplanned",
   "retired": false,
   "order": 5,
-  "notes": "Dane orientacyjne z regulaminu Korony 4.0 (kingrunner.com) - wymagają weryfikacji z regulaminem.",
   "results": [
     {
       "author": "damian",

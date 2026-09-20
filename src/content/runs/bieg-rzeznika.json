@@ -1,12 +1,11 @@
 {
   "name": "Bieg Rzeźnika",
   "distanceKm": 84,
-  "location": "Komańcza, Cisna, Bieszczady",
+  "location": "Komańcza – Cisna (Bieszczady)",
   "typicalMonth": "Boże Ciało",
   "status": "completed",
   "retired": false,
   "order": 4,
-  "notes": "Dane orientacyjne z regulaminu Korony 4.0 (kingrunner.com) - wymagają weryfikacji z regulaminem.",
   "results": [
     {
       "author": "damian",

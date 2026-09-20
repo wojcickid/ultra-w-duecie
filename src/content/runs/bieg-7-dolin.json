@@ -1,11 +1,11 @@
 {
   "name": "Bieg 7 Dolin (Piwniczna)",
-  "distanceKm": 100,
-  "location": "Piwniczna Zdrój",
+  "distanceKm": 100.7,
+  "location": "Piwniczna-Zdrój (Beskid Sądecki)",
   "status": "completed",
   "retired": true,
   "order": 11,
-  "notes": "Bieg wycofany z listy Korony: od 2026 r. nie jest organizowany, wcześniej bieg podstawowy Korony.",
+  "notes": "Bieg wycofany z listy stałych biegów Korony 4.0; wg regulaminu Korony ukończenie do edycji 2025 włącznie można zaliczyć do klasyfikacji. Edycja 2026 została odwołana przez organizatora.",
   "results": [
     {
       "author": "damian",
@@ -19,5 +19,6 @@
       "time": "18:43:37",
       "resultsUrl": "https://live.sts-timing.pl/fb2024/person.php?n=242"
     }
-  ]
+  ],
+  "typicalMonth": "wrzesień"
 }

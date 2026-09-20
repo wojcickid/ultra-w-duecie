@@ -1,11 +1,10 @@
 {
   "name": "Bison Ultra Trail",
   "distanceKm": 106,
-  "location": "Supraśl",
+  "location": "Supraśl (Podlasie)",
   "typicalMonth": "październik",
   "status": "planned",
   "retired": false,
   "plannedDate": "2026-10-03",
-  "order": 9,
-  "notes": "Dane orientacyjne z regulaminu Korony 4.0 (kingrunner.com) - wymagają weryfikacji z regulaminem."
+  "order": 9
 }
