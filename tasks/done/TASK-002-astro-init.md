@@ -2,7 +2,7 @@
 
 ## Status
 
-in-progress
+done
 
 ## Owner
 
@@ -53,7 +53,7 @@ Patrz `docs/architecture.md` i `docs/ui.md`. Nie dodawać zależności bez powod
 
 ### Review
 
-- Not reviewed
+- Lead (2026-09-20): diff obejmuje tylko oczekiwane pliki; build, lint i format:check uruchomione niezależnie, bez błędów; `<html lang="pl">` potwierdzone w dist/index.html. Zaakceptowane.
 
 ## Outcome
 
@@ -62,5 +62,5 @@ Complete this section before moving the task to `done`.
 - Summary: szkielet Astro 7 (statyczny) + Tailwind 4 z ESLint, Prettier, astro check; jedna strona startowa z lang="pl"; README z instrukcją lokalną.
 - Tests: patrz Validation → Tests (wszystko przeszło).
 - Important files: `package.json`, `package-lock.json`, `astro.config.mjs`, `tsconfig.json`, `eslint.config.mjs`, `prettier.config.mjs`, `.prettierignore`, `.gitignore`, `src/layouts/BaseLayout.astro`, `src/pages/index.astro`, `src/styles/global.css`, `README.md`
-- Commit:
-- Follow-up tasks:
+- Commit: f484000, f6a1001, 23bfd45 (gałąź agent/frontend/TASK-002-astro-init)
+- Follow-up tasks: TASK-003, TASK-004 (odblokowane); adres `site` do potwierdzenia w TASK-009; rozważyć `.gitattributes` (eol=lf) — na razie działa autocrlf.
