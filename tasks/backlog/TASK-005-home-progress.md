@@ -12,10 +12,11 @@ frontend-agent
 
 - TASK-003
 - TASK-004
+- Użytkownik: zasada liczenia postępu „w duecie” (pytanie otwarte 1 w `docs/requirements.md`)
 
 ## Description
 
-Strona główna z krótkim opisem projektu, licznikiem ukończonych biegów (X/10), osią czasu postępu oraz ostatnimi wpisami bloga.
+Strona główna z krótkim opisem projektu, licznikiem ukończonych biegów (X/10) liczonym według potwierdzonej zasady, osią czasu postępu oraz ostatnimi wpisami bloga.
 
 ## Context
 

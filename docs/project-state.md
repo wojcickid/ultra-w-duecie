@@ -10,6 +10,8 @@ M0 — Planowanie zakończone; oczekuje na akceptację planu przez użytkownika.
 
 - Zebrano wymagania (`docs/project-brief.md`), uzupełniono `requirements.md`, `architecture.md`, `ui.md`, `decisions.md`.
 - Przygotowano backlog zadań TASK-001 … TASK-013 w `tasks/backlog/`.
+- Użytkownik odpowiedział na pytania: GitHub login, role równorzędne, język (DEC-005), autor wpisu, subdomena na MVP, jedno konto GitHub na start (DEC-006).
+- Otwarte: sposób liczenia postępu „w duecie” (SGS 2025 solo), mapowanie Biegu 7 Dolin na listę Korony, nazwy autorów, nazwa subdomeny i DNS.
 - Implementacja nie rozpoczęta. Żadne zadanie nie jest w `tasks/ready/`.
 
 ## Aktywne zadania
@@ -38,7 +40,7 @@ M0 — Planowanie zakończone; oczekuje na akceptację planu przez użytkownika.
 ## Następna zalecana akcja
 
 1. Użytkownik przegląda plan zadań w `tasks/backlog/` i odpowiada na pytania otwarte z `docs/requirements.md`.
-2. Użytkownik zakłada: repozytorium GitHub (zdalne), konto Cloudflare oraz upewnia się, że obaj autorzy mają konta GitHub (2FA).
+2. Użytkownik zakłada: repozytorium GitHub (zdalne) i konto Cloudflare oraz włącza 2FA na swoim koncie GitHub (drugie konto na start niepotrzebne).
 3. Lead przenosi TASK-001 i TASK-002 do `tasks/ready/`.
 
 > Aktualizuj ten plik przed zakończeniem większej sesji pracy lub po istotnej zmianie stanu projektu.

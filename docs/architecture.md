@@ -22,8 +22,9 @@ Brak własnego backendu, bazy danych i serwera do utrzymania.
 - Framework: **Astro** (generowanie statyczne), TypeScript.
 - Style: **Tailwind CSS**, mobile-first (szczegóły w `docs/ui.md`).
 - Treść: **Astro Content Collections** z walidacją schematu (Zod):
-  - `biegi` — 10 biegów Korony (nazwa, dystans, miejsce, orientacyjny termin, status, data planowana/ukończenia, wynik, link do wyników, notatki),
-  - `wpisy` — wpisy bloga (tytuł, data, treść w Markdown, zdjęcia, opcjonalne powiązanie z biegiem).
+  - `biegi` — 10 biegów Korony (nazwa, dystans, miejsce, orientacyjny termin, status, data planowana, notatki, oraz lista wyników per osoba: osoba, data ukończenia, czas, link do wyników),
+  - `wpisy` — wpisy bloga (tytuł, data, treść w Markdown, zdjęcia, autor/autorzy, opcjonalne powiązanie z biegiem),
+  - `autorzy` — dwie osoby (identyfikator, nazwa wyświetlana); wpisy i wyniki odwołują się do nich.
 - Routing: strona główna, lista biegów, strona biegu, lista wpisów, strona wpisu; panel pod `/admin`.
 - Brak stanu po stronie klienta poza samym panelem CMS.
 
@@ -42,7 +43,7 @@ Brak. Źródłem danych są pliki Markdown/JSON w repozytorium (kolekcje treści
 ## Wdrożenie
 
 - **Dev:** lokalnie (`astro dev`), opcjonalnie na własnym serwerze (Proxmox) — nie jest wymagane.
-- **Prod:** Cloudflare Pages, własna domena zarejestrowana w Cloudflare. Automatyczna publikacja po zmianie na gałęzi `main`.
+- **Prod:** Cloudflare Pages pod subdomeną istniejącej domeny właściciela (DEC-006); dedykowana domena może zastąpić subdomenę później. Automatyczna publikacja po zmianie na gałęzi `main`.
 - **Podgląd:** Cloudflare Pages tworzy adresy podglądu dla gałęzi (do sprawdzania zmian przed merge).
 - Środowiska: dev (lokalnie) i prod. Środowisko testowe zastępują podglądy gałęzi.
 - Repozytorium: GitHub (prywatne lub publiczne — do decyzji użytkownika; przy publicznym treść źródłowa jest jawna, nie zawiera sekretów).
@@ -50,7 +51,7 @@ Brak. Źródłem danych są pliki Markdown/JSON w repozytorium (kolekcje treści
 ## Bezpieczeństwo
 
 - Publiczna strona jest statyczna: brak formularzy, sesji i danych użytkowników — minimalna powierzchnia ataku.
-- Dostęp do zapisu treści ma wyłącznie osoba z uprawnieniami zapisu w repozytorium GitHub; logowanie do panelu przez konto GitHub (zalecane włączenie 2FA na obu kontach).
+- Dostęp do zapisu treści ma wyłącznie osoba z uprawnieniami zapisu w repozytorium GitHub; logowanie do panelu przez konto GitHub (zalecane włączenie 2FA). Na start jedno konto (właściciel); drugi autor może zostać dodany później jako współpracownik repozytorium.
 - Sekrety (identyfikator i sekret aplikacji OAuth GitHub) przechowywane wyłącznie w ustawieniach Cloudflare, nigdy w repozytorium.
 - Ochrona gałęzi `main` (wymóg PR lub przynajmniej brak force-push).
 - Brak danych wrażliwych i osobowych czytelników.

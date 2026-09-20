@@ -25,6 +25,7 @@ FR-4 z `docs/requirements.md`. Zdjęcia w repozytorium — zoptymalizować przez
 
 - [ ] Lista wpisów posortowana malejąco po dacie, z paginacją.
 - [ ] Strona wpisu renderuje Markdown i zdjęcia z tekstem alternatywnym.
+- [ ] Lista i strona wpisu pokazują autora (jednego lub obu).
 - [ ] Kanał RSS generowany przy budowie.
 - [ ] Stan pusty (brak wpisów) obsłużony.
 

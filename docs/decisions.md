@@ -38,8 +38,8 @@ Projekt hobbystyczny: koszt ograniczony do domeny (~11 USD/rok), minimalne utrzy
 
 - Koszt: tylko domena.
 - Backup i historia zmian: Git.
-- Brak e-mail/hasła i resetu haseł; logowanie przez GitHub, więc obaj autorzy potrzebują kont GitHub.
-- Rozróżnienie admin/moderator wynika z uprawnień GitHub, nie z logiki aplikacji.
+- Brak e-mail/hasła i resetu haseł; logowanie przez GitHub. Na start wystarczy jedno konto (DEC-006).
+- Rozróżnienie admin/moderator wynika z uprawnień GitHub, nie z logiki aplikacji; użytkownik zaakceptował równorzędność ról.
 - Role Backend i Database Agent nie są używane w tym projekcie.
 - Dokładny wybór CMS i sposobu logowania OAuth potwierdza TASK-001.
 
@@ -111,7 +111,7 @@ Mniej przerw w pracy; ważne wybory pozostają pod kontrolą użytkownika.
 ## DEC-005 — Język dokumentacji i kodu
 
 Date: 2026-09-20
-Status: proposed
+Status: accepted
 
 ### Decision
 
@@ -119,7 +119,7 @@ Dokumentacja, komentarze, treści interfejsu i komunikaty commitów po polsku. I
 
 ### Context
 
-Użytkownik wskazał język polski dla dokumentacji i kodu. Podział na identyfikatory angielskie jest propozycją agenta i wymaga potwierdzenia.
+Użytkownik wskazał język polski dla dokumentacji i kodu i potwierdził angielskie nazwy w kodzie.
 
 ### Alternatives considered
 
@@ -127,4 +127,29 @@ Użytkownik wskazał język polski dla dokumentacji i kodu. Podział na identyfi
 
 ### Consequences
 
-Do potwierdzenia przez użytkownika przed startem implementacji.
+Nazwy kolekcji i pól w kodzie po angielsku (np. `runs`, `posts`, `authors`). W dokumentach, kolekcje i pola opisujemy po polsku z nazwą kodową w nawiasie.
+
+## DEC-006 — MVP na subdomenie istniejącej domeny; jedno konto GitHub na start
+
+Date: 2026-09-20
+Status: accepted
+
+### Decision
+
+MVP publikujemy na subdomenie istniejącej domeny właściciela (Cloudflare Pages, własna domena podpięta jako subdomena). Osobna domena — później, opcjonalnie. Na start jedno konto GitHub (właściciel); drugi autor przesyła treść, a autor wpisu jest polem wpisu. Admin i moderator są równorzędni (uprawnienia z GitHuba).
+
+### Context
+
+Użytkownik chce zminimalizować koszty i komplikacje; kolega nie ma konta GitHub.
+
+### Alternatives considered
+
+- Zakup nowej domeny od razu (ok. 11 USD/rok).
+- Założenie drugiego konta GitHub przed startem.
+
+### Consequences
+
+- Brak dodatkowego kosztu na start.
+- Wymagana informacja, gdzie działa DNS domeny właściciela (TASK-009).
+- Wpisy pokazują autora niezależnie od tego, kto je opublikował.
+- Drugie konto GitHub można dodać później bez zmiany architektury.

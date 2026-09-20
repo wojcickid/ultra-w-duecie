@@ -10,7 +10,7 @@ frontend-agent
 
 ## Dependencies
 
-- Użytkownik: zdalne repozytorium GitHub, konto Cloudflare, obaj autorzy z kontami GitHub (2FA)
+- Użytkownik: zdalne repozytorium GitHub, konto Cloudflare, konto GitHub właściciela z 2FA (drugie konto niewymagane na start, DEC-006)
 
 ## Description
 

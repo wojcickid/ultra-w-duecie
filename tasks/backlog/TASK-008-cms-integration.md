@@ -25,7 +25,8 @@ FR-5 z `docs/requirements.md`. Panel nie ma linku w publicznej nawigacji. Sekret
 
 - [ ] Zalogowany autor dodaje i edytuje wpis oraz zmienia status biegu przez panel.
 - [ ] Zmiany zapisują się jako commity i po publikacji są widoczne na stronie.
-- [ ] Pola w panelu zgodne ze schematem z TASK-003, z polskimi etykietami.
+- [ ] Pola w panelu zgodne ze schematem z TASK-003, z polskimi etykietami, w tym wybór autora wpisu i wyniki per osoba.
+- [ ] Autor wpisu jest niezależny od konta GitHub, które publikuje.
 - [ ] Niezalogowany użytkownik nie może zapisać zmian.
 
 ## Implementation notes

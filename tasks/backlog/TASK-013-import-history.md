@@ -11,11 +11,12 @@ frontend-agent
 ## Dependencies
 
 - TASK-008
-- Użytkownik: dane o 2 ukończonych biegach (data, czas, link do wyników, ewentualnie zdjęcia)
+- Użytkownik: daty, czasy i linki do wyników oraz ewentualne zdjęcia dla: Biegu Rzeźnika 2024 (oboje), Biegu 7 Dolin w Piwnicznej 2024 (oboje), SGS 2025 (tylko właściciel)
+- Użytkownik: zasada liczenia postępu „w duecie” i mapowanie Biegu 7 Dolin na bieg z listy Korony
 
 ## Description
 
-Wprowadzić dane o już ukończonych biegach (2/10) oraz ewentualne wpisy retrospektywne, korzystając z panelu CMS lub bezpośrednio z plików treści.
+Wprowadzić dane o już ukończonych biegach oraz ewentualne wpisy retrospektywne, korzystając z panelu CMS lub bezpośrednio z plików treści.
 
 ## Context
 
@@ -23,8 +24,8 @@ Zaplanowane przez użytkownika po osiągnięciu MVP. Dane dostarcza użytkownik;
 
 ## Acceptance criteria
 
-- [ ] Dwa ukończone biegi mają status „ukończony” z datą, wynikiem i linkiem do wyników.
-- [ ] Licznik na stronie głównej pokazuje 2/10.
+- [ ] Ukończone biegi mają wyniki zapisane per osoba (data, czas, link do wyników) zgodnie z danymi użytkownika.
+- [ ] Licznik na stronie głównej pokazuje wartość zgodną z potwierdzoną zasadą liczenia (oczekiwane 2/10 dla biegów ukończonych wspólnie).
 - [ ] Dane potwierdzone przez użytkownika.
 
 ## Implementation notes

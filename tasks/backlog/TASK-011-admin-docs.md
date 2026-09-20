@@ -15,7 +15,7 @@ lead-agent
 
 ## Description
 
-Napisać krótką instrukcję po polsku, krok po kroku: logowanie, dodanie wpisu ze zdjęciami, zmiana statusu biegu, podgląd zmian, cofnięcie zmiany, dodanie nowego autora, włączenie 2FA.
+Napisać krótką instrukcję po polsku, krok po kroku: logowanie, dodanie wpisu ze zdjęciami i wybór autora, zmiana statusu biegu, podgląd zmian, cofnięcie zmiany, włączenie 2FA, dodanie drugiego autora jako współpracownika repozytorium (na później) oraz jak przyjmować treść od kolegi i publikować ją z autorstwem kolegi.
 
 ## Context
 
