@@ -10,7 +10,7 @@ frontend-agent
 
 ## Dependencies
 
-- TASK-001
+- TASK-001 (kod i instrukcja gotowe; weryfikacja na żywo po wdrożeniu)
 - TASK-003
 
 ## Description
@@ -23,7 +23,8 @@ FR-5 z `docs/requirements.md`. Panel nie ma linku w publicznej nawigacji. Sekret
 
 ## Acceptance criteria
 
-- [ ] `media_folder` CMS wskazuje katalog w `src/` (np. `src/assets/posts`), zgodny z `image()` w schemacie `posts` (ścieżki względne od pliku wpisu).
+- [ ] Wpisy zapisywane w układzie pakietu `src/content/posts/<slug>/index.md` z obrazami obok (ścieżki względne, zgodne z `image()` w schemacie `posts`; DEC-009).
+- [ ] Pole autorów we wpisie to relacja do kolekcji `authors` (zamiast tymczasowego `select` z TASK-001), a wyniki biegów wskazują autora tak samo.
 - [ ] Zalogowany autor dodaje i edytuje wpis oraz zmienia status biegu przez panel.
 - [ ] Zmiany zapisują się jako commity i po publikacji są widoczne na stronie.
 - [ ] Pola w panelu zgodne ze schematem z TASK-003, z polskimi etykietami, w tym wybór autora wpisu i wyniki per osoba.

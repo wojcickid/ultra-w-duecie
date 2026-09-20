@@ -8,26 +8,28 @@ M1 — Front MVP (wersja lokalna) gotowy: szkielet, model treści, layout, stron
 
 ## Aktualny status
 
-- Zamknięte i scalone do `main` (lokalnie): TASK-002 (szkielet Astro 7 + Tailwind 4), TASK-003 (kolekcje `authors`/`runs`/`posts`), TASK-004 (layout, tokeny, komponenty; paleta tymczasowa, TASK-015), TASK-005 (strona główna), TASK-006 (biegi), TASK-007 (blog + RSS).
-- Zdalne repo: `git@github.com:wojcickid/ultra-w-duecie.git`. Na GitHub wypchnięta jest dokumentacja i plan; kod (TASK-002…007) nie był jeszcze wypychany (push tylko na polecenie użytkownika).
+- Zamknięte i scalone do `main`: TASK-002 (szkielet Astro 7 + Tailwind 4), TASK-003 (kolekcje `authors`/`runs`/`posts`), TASK-004 (layout, tokeny, komponenty; paleta tymczasowa, TASK-015), TASK-005 (strona główna), TASK-006 (biegi), TASK-007 (blog + RSS), TASK-014 (walidacja referencji).
+- TASK-001 (panel Sveltia CMS + funkcje OAuth GitHub w `functions/`, DEC-009, instrukcja `docs/cms-setup.md`) scalony; weryfikacja na żywo po wdrożeniu.
+- Zdalne repo (publiczne): `git@github.com:wojcickid/ultra-w-duecie.git`. Push tylko na polecenie użytkownika.
 - Wspólny kod: `src/lib/` (`format.ts`, `progress.ts`, `runs.ts`, `blog.ts`).
 - Strony: `/`, `/biegi`, `/biegi/<id>`, `/blog`, `/blog/strona/<n>`, `/blog/<id>`, `/rss.xml`, `/404`, pomocniczy `/styleguide`.
 
 ## Aktywne zadania
 
-- Brak.
+- TASK-001 (kod i instrukcja gotowe i scalone; czeka na wdrożenie i weryfikację na żywo z właścicielem).
 
 ## Ostatnio ukończone
 
-- TASK-002, TASK-003, TASK-004, TASK-005, TASK-006, TASK-007
+- TASK-002, TASK-003, TASK-004, TASK-005, TASK-006, TASK-007, TASK-014
 
 ## Zablokowane
 
-- Brak.
+- Brak. TASK-008 czeka na weryfikację TASK-001 na żywo (wdrożenie na Cloudflare wykonuje właściciel wg `docs/cms-setup.md`).
 
 ## Ważne decyzje
 
-- Patrz `docs/decisions.md` (DEC-001…DEC-008).
+- Patrz `docs/decisions.md` (DEC-001…DEC-009).
+- Język: o obu autorach piszemy „obaj”, „obu”, „dwóch” (nie „oboje”, „dwoje”).
 - Licznik postępu: tylko biegi ukończone wspólnie (DEC-007); Bieg 7 Dolin jako wycofany (DEC-008).
 - Zewnętrzne kroki (Cloudflare, GitHub OAuth) odłożone do TASK-001/008/009, gdy będzie co wdrażać.
 - Zasada dla agentów: nie zabijać procesów po nazwie obrazu (`taskkill /IM chrome.exe` / `node.exe`) — tylko własne procesy po PID.
