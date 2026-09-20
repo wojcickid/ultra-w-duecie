@@ -1,0 +1,10 @@
+{
+  "name": "Zimowy Ultramaraton Karkonoski (ZUK)",
+  "distanceKm": 47.5,
+  "typicalMonth": "luty",
+  "status": "unplanned",
+  "retired": false,
+  "order": 1,
+  "notes": "Dane orientacyjne z regulaminu Korony 4.0 (kingrunner.com) - wymagają weryfikacji z regulaminem.",
+  "results": []
+}

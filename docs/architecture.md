@@ -21,10 +21,11 @@ Brak własnego backendu, bazy danych i serwera do utrzymania.
 
 - Framework: **Astro** (generowanie statyczne), TypeScript.
 - Style: **Tailwind CSS**, mobile-first (szczegóły w `docs/ui.md`).
-- Treść: **Astro Content Collections** z walidacją schematu (Zod):
-  - `biegi` — 10 biegów Korony (nazwa, dystans, miejsce, orientacyjny termin, status, flaga wycofania z listy Korony (`retired`), data planowana, notatki, oraz lista wyników per osoba: osoba, data ukończenia, czas, link do wyników),
-  - `wpisy` — wpisy bloga (tytuł, data, treść w Markdown, zdjęcia, autor/autorzy, opcjonalne powiązanie z biegiem),
-  - `autorzy` — dwie osoby (identyfikator, nazwa wyświetlana); wpisy i wyniki odwołują się do nich.
+- Treść: **Astro Content Collections** (loader `glob`, schematy Zod z `astro/zod`); definicje w `src/content.config.ts`, dane w `src/content/`. Identyfikator wpisu kolekcji = nazwa pliku. Niepoprawne dane przerywają budowę czytelnym komunikatem (`InvalidContentEntryDataError` ze ścieżką pola):
+  - **biegi** (`runs`, `src/content/runs/<slug>.json`) — 10 biegów Korony + bieg wycofany. Pola: `name` (nazwa), `distanceKm` (opcjonalny), `location` (opcjonalne), `typicalMonth` (orientacyjny termin, tekst, opcjonalny), `status` (`completed` / `planned` / `unplanned`), `retired` (bieg wycofany z listy Korony, domyślnie `false`), `plannedDate` (opcjonalna data), `notes` (opcjonalne), `order` (opcjonalna pozycja do sortowania), `results` (lista wyników per osoba, domyślnie pusta). Wynik: `author` (referencja do `authors`), `completedDate`, `time` (HH:MM:SS), `resultsUrl` (opcjonalny URL). Reguły: jeden wynik na autora w danym biegu; status `completed` wymaga co najmniej jednego wyniku. Postęp „w duecie” (DEC-007) liczy się w kodzie stron: bieg ma wyniki obojga autorów,
+  - **wpisy** (`posts`, `src/content/posts/*.md`) — pola we frontmatter: `title` (tytuł), `date` (data), `authors` (lista referencji do `authors`, min. 1), `run` (opcjonalna referencja do `runs`), `images` (opcjonalna lista `{ src, alt }`; `src` to obraz z `src/` walidowany przez `image()`, `alt` wymagany); treść w Markdown w pliku,
+  - **autorzy** (`authors`, `src/content/authors/<id>.json`) — dwie osoby (`damian`, `grzegorz`); pole `displayName` (nazwa wyświetlana); wpisy i wyniki odwołują się do nich przez `reference('authors')`.
+  - Ograniczenie: niepoprawna referencja (nieistniejący autor/bieg) jest raportowana jako `[ERROR] Invalid content reference` w logu synchronizacji, ale sama nie przerywa budowy (kod wyjścia 0) — strony powinny to wychwytywać przy rozwiązywaniu referencji.
 - Routing: strona główna, lista biegów, strona biegu, lista wpisów, strona wpisu; panel pod `/admin`.
 - Brak stanu po stronie klienta poza samym panelem CMS.
 

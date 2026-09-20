@@ -1,0 +1,10 @@
+{
+  "name": "Supermaraton Gór Stołowych (SGS)",
+  "distanceKm": 54.7,
+  "typicalMonth": "czerwiec",
+  "status": "unplanned",
+  "retired": false,
+  "order": 5,
+  "notes": "Dane orientacyjne z regulaminu Korony 4.0 (kingrunner.com) - wymagają weryfikacji z regulaminem.",
+  "results": []
+}

@@ -1,0 +1,10 @@
+{
+  "name": "Kaliska Setka",
+  "distanceKm": 100,
+  "typicalMonth": "październik",
+  "status": "unplanned",
+  "retired": false,
+  "order": 10,
+  "notes": "Dane orientacyjne z regulaminu Korony 4.0 (kingrunner.com) - wymagają weryfikacji z regulaminem.",
+  "results": []
+}
