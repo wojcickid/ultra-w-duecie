@@ -1,10 +1,18 @@
 {
   "name": "Supermaraton Gór Stołowych (SGS)",
   "distanceKm": 54.7,
+  "location": "Karłów",
   "typicalMonth": "czerwiec",
   "status": "unplanned",
   "retired": false,
   "order": 5,
   "notes": "Dane orientacyjne z regulaminu Korony 4.0 (kingrunner.com) - wymagają weryfikacji z regulaminem.",
-  "results": []
+  "results": [
+    {
+      "author": "damian",
+      "completedDate": "2025-06-28",
+      "time": "09:49:42",
+      "resultsUrl": "https://wyniki.b4sport.pl/sgs-ultra-54km/wojcicki-damian/e6438/chip_2NNXAG8.html"
+    }
+  ]
 }
