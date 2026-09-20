@@ -1,0 +1,27 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RunCard from '../../components/RunCard.astro';
+
+const runs = (await getCollection('runs')).sort(
+  (a, b) => (a.data.order ?? Infinity) - (b.data.order ?? Infinity),
+);
+---
+
+<BaseLayout
+  title="Biegi — Ultra w duecie"
+  description="Lista biegów Korony Polskich Ultramaratonów: status, dystans, miejsce i termin każdego z nich."
+>
+  <h1 class="text-3xl font-bold sm:text-4xl">Biegi Korony</h1>
+  <p class="mt-4 max-w-prose text-lg text-ink-muted">
+    Wszystkie biegi, które składają się na naszą Koronę Polskich Ultramaratonów,
+    razem z ich statusem.
+  </p>
+  <ul class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    {runs.map((run) => (
+      <li>
+        <RunCard run={run} />
+      </li>
+    ))}
+  </ul>
+</BaseLayout>
