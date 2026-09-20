@@ -2,7 +2,7 @@
 
 ## Status
 
-in-progress
+review
 
 ## Owner
 
@@ -57,7 +57,7 @@ DEC-007 (licznik tylko biegi ukończone wspólnie), DEC-008 (bieg wycofany). Dan
 
 ### Review
 
-- Not reviewed
+- Lead (2026-09-20): diff w zakresie (schemat, logika, komponenty, panel, dokumentacja; dane rzeczywiste nietknięte); przejrzane: schemat wyniku (outcome, reguły), isCompletedTogether (ta sama data, dzień w Europe/Warsaw), build (17 stron), lint, format:check, astro check bez błędów; na danych rzeczywistych licznik 2 z 10, Bieg 7 Dolin ma oba znaczniki na `/`, `/biegi` i `/biegi/bieg-7-dolin`; procesy agenta zatrzymane po PID. Do potwierdzenia przez właściciela na produkcji: zapis pola outcome w panelu (Sveltia), przykłady SGS i Grań Tatr.
 
 ## Outcome
 
