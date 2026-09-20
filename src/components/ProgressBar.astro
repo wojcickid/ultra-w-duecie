@@ -1,0 +1,38 @@
+---
+/**
+ * Pasek postępu z segmentami (jeden segment = jeden bieg).
+ * Wartość jest dostępna też jako tekst (aria-valuetext); wypełnienie różni się
+ * od pustego segmentu nie tylko kolorem, lecz także obramowaniem i licznikiem obok.
+ */
+interface Props {
+  value: number;
+  max: number;
+  /** Tekst czytany przez czytniki ekranu, np. „3 z 10 biegów ukończonych wspólnie”. */
+  label: string;
+}
+
+const { value, max, label } = Astro.props;
+const filled = Math.min(Math.max(value, 0), max);
+const segments = Array.from({ length: max }, (_, index) => index < filled);
+---
+
+<div
+  role="progressbar"
+  aria-label={label}
+  aria-valuemin={0}
+  aria-valuemax={max}
+  aria-valuenow={filled}
+  aria-valuetext={label}
+  class="flex gap-1.5"
+>
+  {segments.map((isFilled) => (
+    <span
+      class:list={[
+        'h-4 min-w-0 flex-1 rounded-sm border-2',
+        isFilled
+          ? 'border-brand-strong bg-brand'
+          : 'border-line-strong bg-surface',
+      ]}
+    />
+  ))}
+</div>

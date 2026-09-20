@@ -1,0 +1,61 @@
+---
+import StatusBadge from './StatusBadge.astro';
+import type { RunStatus } from './StatusBadge.astro';
+
+/** Oś czasu biegów: lista uporządkowana, na telefonie jedna kolumna. */
+export interface TimelineItem {
+  id: string;
+  name: string;
+  status: RunStatus;
+  distance?: string;
+  /** Termin: data (z `isoDate`) lub tekst orientacyjny. */
+  term: string;
+  isoDate?: string;
+  /** Krótka adnotacja tekstowa, np. o biegu wycofanym lub wyniku. */
+  note?: string;
+}
+
+interface Props {
+  items: TimelineItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<ol class="mt-6 space-y-3">
+  {items.map((item) => (
+    <li
+      class:list={[
+        'rounded-lg border bg-surface p-4',
+        item.status === 'withdrawn'
+          ? 'border-dashed border-status-withdrawn-fg'
+          : 'border-line',
+      ]}
+    >
+      <div class="flex flex-wrap items-start justify-between gap-x-4 gap-y-2">
+        <h4 class="min-w-0 text-lg font-semibold">
+          <a href={`/biegi/${item.id}`} class="link">
+            {item.name}
+          </a>
+        </h4>
+        <StatusBadge status={item.status} />
+      </div>
+      <p class="mt-2 text-ink-muted">
+        <span class="sr-only">Termin: </span>
+        {item.isoDate ? (
+          <time datetime={item.isoDate}>{item.term}</time>
+        ) : (
+          item.term
+        )}
+        {item.distance && (
+          <>
+            <span aria-hidden="true"> · </span>
+            <span class="sr-only">Dystans: </span>
+            {item.distance}
+          </>
+        )}
+      </p>
+      {item.note && <p class="mt-1 text-sm text-ink-muted">{item.note}</p>}
+    </li>
+  ))}
+</ol>
