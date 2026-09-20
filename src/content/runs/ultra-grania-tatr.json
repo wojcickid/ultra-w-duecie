@@ -6,5 +6,19 @@
   "retired": false,
   "order": 7,
   "notes": "Dane orientacyjne z regulaminu Korony 4.0 (kingrunner.com) - wymagają weryfikacji z regulaminem.",
-  "results": []
+  "results": [
+    {
+      "author": "damian",
+      "outcome": "dnf",
+      "completedDate": "2025-08-23",
+      "time": "11:29:57",
+      "note": "Nie zdążyliśmy na drugi punkt kontrolny na Murowańcu w czasie."
+    },
+    {
+      "author": "grzegorz",
+      "outcome": "dnf",
+      "time": "11:29:57",
+      "note": "Nie zdążyliśmy na drugi punkt kontrolny na Murowańcu w czasie."
+    }
+  ]
 }
