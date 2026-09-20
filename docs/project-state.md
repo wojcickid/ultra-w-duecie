@@ -4,56 +4,56 @@ Punkt odzyskiwania stanu dla długotrwałej pracy agentów.
 
 ## Aktualny kamień milowy
 
-M2 — Strona działa publicznie na https://korona.damianwojcicki.com (Worker + static assets, Cloudflare); panel /admin działa, wpis testowy dodany przez panel. Dalej: pełna konfiguracja panelu (TASK-008), QA i sprzątanie przed oficjalnym startem.
+M3 — MVP działa publicznie na https://korona.damianwojcicki.com (Worker + static assets, Cloudflare), panel `/admin` z logowaniem GitHub działa i przetestowano go na produkcji (wpis ze zdjęciami, wyniki biegów z DNF/DNS, odmowa dla obcego konta). Raport QA: gotowe z uwagami (`docs/qa-report-mvp.md`). Zostały drobne prace właściciela (Cloudflare) i zadania opcjonalne.
 
 ## Aktualny status
 
-- Zamknięte i scalone do `main`: TASK-002 (szkielet Astro 7 + Tailwind 4), TASK-003 (kolekcje `authors`/`runs`/`posts`), TASK-004 (layout, tokeny, komponenty; paleta tymczasowa, TASK-015), TASK-005 (strona główna), TASK-006 (biegi), TASK-007 (blog + RSS), TASK-014 (walidacja referencji).
-- TASK-001 (panel Sveltia CMS + logowanie OAuth GitHub, DEC-009) i TASK-016 (przeniesienie logiki OAuth z Pages Functions do Workera ze static assets: `wrangler.jsonc`, `worker/`) scalone; instrukcja `docs/cms-setup.md`; weryfikacja na żywo po wdrożeniu.
+- Zamknięte i scalone do `main`: TASK-001…008, 010, 011 (do `review`, patrz niżej), 014, 016…019.
+- Stan produkcji (zweryfikowany 2026-09-20): strony `/`, `/biegi`, `/biegi/<id>`, `/blog`, `/blog/<id>`, `/rss.xml`, `/404`; `/styleguide` i wpis testowy usunięte (404); nagłówki bezpieczeństwa i długi cache `/_astro/*` działają; RSS bez końcowego ukośnika.
+- Dane (`src/content`) edytuje właściciel przez panel na produkcji; agenci ich nie zmieniają poza uzgodnionymi zadaniami (np. TASK-018). Przed pracą na danych zawsze `git pull`.
 - Zdalne repo (publiczne): `git@github.com:wojcickid/ultra-w-duecie.git`. Push tylko na polecenie użytkownika.
 - Wspólny kod: `src/lib/` (`format.ts`, `progress.ts`, `runs.ts`, `blog.ts`).
-- Strony: `/`, `/biegi`, `/biegi/<id>`, `/blog`, `/blog/strona/<n>`, `/blog/<id>`, `/rss.xml`, `/404`. Strona pomocnicza `/styleguide` usunięta w TASK-010 (podgląd wariantów komponentów: historia Git).
+- Model wyniku osoby: `outcome` = finished/dnf/dns (DEC-011); „wspólnie” = obaj finished z tą samą datą (DEC-010).
 
 ## Aktywne zadania
 
-- TASK-001, TASK-008, TASK-017 czekają na potwierdzenie przez właściciela na produkcji (test panelu: zapis wpisu ze zdjęciem, wyniki biegu, outcome DNF/DNS, odmowa zapisu bez uprawnień).
-
-## Ostatnio ukończone
-
-- TASK-002, TASK-003, TASK-004, TASK-005, TASK-006, TASK-007, TASK-014, TASK-016
+- Brak aktywnych zadań agentów.
+- TASK-011 (instrukcja `docs/authors-guide.md`) w `review`: do potwierdzenia w praktyce przycisk „Revert” na GitHubie i działanie „Delete entry” w panelu.
 
 ## Zablokowane
 
-- Brak. TASK-008 czeka na weryfikację TASK-001 na żywo (wdrożenie na Cloudflare wykonuje właściciel wg `docs/cms-setup.md`).
+- Brak.
 
 ## Ważne decyzje
 
-- Patrz `docs/decisions.md` (DEC-001…DEC-011): m.in. DEC-010 (ukończony wspólnie = obaj finished z tą samą datą), DEC-011 (wynik osoby: outcome finished/dnf/dns).
+- Patrz `docs/decisions.md` (DEC-001…DEC-011).
 - Język: o obu autorach piszemy „obaj”, „obu”, „dwóch” (nie „oboje”, „dwoje”).
-- Licznik postępu: tylko biegi ukończone wspólnie (DEC-007); Bieg 7 Dolin jako wycofany (DEC-008).
-- Zewnętrzne kroki (Cloudflare, GitHub OAuth) odłożone do TASK-001/008/009, gdy będzie co wdrażać.
-- Zasada dla agentów: nie zabijać procesów po nazwie obrazu (`taskkill /IM chrome.exe` / `node.exe`) — tylko własne procesy po PID. Uwaga: zatrzymanie zadania w tle nie zamyka procesów potomnych (np. `workerd`); po testach sprawdzić porty i procesy.
+- Bieg 7 Dolin: wycofany z listy stałych biegów, ale wg regulaminu Korony 4.0 ukończenie do edycji 2025 włącznie się zalicza; wolny slot nie jest przypisany (pytanie do redakcji Kingrunera odłożone).
+- Zasada dla agentów: nie zabijać procesów po nazwie obrazu (`taskkill /IM chrome.exe` / `node.exe`) — tylko własne procesy po PID. Zatrzymanie zadania w tle nie zamyka procesów potomnych (np. `workerd`); po testach sprawdzić porty i procesy.
 
 ## Do zrobienia po stronie użytkownika
 
-- Przeczytać instrukcję dla autorów `docs/authors-guide.md` (TASK-011) i wykonać w praktyce jej kroki: logowanie, wpis ze zdjęciem, zmiana statusu i wyniku biegu, cofnięcie zmiany.
-- Wybrać nazwę subdomeny (propozycja: `korona.damianwojcicki.com`).
-- Wdrożenie w Cloudflare jako Worker ze static assets (nie Pages) wg `docs/cms-setup.md`: kreator Workera (Project name `ultra-w-duecie`, Build `npm run build`, Deploy `npx wrangler deploy`, Non-production `npx wrangler versions upload`, Root `/`), Custom domain `korona.damianwojcicki.com`, aplikacja OAuth w GitHubie (callback `https://korona.damianwojcicki.com/api/callback`), dwa Secrets `GITHUB_CLIENT_ID` i `GITHUB_CLIENT_SECRET` w Workerze (Settings → Variables and Secrets) po pierwszym wdrożeniu oraz Web Analytics dla domeny (bez wpisywania czegokolwiek w repozytorium).
-- Dostarczyć daty, czasy i linki do wyników ukończonych biegów (przed TASK-013).
-- Ewentualnie podać lokalizacje biegów (pole `location` jest puste).
-- Opcjonalnie: wskazówki co do palety kolorów (TASK-015).
+- Cloudflare: Redirect Rule HTTP→HTTPS tylko dla hosta `korona.damianwojcicki.com` (nie włączać „Always Use HTTPS” dla całej strefy; wada D-01), Web Analytics (na produkcji nie ma jeszcze skryptu `static.cloudflareinsights.com`), ewentualnie wyłączenie adresu `workers.dev` (TASK-009).
+- Zdecydować: status „Bez planu” przy biegach z wynikami solo/DNF/DNS; czy dodać canonical/Open Graph/sitemapę po starcie; poprawny czas Damiana w Biegu 7 Dolin (dane 18:43:38 vs tekst wpisu 18:43:25).
+- Sprawdzić w praktyce: przycisk „Revert” na GitHubie i „Delete entry” w panelu (TASK-011).
+- Opcjonalnie: wskazówki co do palety kolorów (TASK-015); kopia zapasowa repozytorium na Proxmoxie (TASK-012); pytanie do redakcji Kingrunera o slot Biegu 7 Dolin; Grzegorz może założyć konto GitHub (potem dodać jako współpracownika).
 
-## Sprzątanie przed publikacją (TASK-010)
+## Backlog (opcjonalne)
 
-- Wykonane w TASK-010: usunięto stronę pomocniczą `/styleguide` i wpis testowy `src/content/posts/testowy-wpis.md`.
+- TASK-009 — dokończenie wdrożenia (Web Analytics, `workers.dev`) — po stronie właściciela.
+- TASK-012 — kopia zapasowa repozytorium poza GitHubem.
+- TASK-013 — import historii ukończonych biegów (dane właściciel wprowadził sam przez panel; do zamknięcia po przeglądzie).
+- TASK-015 — rewizja palety kolorów.
 
 ## Ostatnia walidacja
 
-- Po scaleniu TASK-005/006/007: build (17 stron), lint, format:check i astro check przechodzą na `main`.
+- `main`: build (16 stron), lint, format:check, astro check bez błędów; walidacja referencji OK (2 autorów, 11 biegów).
+- QA (produkcja): Lighthouse 100/100/100/100 na 4 stronach; axe 0 naruszeń; 0 martwych linków; brak poziomego przewijania 320–1280 px.
 
 ## Następna zalecana akcja
 
-1. Push `main` na GitHub (na polecenie użytkownika).
-2. TASK-014 (walidacja referencji), TASK-001 → TASK-008 (panel CMS), TASK-009 (wdrożenie na Cloudflare), TASK-010 (QA), TASK-011 (instrukcja dla autorów).
+1. Właściciel: Redirect Rule HTTP→HTTPS i Web Analytics w Cloudflare.
+2. Właściciel: odpowiedzi na pytania z sekcji „Do zrobienia po stronie użytkownika”.
+3. Lead: po odpowiedziach — ewentualne zadania (status biegu z wynikami, SEO), zamknięcie TASK-009, TASK-011 i TASK-013.
 
 > Aktualizuj ten plik przed zakończeniem większej sesji pracy lub po istotnej zmianie stanu projektu.
