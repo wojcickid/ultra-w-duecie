@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import { getEntry, render } from 'astro:content';
+import { render } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Prose from '../../components/Prose.astro';
@@ -9,6 +9,7 @@ import { formatDate } from '../../lib/format';
 import {
   excerpt,
   getAuthorNames,
+  getPostRun,
   getSortedPosts,
   joinNames,
 } from '../../lib/blog';
@@ -21,7 +22,7 @@ export const getStaticPaths = (async () => {
 const { post } = Astro.props;
 const { Content } = await render(post);
 const names = await getAuthorNames(post);
-const run = post.data.run ? await getEntry(post.data.run) : undefined;
+const run = await getPostRun(post);
 const images = post.data.images ?? [];
 const description =
   excerpt(post.body) || `Wpis z bloga Ultra w duecie: ${post.data.title}.`;
@@ -47,7 +48,7 @@ const description =
       </p>
       {run && (
         <p class="mt-2 text-ink-muted">
-          Powiązany bieg:{' '}
+          Dotyczy biegu:{' '}
           <a href={`/biegi/${run.id}`} class="link">
             {run.data.name}
           </a>

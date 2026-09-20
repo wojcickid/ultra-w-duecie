@@ -1,0 +1,37 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Icon from './Icon.astro';
+import { getRetiredNote, getTogetherVerdict } from '../lib/run-verdict';
+import type { AuthorRef } from '../lib/run-verdict';
+
+/**
+ * Informacja „ukończyliśmy razem?” na kartach i osi czasu: tekst + ikona, potem adnotacja
+ * o biegu poza listą Korony 4.0. Dla biegu bez wyników nic nie pokazuje (status mówi wszystko).
+ */
+interface Props {
+  run: CollectionEntry<'runs'>;
+  authors: AuthorRef[];
+}
+
+const { run, authors } = Astro.props;
+const verdict = getTogetherVerdict(run, authors);
+const together = verdict.kind === 'together';
+const retiredNote = getRetiredNote(run, together);
+---
+
+{verdict.kind !== 'upcoming' && (
+  <p class="flex items-start gap-2 text-sm">
+    <Icon
+      name={together ? 'check-circle' : 'circle-minus'}
+      class:list={[
+        'mt-0.5 size-4 shrink-0',
+        together ? 'text-status-completed-fg' : 'text-ink-muted',
+      ]}
+    />
+    <span class="min-w-0">
+      <strong class="font-semibold text-ink">{verdict.headline}</strong>
+      {verdict.reason && <span> — {verdict.reason}</span>}
+    </span>
+  </p>
+)}
+{retiredNote && <p class="mt-1 text-sm text-ink-muted">{retiredNote}</p>}

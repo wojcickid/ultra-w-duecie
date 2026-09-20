@@ -1,0 +1,138 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Icon from './Icon.astro';
+import StatusBadge from './StatusBadge.astro';
+import { formatDate, toDayKey } from '../lib/format';
+import { joinNames } from '../lib/blog';
+import type { AuthorRef } from '../lib/run-verdict';
+
+/**
+ * Tabela wyników „Damian | Grzegorz”. Wiersze pojawiają się tylko wtedy, gdy którykolwiek autor ma
+ * w nich dane (poza wierszem Status, który jest zawsze). Puste komórki: „—” + „brak danych” dla
+ * czytników ekranu; wartości nie są generowane. Poniżej `sm` tabela przechodzi na układ blokowy
+ * (etykieta wiersza, pod nią wartości osób z imieniem), żeby nie było poziomego przewijania.
+ */
+interface Props {
+  results: CollectionEntry<'runs'>['data']['results'];
+  authors: AuthorRef[];
+  runName: string;
+}
+
+const { results, authors, runName } = Astro.props;
+type Result = Props['results'][number];
+
+const people = authors.map((author) => ({
+  ...author,
+  result: results.find((candidate) => candidate.author.id === author.id),
+}));
+
+// Kolejność wierszy = kolejność w tabeli; `has` decyduje, czy wiersz w ogóle się pojawi.
+const rows: { key: string; label: string; has: (result: Result) => boolean }[] =
+  [
+    { key: 'time', label: 'Czas', has: (result) => result.time !== undefined },
+    {
+      key: 'place',
+      label: 'Miejsce',
+      has: (result) => result.place !== undefined,
+    },
+    {
+      key: 'date',
+      label: 'Data',
+      has: (result) => result.completedDate !== undefined,
+    },
+    { key: 'note', label: 'Notatka', has: (result) => Boolean(result.note) },
+    {
+      key: 'link',
+      label: 'Wyniki oficjalne',
+      has: (result) => result.resultsUrl !== undefined,
+    },
+  ];
+const visibleRows = rows.filter((row) =>
+  people.some((person) => person.result && row.has(person.result)),
+);
+
+const cellClass =
+  'flex flex-wrap items-center gap-x-2 gap-y-1 py-1 sm:table-cell sm:py-3 sm:pr-4 sm:align-top';
+const rowClass =
+  'block border-t border-line py-3 first:border-t-0 sm:table-row sm:py-0';
+const headClass =
+  'block pb-1 text-sm font-semibold text-ink-muted sm:table-cell sm:w-40 sm:py-3 sm:pr-4 sm:align-top sm:text-base sm:text-ink';
+---
+
+<div class="mt-4 rounded-lg border border-line bg-surface p-4 sm:p-5">
+  <table class="block w-full text-left sm:table">
+    <caption class="sr-only">
+      Wyniki w biegu{runName}:{joinNames(authors.map((author) => author.name))}
+    </caption>
+    <thead class="sr-only sm:not-sr-only sm:table-header-group">
+      <tr class="sm:table-row">
+        <th scope="col" class="sm:table-cell sm:py-2 sm:pr-4">
+          <span class="sr-only">Pozycja</span>
+        </th>
+        {people.map((person) => (
+          <th
+            scope="col"
+            class="sm:table-cell sm:py-2 sm:pr-4 sm:text-left sm:text-lg sm:font-semibold"
+          >
+            {person.name}
+          </th>
+        ))}
+      </tr>
+    </thead>
+    <tbody class="block sm:table-row-group">
+      <tr class={rowClass}>
+        <th scope="row" class={headClass}>
+          Status
+        </th>
+        {people.map((person) => (
+          <td class={cellClass}>
+            <span class="font-semibold sm:hidden">{person.name}:</span>
+            {person.result ? (
+              <StatusBadge status={person.result.outcome} />
+            ) : (
+              <span class="inline-flex items-center gap-1.5 text-ink-muted">
+                <Icon name="circle-dashed" class="size-4 shrink-0" />
+                Brak danych
+              </span>
+            )}
+          </td>
+        ))}
+      </tr>
+      {visibleRows.map((row) => (
+        <tr class={rowClass}>
+          <th scope="row" class={headClass}>
+            {row.label}
+          </th>
+          {people.map(({ name, result }) => (
+            <td class={cellClass}>
+              <span class="font-semibold sm:hidden">{name}:</span>
+              {result && row.has(result) ? (
+                <span class="min-w-0 [overflow-wrap:anywhere]">
+                  {row.key === 'time' && result.time}
+                  {row.key === 'place' && result.place}
+                  {row.key === 'date' && result.completedDate && (
+                    <time datetime={toDayKey(result.completedDate)}>
+                      {formatDate(result.completedDate)}
+                    </time>
+                  )}
+                  {row.key === 'note' && result.note}
+                  {row.key === 'link' && result.resultsUrl && (
+                    <a href={result.resultsUrl} class="link" rel="noopener">
+                      Zobacz wyniki
+                      <span class="sr-only"> — {name}</span>
+                    </a>
+                  )}
+                </span>
+              ) : (
+                <>
+                  <span aria-hidden="true">—</span>
+                  <span class="sr-only">brak danych</span>
+                </>
+              )}
+            </td>
+          ))}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>

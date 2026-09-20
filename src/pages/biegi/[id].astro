@@ -3,10 +3,13 @@ import { getCollection } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/Icon.astro';
+import PostTeaser from '../../components/PostTeaser.astro';
+import RunFacts from '../../components/RunFacts.astro';
+import RunResultsTable from '../../components/RunResultsTable.astro';
+import Section from '../../components/Section.astro';
 import StatusBadge from '../../components/StatusBadge.astro';
-import { joinNames } from '../../lib/blog';
-import { formatDate } from '../../lib/format';
 import { getRunBadges, getRunFacts } from '../../lib/runs';
+import { getRetiredNote, getTogetherVerdict } from '../../lib/run-verdict';
 
 export const getStaticPaths = (async () => {
   const runs = await getCollection('runs');
@@ -14,29 +17,23 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const { run } = Astro.props;
-const { name, location, notes } = run.data;
+const { name, location, notes, results } = run.data;
 
-const authorEntries = (await getCollection('authors')).sort((a, b) =>
-  a.id.localeCompare(b.id),
-);
-const authors = new Map(authorEntries.map((a) => [a.id, a.data.displayName]));
-const authorName = (id: string) => authors.get(id) ?? id;
+const authors = (await getCollection('authors'))
+  .sort((a, b) => a.id.localeCompare(b.id))
+  .map((author) => ({ id: author.id, name: author.data.displayName }));
 
-const results = run.data.results;
-// Karta na każdego autora: wynik albo pusty stan „Jeszcze bez wyniku”.
-const resultsByAuthor = authorEntries.map((author) => ({
-  id: author.id,
-  result: results.find((candidate) => candidate.author.id === author.id),
-}));
+const verdict = getTogetherVerdict(run, authors);
+const together = verdict.kind === 'together';
+const retiredNote = getRetiredNote(run, together);
 
 const relatedPosts = (await getCollection('posts'))
   .filter((post) => post.data.run?.id === run.id)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-const facts = getRunFacts(run.data);
 const summary = [
   name,
-  facts.find((f) => f.label === 'Dystans')?.value,
+  getRunFacts(run.data).find((f) => f.label === 'Dystans')?.value,
   location,
 ]
   .filter(Boolean)
@@ -53,6 +50,7 @@ const summary = [
     </a>
   </p>
 
+  <!-- Nagłówek: nazwa, znaczniki, dane biegu -->
   <h1 class="mt-4 text-3xl font-bold sm:text-4xl">{name}</h1>
   <div class="mt-4 flex flex-wrap gap-2">
     {getRunBadges(run.data).map((status) => (
@@ -60,109 +58,93 @@ const summary = [
     ))}
   </div>
 
-  {run.data.retired && (
+  {retiredNote && (
     <p class="mt-4 max-w-prose rounded-lg border border-line bg-sand p-4 text-ink">
-      Bieg wycofany z listy stałych biegów Korony.
+      {retiredNote}
     </p>
   )}
 
-  {facts.length > 0 && (
-    <dl class="mt-6 grid max-w-prose grid-cols-[auto_1fr] gap-x-4 gap-y-2">
-      {facts.map(({ label, value }) => (
-        <>
-          <dt class="font-semibold">{label}</dt>
-          <dd class="text-ink-muted">{value}</dd>
-        </>
-      ))}
-    </dl>
-  )}
+  <RunFacts run={run.data} class="mt-6 max-w-prose text-ink-muted" />
 
   {notes && <p class="mt-6 max-w-prose text-ink-muted">{notes}</p>}
 
-  <section class="mt-12" aria-labelledby="results-heading">
-    <h2 id="results-heading" class="text-2xl font-semibold">
-      Wyniki
-    </h2>
-    {results.length === 0 ? (
-      <p class="mt-4 flex max-w-prose items-center gap-2 rounded-lg border border-dashed border-line-strong bg-surface p-4 text-ink">
-        <Icon name="circle-dashed" class="size-5 shrink-0" />
-        Jeszcze bez wyniku
+  <!--
+    SEKCJE STRONY BIEGU. Kolejne sekcje (zdjęcia, trasa, GPX, przewyższenie, statystyki, wideo)
+    dodaje się tu, jako jeden blok <Section id="..." title="..."> w wybranym miejscu poniżej.
+    Nic innego na stronie nie wymaga zmian.
+  -->
+
+  <Section id="together" title="Razem">
+    <p
+      class:list={[
+        'mt-4 flex max-w-prose items-start gap-3 rounded-lg border p-4 text-lg',
+        together
+          ? 'border-status-completed-fg bg-status-completed-bg text-status-completed-fg'
+          : 'border-line bg-surface text-ink',
+      ]}
+    >
+      <Icon
+        name={
+          together
+            ? 'check-circle'
+            : verdict.kind === 'upcoming'
+              ? 'calendar'
+              : 'circle-minus'
+        }
+        class="mt-1 size-5 shrink-0"
+      />
+      <span class="min-w-0">
+        <strong class="font-semibold">{verdict.headline}</strong>
+        {verdict.date && (
+          <>
+            {' — '}
+            <time datetime={verdict.isoDate}>{verdict.date}</time>
+          </>
+        )}
+        {verdict.reason && (
+          <>
+            {' — '}
+            {verdict.reason}
+          </>
+        )}
+        {'.'}
+      </span>
+    </p>
+  </Section>
+
+  {results.length > 0 && (
+    <Section id="result" title="Nasz wynik">
+      <RunResultsTable results={results} authors={authors} runName={name} />
+    </Section>
+  )}
+
+  {run.data.resultsUrl && (
+    <Section id="official-results" title="Oficjalne wyniki">
+      <p class="mt-4">
+        <a
+          href={run.data.resultsUrl}
+          class="link inline-flex min-h-11 items-center"
+          rel="noopener"
+        >
+          Wyniki oficjalne tego biegu
+        </a>
+      </p>
+    </Section>
+  )}
+
+  <Section id="report" title="Relacja">
+    {relatedPosts.length === 0 ? (
+      <p class="mt-4 text-ink-muted">
+        Relacja z tego biegu jeszcze się nie pojawiła.
       </p>
     ) : (
-      <ul class="mt-4 grid gap-4 sm:grid-cols-2">
-        {resultsByAuthor.map(({ id, result }) =>
-          result ? (
-            <li class="rounded-lg border border-line bg-surface p-5">
-              <div class="flex flex-wrap items-start justify-between gap-x-3 gap-y-2">
-                <h3 class="text-xl font-semibold">{authorName(id)}</h3>
-                <StatusBadge status={result.outcome} />
-              </div>
-              {(result.completedDate || result.time) && (
-                <dl class="mt-2 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-ink-muted">
-                  {result.completedDate && (
-                    <>
-                      <dt class="font-semibold text-ink">
-                        {result.outcome === 'finished'
-                          ? 'Data'
-                          : 'Data podejścia'}
-                      </dt>
-                      <dd>{formatDate(result.completedDate)}</dd>
-                    </>
-                  )}
-                  {result.time && (
-                    <>
-                      <dt class="font-semibold text-ink">Czas</dt>
-                      <dd>{result.time}</dd>
-                    </>
-                  )}
-                </dl>
-              )}
-              {result.note && <p class="mt-2 text-ink-muted">{result.note}</p>}
-              {result.resultsUrl && (
-                <p class="mt-3">
-                  <a href={result.resultsUrl} class="link" rel="noopener">
-                    Wyniki oficjalne — {authorName(id)}
-                  </a>
-                </p>
-              )}
-            </li>
-          ) : (
-            <li class="rounded-lg border border-dashed border-line-strong bg-surface p-5">
-              <h3 class="text-xl font-semibold">{authorName(id)}</h3>
-              <p class="mt-2 flex items-center gap-2 text-ink">
-                <Icon name="circle-dashed" class="size-5 shrink-0" />
-                Jeszcze bez wyniku
-              </p>
-            </li>
-          ),
-        )}
-      </ul>
-    )}
-  </section>
-
-  <section class="mt-12" aria-labelledby="posts-heading">
-    <h2 id="posts-heading" class="text-2xl font-semibold">
-      Powiązane wpisy
-    </h2>
-    {relatedPosts.length === 0 ? (
-      <p class="mt-4 text-ink-muted">Brak wpisów o tym biegu.</p>
-    ) : (
-      <ul class="mt-4 space-y-4">
+      <ul class="mt-4 space-y-6">
         {relatedPosts.map((post) => (
           <li>
-            <a href={`/blog/${post.id}`} class="link text-lg font-semibold">
-              {post.data.title}
-            </a>
-            <p class="text-sm text-ink-muted">
-              <time datetime={post.data.date.toISOString()}>
-                {formatDate(post.data.date)}
-              </time>
-              {' · '}
-              {joinNames(post.data.authors.map((a) => authorName(a.id)))}
-            </p>
+            <PostTeaser post={post} headingLevel={3} showRun={false} />
           </li>
         ))}
       </ul>
     )}
-  </section>
+  </Section>
 </BaseLayout>

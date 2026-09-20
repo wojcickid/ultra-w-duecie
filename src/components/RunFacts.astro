@@ -1,0 +1,40 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import RunTerm from './RunTerm.astro';
+import { getRunTerm } from '../lib/runs';
+
+/**
+ * Dane biegu: Dystans / Lokalizacja / termin (etykieta i wartość z `getRunTerm`).
+ * Brakujące pola są pomijane. Nie mylić z „Miejscem” w klasyfikacji (wynik osoby).
+ */
+interface Props {
+  run: CollectionEntry<'runs'>['data'];
+  class?: string;
+}
+
+const { run, class: className } = Astro.props;
+const term = getRunTerm(run);
+const distance =
+  run.distanceKm !== undefined
+    ? `${run.distanceKm.toLocaleString('pl-PL')} km`
+    : undefined;
+---
+
+<dl class:list={['grid grid-cols-[auto_1fr] gap-x-3 gap-y-1', className]}>
+  {distance && (
+    <>
+      <dt class="font-semibold text-ink">Dystans:</dt>
+      <dd class="min-w-0">{distance}</dd>
+    </>
+  )}
+  {run.location && (
+    <>
+      <dt class="font-semibold text-ink">Lokalizacja:</dt>
+      <dd class="min-w-0">{run.location}</dd>
+    </>
+  )}
+  <dt class="font-semibold text-ink">{term.label}:</dt>
+  <dd class="min-w-0">
+    {term.kind === 'tbd' ? 'do ustalenia' : <RunTerm term={term} />}
+  </dd>
+</dl>
