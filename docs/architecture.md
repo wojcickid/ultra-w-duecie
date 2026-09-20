@@ -22,11 +22,17 @@ Brak własnego backendu, bazy danych i serwera do utrzymania.
 - Framework: **Astro** (generowanie statyczne), TypeScript.
 - Style: **Tailwind CSS**, mobile-first (szczegóły w `docs/ui.md`).
 - Treść: **Astro Content Collections** (loader `glob`, schematy Zod z `astro/zod`); definicje w `src/content.config.ts`, dane w `src/content/`. Identyfikator wpisu kolekcji = nazwa pliku. Niepoprawne dane przerywają budowę czytelnym komunikatem (`InvalidContentEntryDataError` ze ścieżką pola):
-  - **biegi** (`runs`, `src/content/runs/<slug>.json`) — 10 biegów Korony + bieg wycofany. Pola: `name` (nazwa), `distanceKm` (opcjonalny), `location` (opcjonalne), `typicalMonth` (orientacyjny termin, tekst, opcjonalny), `status` (`completed` / `planned` / `unplanned`), `retired` (bieg wycofany z listy Korony, domyślnie `false`), `plannedDate` (opcjonalna data), `notes` (opcjonalne), `order` (opcjonalna pozycja do sortowania), `results` (lista wyników per osoba, domyślnie pusta). Wynik: `author` (referencja do `authors`), `completedDate`, `time` (HH:MM:SS), `resultsUrl` (opcjonalny URL). Reguły: jeden wynik na autora w danym biegu; status `completed` wymaga co najmniej jednego wyniku. Postęp „w duecie” (DEC-007) liczy się w kodzie stron: bieg ma wyniki obojga autorów,
+  - **biegi** (`runs`, `src/content/runs/<slug>.json`) — 10 biegów Korony + bieg wycofany. Pola: `name` (nazwa), `distanceKm` (opcjonalny), `location` (opcjonalne), `typicalMonth` (orientacyjny termin, tekst, opcjonalny), `status` (`completed` / `planned` / `unplanned`), `retired` (bieg wycofany z listy Korony, domyślnie `false`), `plannedDate` (opcjonalna data), `notes` (opcjonalne), `order` (opcjonalna pozycja do sortowania), `results` (lista wyników per osoba, domyślnie pusta). Wynik: `author` (referencja do `authors`), `completedDate`, `time` (HH:MM:SS), `resultsUrl` (opcjonalny URL). Reguły: jeden wynik na autora w danym biegu; status `completed` wymaga co najmniej jednego wyniku. Postęp „w duecie” (DEC-007) liczy się w kodzie (`src/lib/progress.ts`): bieg jest zaliczony, gdy wyniki mają wszyscy autorzy; mianownik `CROWN_TOTAL = 10`,
   - **wpisy** (`posts`, `src/content/posts/*.md`) — pola we frontmatter: `title` (tytuł), `date` (data), `authors` (lista referencji do `authors`, min. 1), `run` (opcjonalna referencja do `runs`), `images` (opcjonalna lista `{ src, alt }`; `src` to obraz z `src/` walidowany przez `image()`, `alt` wymagany); treść w Markdown w pliku,
   - **autorzy** (`authors`, `src/content/authors/<id>.json`) — dwie osoby (`damian`, `grzegorz`); pole `displayName` (nazwa wyświetlana); wpisy i wyniki odwołują się do nich przez `reference('authors')`.
   - Ograniczenie: niepoprawna referencja (nieistniejący autor/bieg) jest raportowana jako `[ERROR] Invalid content reference` w logu synchronizacji, ale sama nie przerywa budowy (kod wyjścia 0) — strony powinny to wychwytywać przy rozwiązywaniu referencji.
-- Routing: strona główna, lista biegów, strona biegu, lista wpisów, strona wpisu; panel pod `/admin`.
+- Routing (statyczny):
+  - `/` — strona główna (wprowadzenie, licznik postępu X/10, oś czasu, wyniki indywidualne, 3 ostatnie wpisy),
+  - `/biegi` i `/biegi/<id>` — lista biegów i szczegóły biegu (wyniki per osoba, powiązane wpisy),
+  - `/blog` (strona 1), `/blog/strona/<n>` (od 2, po 10 wpisów) i `/blog/<id>` — lista z paginacją i wpis; unikać identyfikatora wpisu `strona`,
+  - `/rss.xml` — kanał RSS (zależność `@astrojs/rss`, adres z `site` w `astro.config.mjs`),
+  - `/404`, pomocniczy `/styleguide` (do usunięcia przed publikacją, TASK-010), panel `/admin` (TASK-008).
+- Wspólny kod w `src/lib/`: `format.ts` (`formatDate`, strefa Europe/Warsaw — daty z kolekcji są parsowane jako UTC), `progress.ts` (licznik, sortowanie po `order`, wyniki autora), `runs.ts` (znaczniki statusu i dane biegu do wyświetlenia), `blog.ts` (pomocnicze funkcje wpisów).
 - Brak stanu po stronie klienta poza samym panelem CMS.
 
 ## Backend

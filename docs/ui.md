@@ -72,6 +72,12 @@ Wszystkie w `src/components/`; podgląd wszystkich wariantów na `/styleguide` (
 - **`Icon`**: `name` = `mountain | check-circle | calendar | circle-dashed | ban | arrow-right`; rozmiar przez `class` (domyślnie `size-4`). Nowe ikony dodawać w tym samym pliku i stylu.
 - **`StatusBadge`**: `status` = `completed | planned | unplanned | withdrawn` → „Ukończony” (ikona ptaszka w kółku), „Planowany” (kalendarz), „Bez planu” (przerywane kółko, przerywana ramka), „Wycofany” (przekreślone kółko). Status zawsze ma tekst i ikonę — nigdy sam kolor (WCAG 1.4.1).
 - **`Card`**: `title?`, `headingLevel` (2–4, domyślnie 3), `href?`. Z `href` cała karta jest klikalna (rozciągnięty link na tytule) i pokazuje fokus całej karty. Treść przez slot.
+- **`ProgressBar`**: pasek postępu `role="progressbar"` (`aria-valuenow/min/max/valuetext`); segmenty pełny/pusty różnią się też obramowaniem, obok zawsze jest tekst „X z 10”. Segmenty przycięte do 10.
+- **`Timeline`**: oś czasu biegów jako `<ol>` w jednej kolumnie; bieg wycofany z przerywaną ramką i adnotacją.
+- **`RunCard`**: karta biegu (nazwa jako `h2`, `StatusBadge`, dystans/miejsce/termin w `<dl>`); brakujące pola pomijane; cała karta klikalna.
+- **`PostCard`**: karta wpisu (tytuł `h2`, data, autorzy „Damian i Grzegorz”, opcjonalna miniatura z altem); cała karta klikalna.
+- **`Prose`**: typografia treści Markdown wpisu (style zakresowe oparte na tokenach; bez `@tailwindcss/typography`). Bloki kodu renderuje Shiki z własnymi kolorami (poza tokenami) — akceptowane, bo wpisy raczej nie zawierają kodu.
+- **Stany puste**: każda lista ma czytelny komunikat („Jeszcze bez ukończonych biegów”, „Wpisy pojawią się wkrótce”, „Brak wpisów o tym biegu”, „Wpisów jeszcze nie ma. Zajrzyj wkrótce.”, „Jeszcze bez wyniku”).
 - **Klasy pomocnicze** (`@layer components` w `global.css`): `.link` (link w treści: podkreślony, kolor marki), `.btn` + `.btn-primary` / `.btn-secondary` (link wyglądający jak przycisk).
 
 ## Zasady
