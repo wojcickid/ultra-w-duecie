@@ -2,15 +2,28 @@
 import type { CollectionEntry } from 'astro:content';
 import Card from './Card.astro';
 import StatusBadge from './StatusBadge.astro';
-import { getRunBadges, getRunFacts } from '../lib/runs';
+import { isCompletedTogether } from '../lib/progress';
+import { getResultSummaries, getRunBadges, getRunFacts } from '../lib/runs';
 
 interface Props {
   run: CollectionEntry<'runs'>;
+  /** Autorzy (id + nazwa) do zwięzłego opisu wyników osób i reguły „wspólnie”. */
+  authors: { id: string; name: string }[];
 }
 
-const { run } = Astro.props;
+const { run, authors } = Astro.props;
 const { name } = run.data;
 const details = getRunFacts(run.data);
+const together = isCompletedTogether(
+  run,
+  authors.map((author) => author.id),
+);
+const results = together
+  ? []
+  : getResultSummaries(
+      run.data.results,
+      new Map(authors.map((author) => [author.id, author.name])),
+    );
 ---
 
 <Card title={name} headingLevel={2} href={`/biegi/${run.id}`}>
@@ -19,6 +32,13 @@ const details = getRunFacts(run.data);
       <StatusBadge status={status} />
     ))}
   </div>
+  {results.length > 0 && (
+    <ul class="mt-3 text-sm">
+      {results.map((line) => (
+        <li>{line}</li>
+      ))}
+    </ul>
+  )}
   {details.length > 0 && (
     <dl class="mt-3 space-y-1 text-sm">
       {details.map(({ label, value }) => (

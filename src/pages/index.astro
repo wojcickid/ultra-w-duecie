@@ -4,9 +4,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Card from '../components/Card.astro';
 import Icon from '../components/Icon.astro';
 import ProgressBar from '../components/ProgressBar.astro';
+import StatusBadge from '../components/StatusBadge.astro';
 import Timeline from '../components/Timeline.astro';
 import type { TimelineItem } from '../components/Timeline.astro';
 import { formatDate } from '../lib/format';
+import { getResultSummaries, getRunBadges } from '../lib/runs';
 import {
   CROWN_TOTAL,
   countCompletedTogether,
@@ -36,34 +38,44 @@ const distanceFormat = new Intl.NumberFormat('pl-PL');
 const timelineItems: TimelineItem[] = runs.map((run) => {
   const { data } = run;
   const together = isCompletedTogether(run, authorIds);
-  const finishers = data.results.map(
-    (result) => authorNames.get(result.author.id) ?? result.author.id,
-  );
 
-  // Ukończony bieg: data faktycznego startu; w przeciwnym razie data planowana.
-  const completedDates = data.results.map((result) =>
-    result.completedDate.getTime(),
+  // Data z wyników (ukończenie lub podejście DNF/DNS); w przeciwnym razie data planowana.
+  const resultDates = data.results.flatMap((result) =>
+    result.completedDate ? [result.completedDate.getTime()] : [],
   );
   const termDate =
-    completedDates.length > 0
-      ? new Date(Math.min(...completedDates))
+    resultDates.length > 0
+      ? new Date(Math.min(...resultDates))
       : data.plannedDate;
 
+  const bothFinished =
+    authorIds.length > 0 &&
+    authorIds.every((id) =>
+      data.results.some(
+        (result) => result.author.id === id && result.outcome === 'finished',
+      ),
+    );
   let note: string | undefined;
-  if (data.retired) {
-    note = together
+  if (together) {
+    note = data.retired
       ? 'Wycofany z listy Korony; ukończony wspólnie, więc wlicza się do postępu.'
-      : 'Wycofany z listy Korony.';
-  } else if (together) {
-    note = 'Ukończony wspólnie.';
-  } else if (finishers.length > 0) {
-    note = `Ukończony indywidualnie: ${finishers.join(', ')}.`;
+      : 'Ukończony wspólnie.';
+  } else {
+    // Obaj ukończyli, ale w różnych dniach: nie liczy się jako wspólny (DEC-010).
+    note =
+      [
+        data.retired && 'Wycofany z listy Korony.',
+        bothFinished &&
+          'Ukończony przez obu w różnych dniach, więc nie liczy się do wspólnego postępu.',
+      ]
+        .filter(Boolean)
+        .join(' ') || undefined;
   }
 
   return {
     id: run.id,
     name: data.name,
-    status: data.retired ? 'withdrawn' : data.status,
+    badges: getRunBadges(data),
     distance:
       data.distanceKm !== undefined
         ? `${distanceFormat.format(data.distanceKm)} km`
@@ -73,6 +85,7 @@ const timelineItems: TimelineItem[] = runs.map((run) => {
       : (data.typicalMonth ?? 'Termin nieznany'),
     isoDate: termDate?.toISOString().slice(0, 10),
     note,
+    results: together ? [] : getResultSummaries(data.results, authorNames),
   };
 });
 
@@ -113,8 +126,8 @@ const latestPosts = [...postEntries]
         />
       </div>
       <p class="mt-3 text-sm text-ink-muted">
-        Licznik obejmuje tylko biegi ukończone przez obu. Wyniki indywidualne
-        podajemy osobno.
+        Licznik obejmuje tylko biegi ukończone przez obu tego samego dnia.
+        Wyniki indywidualne podajemy osobno.
       </p>
     </div>
 
@@ -137,14 +150,14 @@ const latestPosts = [...postEntries]
       Wyniki indywidualne
     </h2>
     <p class="mt-2 max-w-prose text-ink-muted">
-      Biegi ukończone przez każdego z nas, także samodzielnie — poza licznikiem
-      wspólnego postępu.
+      Podejścia każdego z nas: biegi ukończone także samodzielnie oraz
+      nieukończone (DNF) i bez startu (DNS) — poza licznikiem wspólnego postępu.
     </p>
     <div class="mt-4 grid gap-4 sm:grid-cols-2">
       {authorResults.map((author) => (
         <Card title={author.name} headingLevel={3}>
           {author.results.length === 0 ? (
-            <p>Jeszcze bez ukończonych biegów</p>
+            <p>Jeszcze bez wyników</p>
           ) : (
             <ul class="space-y-3">
               {author.results.map(({ run, result, together }) => (
@@ -152,22 +165,42 @@ const latestPosts = [...postEntries]
                   <a href={`/biegi/${run.id}`} class="link font-semibold">
                     {run.data.name}
                   </a>
-                  <p class="text-sm">
-                    <time
-                      datetime={result.completedDate.toISOString().slice(0, 10)}
-                    >
-                      {formatDate(result.completedDate)}
-                    </time>
-                    <span aria-hidden="true"> · </span>
-                    <span class="sr-only">Czas: </span>
-                    {result.time}
-                    {together && (
-                      <>
-                        <span aria-hidden="true"> · </span>
-                        ukończony wspólnie
-                      </>
-                    )}
-                  </p>
+                  {result.outcome !== 'finished' && (
+                    <p class="mt-1">
+                      <StatusBadge status={result.outcome} />
+                    </p>
+                  )}
+                  {(result.completedDate || result.time || together) && (
+                    <p class="text-sm">
+                      {result.completedDate && (
+                        <time
+                          datetime={result.completedDate
+                            .toISOString()
+                            .slice(0, 10)}
+                        >
+                          {formatDate(result.completedDate)}
+                        </time>
+                      )}
+                      {result.time && (
+                        <>
+                          {result.completedDate && (
+                            <span aria-hidden="true"> · </span>
+                          )}
+                          <span class="sr-only">Czas: </span>
+                          {result.time}
+                        </>
+                      )}
+                      {together && (
+                        <>
+                          <span aria-hidden="true"> · </span>
+                          ukończony wspólnie
+                        </>
+                      )}
+                    </p>
+                  )}
+                  {result.note && (
+                    <p class="text-sm text-ink-muted">{result.note}</p>
+                  )}
                 </li>
               ))}
             </ul>

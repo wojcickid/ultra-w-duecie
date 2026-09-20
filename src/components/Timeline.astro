@@ -6,13 +6,16 @@ import type { RunStatus } from './StatusBadge.astro';
 export interface TimelineItem {
   id: string;
   name: string;
-  status: RunStatus;
+  /** Znaczniki z `getRunBadges` (jedno źródło prawdy, DEC-008). */
+  badges: RunStatus[];
   distance?: string;
   /** Termin: data (z `isoDate`) lub tekst orientacyjny. */
   term: string;
   isoDate?: string;
-  /** Krótka adnotacja tekstowa, np. o biegu wycofanym lub wyniku. */
+  /** Krótka adnotacja tekstowa, np. o biegu wycofanym lub ukończeniu wspólnym. */
   note?: string;
+  /** Wyniki osób, gdy bieg nie jest ukończony wspólnie (np. „Damian: ukończył 09:49:42”). */
+  results?: string[];
 }
 
 interface Props {
@@ -27,7 +30,7 @@ const { items } = Astro.props;
     <li
       class:list={[
         'rounded-lg border bg-surface p-4',
-        item.status === 'withdrawn'
+        item.badges.includes('withdrawn')
           ? 'border-dashed border-status-withdrawn-fg'
           : 'border-line',
       ]}
@@ -38,7 +41,11 @@ const { items } = Astro.props;
             {item.name}
           </a>
         </h4>
-        <StatusBadge status={item.status} />
+        <div class="flex flex-wrap gap-2">
+          {item.badges.map((status) => (
+            <StatusBadge status={status} />
+          ))}
+        </div>
       </div>
       <p class="mt-2 text-ink-muted">
         <span class="sr-only">Termin: </span>
@@ -55,6 +62,13 @@ const { items } = Astro.props;
           </>
         )}
       </p>
+      {item.results && item.results.length > 0 && (
+        <ul class="mt-1 text-sm text-ink-muted">
+          {item.results.map((line) => (
+            <li>{line}</li>
+          ))}
+        </ul>
+      )}
       {item.note && <p class="mt-1 text-sm text-ink-muted">{item.note}</p>}
     </li>
   ))}

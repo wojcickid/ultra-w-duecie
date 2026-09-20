@@ -15,12 +15,18 @@ export const getStaticPaths = (async () => {
 const { run } = Astro.props;
 const { name, location, notes } = run.data;
 
-const authors = new Map(
-  (await getCollection('authors')).map((a) => [a.id, a.data.displayName]),
+const authorEntries = (await getCollection('authors')).sort((a, b) =>
+  a.id.localeCompare(b.id),
 );
+const authors = new Map(authorEntries.map((a) => [a.id, a.data.displayName]));
 const authorName = (id: string) => authors.get(id) ?? id;
 
 const results = run.data.results;
+// Karta na każdego autora: wynik albo pusty stan „Jeszcze bez wyniku”.
+const resultsByAuthor = authorEntries.map((author) => ({
+  id: author.id,
+  result: results.find((candidate) => candidate.author.id === author.id),
+}));
 
 const relatedPosts = (await getCollection('posts'))
   .filter((post) => post.data.run?.id === run.id)
@@ -83,26 +89,52 @@ const summary = [
       </p>
     ) : (
       <ul class="mt-4 grid gap-4 sm:grid-cols-2">
-        {results.map((result) => (
-          <li class="rounded-lg border border-line bg-surface p-5">
-            <h3 class="text-xl font-semibold">
-              {authorName(result.author.id)}
-            </h3>
-            <dl class="mt-2 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-ink-muted">
-              <dt class="font-semibold text-ink">Data</dt>
-              <dd>{formatDate(result.completedDate)}</dd>
-              <dt class="font-semibold text-ink">Czas</dt>
-              <dd>{result.time}</dd>
-            </dl>
-            {result.resultsUrl && (
-              <p class="mt-3">
-                <a href={result.resultsUrl} class="link" rel="noopener">
-                  Wyniki oficjalne — {authorName(result.author.id)}
-                </a>
+        {resultsByAuthor.map(({ id, result }) =>
+          result ? (
+            <li class="rounded-lg border border-line bg-surface p-5">
+              <div class="flex flex-wrap items-start justify-between gap-x-3 gap-y-2">
+                <h3 class="text-xl font-semibold">{authorName(id)}</h3>
+                <StatusBadge status={result.outcome} />
+              </div>
+              {(result.completedDate || result.time) && (
+                <dl class="mt-2 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-ink-muted">
+                  {result.completedDate && (
+                    <>
+                      <dt class="font-semibold text-ink">
+                        {result.outcome === 'finished'
+                          ? 'Data'
+                          : 'Data podejścia'}
+                      </dt>
+                      <dd>{formatDate(result.completedDate)}</dd>
+                    </>
+                  )}
+                  {result.time && (
+                    <>
+                      <dt class="font-semibold text-ink">Czas</dt>
+                      <dd>{result.time}</dd>
+                    </>
+                  )}
+                </dl>
+              )}
+              {result.note && <p class="mt-2 text-ink-muted">{result.note}</p>}
+              {result.resultsUrl && (
+                <p class="mt-3">
+                  <a href={result.resultsUrl} class="link" rel="noopener">
+                    Wyniki oficjalne — {authorName(id)}
+                  </a>
+                </p>
+              )}
+            </li>
+          ) : (
+            <li class="rounded-lg border border-dashed border-line-strong bg-surface p-5">
+              <h3 class="text-xl font-semibold">{authorName(id)}</h3>
+              <p class="mt-2 flex items-center gap-2 text-ink">
+                <Icon name="circle-dashed" class="size-5 shrink-0" />
+                Jeszcze bez wyniku
               </p>
-            )}
-          </li>
-        ))}
+            </li>
+          ),
+        )}
       </ul>
     )}
   </section>
