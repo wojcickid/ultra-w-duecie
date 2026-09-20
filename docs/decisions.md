@@ -203,6 +203,8 @@ Model danych ma flagę `retired` dla biegu. Zasadę wliczania do licznika, gdy a
 Date: 2026-09-20
 Status: accepted
 
+> Aktualizacja (2026-09-20): wdrożenie jako Worker ze static assets, nie Pages — patrz sekcja „Aktualizacja” na końcu tego wpisu. Poniższy opis Pages Function i `functions/` jest historyczny; obowiązuje `worker/` i `wrangler.jsonc`.
+
 ### Decision
 
 Panel CMS to **Sveltia CMS** w przypiętej wersji (0.217.0, ładowany z CDN jsDelivr z sumą SRI) w `public/admin/`. Logowanie GitHub OAuth obsługuje własna, krótka **Cloudflare Pages Function** w `functions/api/` (`/api/auth`, `/api/callback`), oparta na protokole Decap/Sveltia (przekierowanie do GitHuba, wymiana kodu na token, przekazanie tokenu do okna panelu przez `postMessage`). Zabezpieczenia: losowy `state` w ciasteczku HttpOnly, stały minimalny zakres `public_repo` (repozytorium jest publiczne), token wydawany wyłącznie originowi z `ALLOWED_ORIGIN`, sekrety tylko w zmiennych Cloudflare (`GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`), brak logowania tokenów i sekretów. Wpisy mają układ pakietu (`src/content/posts/<slug>/index.md` + obrazy obok), co daje ścieżki względne wymagane przez `image()` w Astro.
@@ -230,3 +232,18 @@ DEC-001 przewiduje CMS oparty na Git. Na Cloudflare Pages nie ma wbudowanego dos
 - Panel działa tylko na domenie z `ALLOWED_ORIGIN` (produkcyjna subdomena); podglądy `*.pages.dev` służą do sprawdzania strony, nie panelu.
 - Układ wpisów jako pakiet katalogu (`<slug>/index.md`): identyfikator wpisu w Astro to `<slug>` (przyrostek `/index` jest pomijany), a obrazy leżą obok wpisu i są wskazywane samą nazwą pliku (Astro `image()` przyjmuje taką ścieżkę). Istniejący płaski plik `testowy-wpis.md` nie jest widoczny w panelu (do usunięcia przed publikacją).
 - Instrukcja dla właściciela: `docs/cms-setup.md`. Weryfikacja logowania i zapisu na żywo oraz odmowy zapisu dla osoby bez uprawnień pozostaje do wykonania po wdrożeniu (TASK-001), pełną konfigurację kolekcji robi TASK-008.
+
+### Aktualizacja: wdrożenie jako Worker ze static assets, nie Pages
+
+Date: 2026-09-20
+Status: accepted (decyzja o Sveltia CMS i własnym proxy OAuth bez zmian; zmienia się tylko sposób wdrożenia)
+
+Kreator Cloudflare dla nowych projektów tworzy **Workera** (build z Git przez Workers Builds: `npm run build`, wdrożenie `npx wrangler deploy`, podglądy gałęzi `npx wrangler versions upload`), a nie projekt Pages; według dokumentacji Cloudflare (migracja z Pages: https://developers.cloudflare.com/workers/static-assets/migration-guides/migrate-from-pages/) nowe projekty są rekomendowane na Workers, a Pages tylko dla już istniejących. Funkcje w formacie Pages Functions (`functions/`, `onRequestGet`, routing plikowy) w takim wdrożeniu nie działają, więc:
+
+- kod OAuth przeniesiono do `worker/` (`worker/index.ts` jako punkt wejścia `fetch`, handlery `auth.ts` i `callback.ts`, wspólny `oauth.ts`); zachowanie i zabezpieczenia bez zmian (`state` w ciasteczku `Path=/api`, zakres `public_repo`, `ALLOWED_ORIGIN`, CSP z nonce, `no-store`); katalog `functions/` usunięto,
+- `wrangler.jsonc`: `assets.directory: ./dist`, `not_found_handling: 404-page`, `run_worker_first: ["/api/*"]` (tylko `/api/*` uruchamia skrypt; reszta to statyczne pliki, `public/_headers` działa natywnie), `vars.ALLOWED_ORIGIN` jawnie, `observability` wyłączone,
+- `GITHUB_CLIENT_ID` i `GITHUB_CLIENT_SECRET` jako **Secrets** w panelu Workera (nie w repozytorium i nie w `vars`): Cloudflare zachowuje sekrety między wdrożeniami, natomiast zwykłe zmienne z dashboardu, których nie ma w `wrangler.jsonc`, byłyby usuwane przez `wrangler deploy` (`keep_vars` nie włączamy: plik jest źródłem prawdy). Bez sekretów Worker wdraża się poprawnie i zwraca `MISCONFIGURED_CLIENT`,
+- domena `korona.damianwojcicki.com` jako Custom Domain Workera (strefa jest w Cloudflare, DNS dodawany automatycznie); `wrangler` dopisano do devDependencies (Workers Builds uruchamia `npx wrangler`, a przypięta wersja daje powtarzalne budowy),
+- skutek uboczny: adres `workers.dev` też serwuje stronę, ale panel działa tylko na domenie z `ALLOWED_ORIGIN`; `html_handling: drop-trailing-slash` (adresy bez ukośnika na końcu serwowane wprost, wersje z ukośnikiem przekierowują na nie; panel Sveltia ładuje `config.yml` z bezwzględnej ścieżki `/admin/config.yml`, więc nie zależy od ukośnika).
+
+Instrukcja dla właściciela: `docs/cms-setup.md`.

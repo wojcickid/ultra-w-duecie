@@ -8,13 +8,12 @@
     "directory": "./dist",
     "binding": "ASSETS",
     "not_found_handling": "404-page",
+    "html_handling": "drop-trailing-slash",
     // Do Workera trafia wyłącznie /api/*; reszta idzie prosto ze statycznych plików.
     "run_worker_first": ["/api/*"],
   },
-  // Jawne, niesekretne zmienne. GITHUB_CLIENT_SECRET NIE wpisujemy tutaj: to Secret w panelu Cloudflare.
+  // Jawne zmienne. GITHUB_CLIENT_ID i GITHUB_CLIENT_SECRET NIE są tutaj: to Secrets wpisywane w panelu Cloudflare.
   "vars": {
-    // Podmień na Client ID aplikacji OAuth z GitHuba (jawny identyfikator, nie sekret). Instrukcja: docs/cms-setup.md.
-    "GITHUB_CLIENT_ID": "ZMIEN_NA_CLIENT_ID_Z_GITHUBA",
     "ALLOWED_ORIGIN": "https://korona.damianwojcicki.com",
   },
   // Logi Workera wyłączone: adres /api/callback zawiera jednorazowy kod z GitHuba.

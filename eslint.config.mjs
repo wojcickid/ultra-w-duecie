@@ -4,7 +4,15 @@ import astro from 'eslint-plugin-astro';
 import globals from 'globals';
 
 export default [
-  { ignores: ['dist/', '.astro/', 'node_modules/', 'package-lock.json'] },
+  {
+    ignores: [
+      'dist/',
+      '.astro/',
+      '.wrangler/',
+      'node_modules/',
+      'package-lock.json',
+    ],
+  },
   js.configs.recommended,
   ...tseslint.configs.recommended,
   ...astro.configs.recommended,

@@ -5,7 +5,7 @@ backend:
   name: github
   repo: wojcickid/ultra-w-duecie
   branch: main
-  # Adres funkcji OAuth (Cloudflare Pages Function: /api/auth, /api/callback).
+  # Adres logowania OAuth (Worker: /api/auth, /api/callback).
   base_url: https://korona.damianwojcicki.com/api
   auth_scope: public_repo
 

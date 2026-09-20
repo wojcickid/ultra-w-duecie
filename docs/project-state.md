@@ -37,6 +37,7 @@ M1 — Front MVP (wersja lokalna) gotowy: szkielet, model treści, layout, stron
 ## Do zrobienia po stronie użytkownika
 
 - Wybrać nazwę subdomeny (propozycja: `korona.damianwojcicki.com`).
+- Wdrożenie w Cloudflare jako Worker ze static assets (nie Pages) wg `docs/cms-setup.md`: kreator Workera (Project name `ultra-w-duecie`, Build `npm run build`, Deploy `npx wrangler deploy`, Non-production `npx wrangler versions upload`, Root `/`), Custom domain `korona.damianwojcicki.com`, aplikacja OAuth w GitHubie (callback `https://korona.damianwojcicki.com/api/callback`), dwa Secrets `GITHUB_CLIENT_ID` i `GITHUB_CLIENT_SECRET` w Workerze (Settings → Variables and Secrets) po pierwszym wdrożeniu oraz Web Analytics dla domeny (bez wpisywania czegokolwiek w repozytorium).
 - Dostarczyć daty, czasy i linki do wyników ukończonych biegów (przed TASK-013).
 - Ewentualnie podać lokalizacje biegów (pole `location` jest puste).
 - Opcjonalnie: wskazówki co do palety kolorów (TASK-015).
