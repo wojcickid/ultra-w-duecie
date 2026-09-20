@@ -311,3 +311,37 @@ Właściciel podał przypadki: SGS 2025 (Damian ukończył, Grzegorz DNS) i Bieg
 ## DEC-008 — aktualizacja (2026-09-20, TASK-018)
 
 Weryfikacja w źródłach ([docs/run-data-proposals.md](run-data-proposals.md)) potwierdziła: regulamin Korony 4.0 (wersja z 07.12.2024) stanowi, że „wszyscy którzy przebiegli Bieg 7 Dolin Festiwalu Biegowego do edycji 2025 włącznie mogą zaliczyć ten bieg do klasyfikacji”. Organizator nie zakończył imprezy: odwołał edycję 2026 i zapowiedział propozycję na 2027. Regulamin nie wskazuje, który z 10 slotów zajmuje 7 Dolin (jest w nim niespójność „8 stałych + jeden z trzech”); właściciel odłożył pytanie do redakcji Kingrunera i pozostawia flagę `retired: true` oraz dotychczasowy licznik.
+
+## DEC-012 — Runda UX: lista Korony 4.0 i historia, terminy, statusy, nowe pola
+
+Date: 2026-09-20
+Status: accepted
+
+### Decision
+
+Zlecenie właściciela (runda dopracowania UX i struktury serwisu, TASK-020 / TASK-021):
+
+1. **Nowe pola opcjonalne** w schemacie (`src/content.config.ts`): `place` (miejsce, liczba całkowita dodatnia) przy wyniku osoby, `resultsUrl` na poziomie biegu (link do wyników całego biegu; wyniki osób mają własne `resultsUrl`), `expectedYear` (rok terminu orientacyjnego, liczba całkowita 2000-2100) w biegu. Bez migracji istniejących danych i bez wymyślania wartości: pola pozostają puste, dopóki nie ma potwierdzonych informacji.
+2. **Bieg 7 Dolin nie jest ukrywany.** Widoki pokazują 10 biegów Korony 4.0 (`retired: false`, kolejność sezonu wg `order`) oraz pod nimi osobną sekcję „Historia projektu” (`retired: true`) z wyraźnym znacznikiem „Ukończony wspólnie” i adnotacją, że nie jest jedną z 10 pozycji Korony 4.0. Podział robi `splitCrownAndHistory` (`src/lib/progress.ts`). Licznik 2/10 zostaje (DEC-008); pod licznikiem widok wyjaśnia, z czego się składa (Bieg Rzeźnika + Bieg 7 Dolin; `getTogetherSummary`).
+3. **Statusy: wartości w danych bez zmian** (`completed` / `planned` / `unplanned`), zmieniają się tylko etykiety: **Ukończony / Zaplanowany / Do ustalenia**, a znacznik biegu wycofanego to **„Poza listą Korony 4.0”** (wartość `withdrawn` typu `RunStatus` bez zmian). Etykiety są zdefiniowane w jednym miejscu (`src/components/StatusBadge.astro`); panel CMS ma te same nazwy.
+4. **Trzy rodzaje terminu** (`getRunTerm` w `src/lib/runs.ts`, pole `kind`): `confirmed` (data z wyników albo `plannedDate`; „3 października 2026”), `approximate` (`typicalMonth`; z `expectedYear` daje „październik 2027”, bez roku „październik” z dopiskiem „termin orientacyjny” w polu `qualifier`), `tbd` („Termin do ustalenia”). Nie pokazujemy już prefiksu „orientacyjnie: …”. Pierwszeństwo: data z wyników > `plannedDate` > orientacyjny > do ustalenia. Etykiety „Ukończono” / „Podejście” / „Pierwsze podejście” dla dat z wyników bez zmian (DEC-010).
+5. **„Najbliższy start”** liczy się przy budowie strony z danych (`getNextRun` w `src/lib/progress.ts`), nie z hardkodu: niewycofany bieg z potwierdzoną `plannedDate`, jeszcze nieukończony wspólnie, o dacie nie wcześniejszej niż dziś (dni porównywane w Europe/Warsaw; w dniu startu bieg nadal jest „najbliższy”). Funkcja przyjmuje `now` jako parametr (testowalność). Krótki skrypt po stronie przeglądarki ukrywa kartę po dniu startu (`isoDate` zwracane przez helper), bo strona statyczna nie przebudowuje się sama po dacie. Termin orientacyjny nie kwalifikuje biegu na „najbliższy start”.
+6. **Ostrzeżenie w walidacji:** `scripts/validate-content.mjs` ostrzega (bez przerywania budowy), gdy liczba biegów aktywnych (bez `retired: true`) jest inna niż 10 (`CROWN_TOTAL`).
+
+### Context
+
+Po pierwszych wdrożeniach właściciel poprosił o dopracowanie UX i struktury: lista Korony ma być czytelna jako 10 pozycji, a wspólnie ukończony Bieg 7 Dolin nie może znikać ani mylić przy liczniku 2/10. Etykiety „Planowany” i „Bez planu” oraz prefiks „orientacyjnie:” były mało czytelne.
+
+### Alternatives considered
+
+- Ukrycie Biegu 7 Dolin w widokach (zostaje tylko w licznikach): odrzucone, bo wspólny wynik jest ważną częścią historii projektu.
+- Zmiana wartości `status` w danych (np. `unplanned` na `tbd`): odrzucone, wymagałoby migracji danych bez potrzeby; wystarczy zmiana etykiet.
+- „Najbliższy start” wyłącznie skryptem po stronie klienta: odrzucone; dane powinny być wybrane przy budowie, skrypt tylko ukrywa kartę po terminie.
+- Wybór „najbliższego startu” także z terminów orientacyjnych: odrzucone, bo bez potwierdzonej daty nie da się stwierdzić, że start jest „najbliższy”.
+
+### Consequences
+
+- `getRunTerm` zawsze zwraca obiekt (wcześniej mógł zwrócić `undefined`); brak jakichkolwiek danych o terminie to `kind: 'tbd'`. `isoDate` liczone jest w Europe/Warsaw (jak wyświetlana data).
+- Helpery: `getRunTerm` / `formatRunTerm` / `getRunFacts` (`src/lib/runs.ts`) oraz `splitCrownAndHistory`, `getTogetherSummary`, `getNextRun` (`src/lib/progress.ts`); widoki (TASK-021) korzystają z nich zamiast liczyć same.
+- Dodanie 11. aktywnego biegu albo usunięcie flagi `retired` bez zmiany reszty listy wywoła ostrzeżenie w logu budowy, a nie błąd.
+- Dane w `src/content/` nie były zmieniane w TASK-020; wartości `expectedYear`, `place` i `resultsUrl` można dopisywać osobno po potwierdzeniu w źródłach.
