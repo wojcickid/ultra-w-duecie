@@ -309,9 +309,9 @@ authors:
   - grzegorz
 run: bieg-rzeznika
 images:
-  - src: ./meta.jpg
+  - src: meta.jpg
     alt: 'Damian i Grzegorz na mecie'
-  - src: ./szlak.jpg
+  - src: szlak.jpg
     alt: 'Szlak na Ślężę we mgle'
 ---
 
