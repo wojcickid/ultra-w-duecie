@@ -4,7 +4,7 @@ Punkt odzyskiwania stanu dla długotrwałej pracy agentów.
 
 ## Aktualny kamień milowy
 
-M1 — Front MVP (wersja lokalna) gotowy: szkielet, model treści, layout, strona główna, biegi i blog. Dalej: panel CMS, wdrożenie i QA.
+M2 — Strona działa publicznie na https://korona.damianwojcicki.com (Worker + static assets, Cloudflare); panel /admin działa, wpis testowy dodany przez panel. Dalej: pełna konfiguracja panelu (TASK-008), QA i sprzątanie przed oficjalnym startem.
 
 ## Aktualny status
 
