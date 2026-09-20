@@ -187,7 +187,7 @@ DNF (Did Not Finish) to start bez dobiegnięcia do mety. DNS (Did Not Start) to 
    - Przykład, który się NIE liczy: Damian „Ukończył”, a Grzegorz „Nie wystartował (DNS)”.
 3. **Biegli razem po północy?** Jeśli bieg trwał przez noc i mety mieliście w różnych dniach kalendarzowych, wpisz **obu tę samą datę** (np. datę startu albo mety, byle taką samą). Inaczej licznik uzna to za dwa osobne podejścia.
 4. **DNF i DNS nie liczą się do licznika, ale są widoczne** na stronie biegu, na liście, na osi czasu i w wynikach indywidualnych (zawsze z tekstem i ikoną).
-5. **Bieg wycofany z listy Korony.** Zaznacz **Wycofany z listy Korony** dla biegu, którego już nie ma na liście (np. Bieg 7 Dolin, nieorganizowany od 2026 r.). Taki bieg nadal liczy się do postępu, jeśli obaj autorzy ukończyli go tego samego dnia.
+5. **Bieg wycofany z listy Korony.** Zaznacz **Wycofany z listy Korony** dla biegu, którego już nie ma na liście (np. Bieg 7 Dolin, którego edycja 2026 została odwołana, a wg regulaminu Korony ukończenie do edycji 2025 włącznie nadal się zalicza). Taki bieg nadal liczy się do postępu, jeśli obaj autorzy ukończyli go tego samego dnia.
 6. Jeśli bieg nie jest ukończony wspólnie (np. tylko Damian ukończył), ustaw **Status** zgodnie z tym, co jest prawdą dla następnego podejścia (zwykle **Bez planu** albo **Planowany**), a wynik Damiana zostaw w **Wynikach**. Status **Ukończony** przy wyniku tylko jednej osoby zbuduje się, ale w logu budowy pojawi się ostrzeżenie, że bieg nie liczy się jako wspólny.
 
 ### Gotowe przykłady
