@@ -177,6 +177,23 @@ Bez logowania do Cloudflare i bez kont:
 4. Sprawdź m.in.: `http://127.0.0.1:8787/api/auth?provider=github&site_id=127.0.0.1` (302 na `github.com/login/oauth/authorize`), `/api/callback` bez ciasteczka (`CSRF_DETECTED`), `/`, `/admin/`, `/nieistnieje` (404 ze strony 404), `/api/nieistnieje` (404).
 5. Zatrzymaj serwer (Ctrl+C). Nie używaj `wrangler login`, `wrangler deploy` ani `wrangler secret put` z komputera agenta; wdrożenia robi Cloudflare z gałęzi `main`.
 
+## Test panelu lokalnie (bez logowania do GitHuba)
+
+Do sprawdzenia konfiguracji kolekcji (etykiety, pola, walidacja, wygląd zapisanych plików) nie potrzeba konta GitHub ani Cloudflare. Sveltia CMS ma tryb „Work with Local Repository”, w którym panel czyta i zapisuje pliki wprost w katalogu projektu (dokumentacja: https://sveltiacms.app/en/docs/workflows/local).
+
+1. W katalogu projektu uruchom `npm run dev` (serwer Astro na porcie 4321; zostaw go włączonego).
+2. W **Chrome lub Edge** (przeglądarki oparte na Chromium; Firefox i Safari nie działają, bo tryb wymaga File System Access API) otwórz `http://localhost:4321/admin/index.html`. Zalecany jest adres z `index.html`, żeby serwer potraktował panel jako zwykły plik.
+3. Na ekranie logowania kliknij **Pracuj z lokalnym repozytorium** (**Work with Local Repository**) i wskaż **główny katalog projektu** (ten z `package.json` i ukrytym `.git`). Przeglądarka poprosi o zgodę na odczyt i zapis w tym katalogu; zezwól tylko dla tego katalogu.
+4. W panelu widać znacznik „Lokalny”. Edytuj wpisy, biegi i autorów jak zwykle: **Zapisz** zapisuje pliki w `src/content/` (wpisy w `src/content/posts/<slug>/index.md`, biegi i autorzy jako JSON). Podgląd strony: `http://localhost:4321/`.
+5. Obejrzyj zmiany poleceniem `git diff` i `git status`. Nic nie jest commitowane ani wysyłane: panel w tym trybie nie wykonuje operacji Git. Zmiany zatwierdzasz sam (commit) albo odrzucasz (`git restore src/content`; nowe pliki usuń lub `git clean -fd src/content` po sprawdzeniu, co zostanie usunięte).
+
+Ograniczenia i uwagi:
+
+- Tryb sprawdza obecność katalogu `.git` w wybranym folderze. W git worktree `.git` jest plikiem, więc wybór katalogu worktree może zostać odrzucony („not a repository root directory”); użyj wtedy głównego klona repozytorium.
+- Po zmianie `public/admin/config.yml` oraz po pobraniu zmian z repozytorium odśwież panel (F5). Skrypt panelu ładuje się z CDN (jsDelivr) w przypiętej wersji, więc potrzebne jest połączenie z internetem.
+- Tryb lokalny nie sprawdza logowania, uprawnień ani zapisu commitów na GitHubie; to testuje się dopiero na produkcji (Krok 6). Nie sprawdza też reguł łączonych ze schematu (np. co najmniej jeden wynik dla statusu „Ukończony”); wykryje je `npm run build` lub serwer `npm run dev` (komunikat o błędzie treści).
+- Panel zapisuje tylko pliki wskazanego katalogu, ale ma w nim pełny zapis: nie wskazuj katalogu nadrzędnego ani całego dysku.
+
 ## Aktualizacja panelu (Sveltia CMS)
 
 Wersja panelu jest przypięta w `public/admin/index.html` (adres z numerem wersji oraz suma kontrolna `integrity`). Bez zmiany pliku wersja się nie zmieni. Aktualizacja jest zadaniem dla agenta/dewelopera:
