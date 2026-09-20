@@ -2,7 +2,7 @@
 
 ## Status
 
-ready
+in-progress
 
 ## Owner
 
@@ -14,7 +14,9 @@ frontend-agent
 
 ## Description
 
-Zweryfikować w praktyce działanie panelu CMS (Decap CMS vs Sveltia CMS) z logowaniem przez GitHub OAuth na Cloudflare Pages, na minimalnej stronie testowej. Wybrać CMS i sposób obsługi OAuth (Pages Function/Worker) oraz opisać kroki konfiguracji.
+Zbadać (aktualna dokumentacja) i przygotować w kodzie projektu panel CMS (Decap CMS vs Sveltia CMS) z logowaniem przez GitHub OAuth na Cloudflare Pages: wybrać CMS i sposób obsługi OAuth (Pages Function), zbudować minimalny panel `/admin` na prawdziwym projekcie (nie na osobnej stronie testowej) oraz napisać instrukcję konfiguracji krok po kroku dla właściciela (GitHub OAuth App, Cloudflare Pages, zmienne środowiskowe).
+
+Uwaga o zakresie: agent nie ma dostępu do kont Cloudflare/GitHub. Kroki w panelach (utworzenie aplikacji OAuth, projektu Pages, ustawienie sekretów) wykonuje właściciel według instrukcji; weryfikację na żywo (kryteria 1 i 4) wykonuje Lead wspólnie z właścicielem po wdrożeniu. Do tego czasu zadanie zostaje w `in-progress`.
 
 ## Context
 
