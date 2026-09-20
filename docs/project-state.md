@@ -33,6 +33,8 @@ M3 — MVP działa publicznie na https://korona.damianwojcicki.com (Worker + sta
 
 ## Do zrobienia po stronie użytkownika
 
+Pełna lista z krokami: `docs/todo-wlasciciel.md`.
+
 - Cloudflare: Redirect Rule HTTP→HTTPS tylko dla hosta `korona.damianwojcicki.com` (nie włączać „Always Use HTTPS” dla całej strefy; wada D-01), Web Analytics (na produkcji nie ma jeszcze skryptu `static.cloudflareinsights.com`), ewentualnie wyłączenie adresu `workers.dev` (TASK-009).
 - Zdecydować: status „Bez planu” przy biegach z wynikami solo/DNF/DNS; czy dodać canonical/Open Graph/sitemapę po starcie; poprawny czas Damiana w Biegu 7 Dolin (dane 18:43:38 vs tekst wpisu 18:43:25).
 - Sprawdzić w praktyce: przycisk „Revert” na GitHubie i „Delete entry” w panelu (TASK-011).
