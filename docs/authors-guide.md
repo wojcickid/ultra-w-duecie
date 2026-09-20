@@ -263,7 +263,7 @@ W logu może pojawić się blok „Ostrzeżenia (src/content), budowa jest konty
 
 - **Obaj mają „Ukończył”, ale w różne dni** (komunikat zawiera daty każdego autora). Bieg NIE liczy się jako ukończony wspólnie, a wyniki są pokazane jako indywidualne. Jeśli biegli razem, ustaw w obu wynikach tę samą **Data ukończenia**. Jeśli to naprawdę dwa osobne podejścia, nic nie zmieniaj.
 - **Status „Ukończony”, ale nie obaj mają „Ukończył”.** Bieg nie liczy się jako wspólny. Jeśli to prawda, zmień **Status** biegu. Jeśli brakuje wyniku, dodaj go.
-- **Liczba biegów aktywnych inna niż 10.** Lista Korony 4.0 ma dokładnie 10 biegów (bez flagi **Poza listą Korony 4.0**). Ostrzeżenie pojawia się np. po przypadkowym zaznaczeniu tej flagi przy zwykłym biegu albo gdy brakuje pliku biegu. Sprawdź flagę; jeśli lista faktycznie się zmieniła, trzeba to omówić z deweloperem (zmiana ).
+- **Liczba biegów aktywnych inna niż 10.** Lista Korony 4.0 ma dokładnie 10 biegów (bez flagi **Poza listą Korony 4.0**). Ostrzeżenie pojawia się np. po przypadkowym zaznaczeniu tej flagi przy zwykłym biegu albo gdy brakuje pliku biegu. Sprawdź flagę; jeśli lista faktycznie się zmieniła, trzeba to omówić z deweloperem (zmiana stałej `CROWN_TOTAL`).
 
 ## 7. Cofnięcie błędnej zmiany
 
