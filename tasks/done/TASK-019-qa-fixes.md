@@ -2,7 +2,7 @@
 
 ## Status
 
-in-progress
+done
 
 ## Owner
 
@@ -57,7 +57,7 @@ Szczegóły, kroki odtworzenia i propozycje napraw: `docs/qa-report-mvp.md` (sek
 
 ### Review
 
-- Not reviewed
+- Lead (2026-09-20): zakres zweryfikowany (bez zmian w src/content, worker, wrangler); przejrzane: public/_headers (odpięcie Referrer-Policy dla /admin), getRunTerm; procesy agenta zatrzymane po PID, porty wolne. Zachowanie nagłówków na produkcji do potwierdzenia po wdrożeniu (curl -I). Zaakceptowane.
 
 ## Outcome
 
