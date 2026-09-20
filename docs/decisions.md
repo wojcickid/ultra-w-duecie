@@ -153,3 +153,47 @@ Użytkownik chce zminimalizować koszty i komplikacje; kolega nie ma konta GitHu
 - Wymagana informacja, gdzie działa DNS domeny właściciela (TASK-009).
 - Wpisy pokazują autora niezależnie od tego, kto je opublikował.
 - Drugie konto GitHub można dodać później bez zmiany architektury.
+- Domena właściciela (damianwojcicki.com) jest w Cloudflare, więc dodanie subdomeny do projektu Pages tworzy rekord DNS automatycznie. Nazwę subdomeny wybiera właściciel.
+
+## DEC-007 — Postęp „w duecie” liczy tylko biegi ukończone wspólnie
+
+Date: 2026-09-20
+Status: accepted
+
+### Decision
+
+Licznik X/10 na stronie głównej obejmuje wyłącznie biegi ukończone przez oboje autorów. Wyniki indywidualne (np. SGS 2025 ukończony tylko przez Damiana) są zapisywane per osoba i pokazywane osobno, poza licznikiem.
+
+### Context
+
+Formuła wyzwania to zdobycie całej korony w parze.
+
+### Alternatives considered
+
+- Wliczanie biegów ukończonych przez jedną osobę do licznika.
+
+### Consequences
+
+Model danych przechowuje wyniki per osoba (FR-7). Licznik jest liczony automatycznie z danych.
+
+## DEC-008 — Bieg 7 Dolin jako bieg wycofany z listy
+
+Date: 2026-09-20
+Status: accepted
+
+### Decision
+
+Bieg 7 Dolin (Piwniczna) 2024, ukończony wspólnie, pozostaje w danych jako bieg wycofany z listy Korony (od 2026 r. nie jest organizowany) i wlicza się do postępu. Wolnego miejsca nie zastępujemy innym biegiem na razie; decyzja o sposobie zaliczenia slotu zostaje odłożona.
+
+### Context
+
+W chwili ukończenia był biegiem podstawowym Korony. Regulamin 4.0 nie zawiera go już wśród stałych biegów.
+
+### Alternatives considered
+
+- Zastąpienie go od razu konkretnym biegiem z aktualnej listy.
+- Usunięcie go ze statystyk.
+
+### Consequences
+
+Model danych ma flagę `retired` dla biegu. Zasadę wliczania do licznika, gdy aktualna lista zawiera 10 innych biegów, trzeba doprecyzować przy TASK-005 po sprawdzeniu regulaminu.

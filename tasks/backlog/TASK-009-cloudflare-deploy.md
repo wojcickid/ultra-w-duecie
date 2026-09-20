@@ -11,11 +11,11 @@ lead-agent
 ## Dependencies
 
 - TASK-002
-- Użytkownik: konto Cloudflare, zdalne repozytorium GitHub, nazwa subdomeny oraz informacja, gdzie działa DNS jego domeny (Cloudflare czy inny dostawca)
+- Użytkownik: zdalne repozytorium GitHub oraz wybór nazwy subdomeny (domena damianwojcicki.com ma DNS w Cloudflare)
 
 ## Description
 
-Podłączyć repozytorium do Cloudflare Pages (automatyczna publikacja z `main`, podglądy gałęzi), podpiąć subdomenę istniejącej domeny właściciela oraz włączyć Cloudflare Web Analytics. Przygotować instrukcję kroków wykonywanych ręcznie przez użytkownika (w tym rekord CNAME, jeśli DNS jest poza Cloudflare).
+Podłączyć repozytorium do Cloudflare Pages (automatyczna publikacja z `main`, podglądy gałęzi), podpiąć subdomenę istniejącej domeny właściciela oraz włączyć Cloudflare Web Analytics. Przygotować instrukcję kroków wykonywanych ręcznie przez użytkownika (DNS jest w Cloudflare, więc rekord subdomeny dodaje się automatycznie po podpięciu domeny w Pages).
 
 ## Context
 

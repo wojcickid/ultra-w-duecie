@@ -22,7 +22,7 @@ Brak własnego backendu, bazy danych i serwera do utrzymania.
 - Framework: **Astro** (generowanie statyczne), TypeScript.
 - Style: **Tailwind CSS**, mobile-first (szczegóły w `docs/ui.md`).
 - Treść: **Astro Content Collections** z walidacją schematu (Zod):
-  - `biegi` — 10 biegów Korony (nazwa, dystans, miejsce, orientacyjny termin, status, data planowana, notatki, oraz lista wyników per osoba: osoba, data ukończenia, czas, link do wyników),
+  - `biegi` — 10 biegów Korony (nazwa, dystans, miejsce, orientacyjny termin, status, flaga wycofania z listy Korony (`retired`), data planowana, notatki, oraz lista wyników per osoba: osoba, data ukończenia, czas, link do wyników),
   - `wpisy` — wpisy bloga (tytuł, data, treść w Markdown, zdjęcia, autor/autorzy, opcjonalne powiązanie z biegiem),
   - `autorzy` — dwie osoby (identyfikator, nazwa wyświetlana); wpisy i wyniki odwołują się do nich.
 - Routing: strona główna, lista biegów, strona biegu, lista wpisów, strona wpisu; panel pod `/admin`.

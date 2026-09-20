@@ -12,11 +12,11 @@ frontend-agent
 
 - TASK-003
 - TASK-004
-- Użytkownik: zasada liczenia postępu „w duecie” (pytanie otwarte 1 w `docs/requirements.md`)
+- Użytkownik: decyzja o wolnym slocie po Biegu 7 Dolin, jeśli wpływa na licznik (DEC-008; pytanie otwarte 2)
 
 ## Description
 
-Strona główna z krótkim opisem projektu, licznikiem ukończonych biegów (X/10) liczonym według potwierdzonej zasady, osią czasu postępu oraz ostatnimi wpisami bloga.
+Strona główna z krótkim opisem projektu, licznikiem biegów ukończonych wspólnie (X/10, DEC-007), osią czasu postępu (z wyróżnieniem biegu wycofanego) oraz ostatnimi wpisami bloga. Wyniki indywidualne pokazywane osobno poza licznikiem.
 
 ## Context
 

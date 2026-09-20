@@ -11,7 +11,8 @@ M0 — Planowanie zakończone; oczekuje na akceptację planu przez użytkownika.
 - Zebrano wymagania (`docs/project-brief.md`), uzupełniono `requirements.md`, `architecture.md`, `ui.md`, `decisions.md`.
 - Przygotowano backlog zadań TASK-001 … TASK-013 w `tasks/backlog/`.
 - Użytkownik odpowiedział na pytania: GitHub login, role równorzędne, język (DEC-005), autor wpisu, subdomena na MVP, jedno konto GitHub na start (DEC-006).
-- Otwarte: sposób liczenia postępu „w duecie” (SGS 2025 solo), mapowanie Biegu 7 Dolin na listę Korony, nazwy autorów, nazwa subdomeny i DNS.
+- Rozstrzygnięte: licznik „w duecie” tylko biegi wspólne (DEC-007), Bieg 7 Dolin jako wycofany z listy (DEC-008), autorzy Damian i Grzegorz, domena damianwojcicki.com w Cloudflare.
+- Otwarte: nazwa subdomeny (wybór właściciela), wolny slot po Biegu 7 Dolin (odłożone), dane ukończonych biegów (po MVP, TASK-013).
 - Implementacja nie rozpoczęta. Żadne zadanie nie jest w `tasks/ready/`.
 
 ## Aktywne zadania

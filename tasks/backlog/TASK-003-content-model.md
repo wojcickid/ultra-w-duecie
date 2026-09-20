@@ -11,8 +11,7 @@ frontend-agent
 ## Dependencies
 
 - TASK-002
-- Użytkownik: potwierdzenie listy 10 biegów i mapowania Biegu 7 Dolin (pytanie otwarte 2 w `docs/requirements.md`)
-- Użytkownik: zasada liczenia postępu „w duecie” (pytanie otwarte 1)
+- Brak zablokowań po stronie użytkownika (DEC-007, DEC-008)
 
 ## Description
 
@@ -27,7 +26,8 @@ Pola `runs`: nazwa, dystans (km), miejsce, orientacyjny termin, status (ukończo
 
 - [ ] Schematy walidują dane; niepoprawny plik powoduje czytelny błąd budowy.
 - [ ] Wyniki można zapisać osobno dla każdej z dwóch osób; wpis ma pole autora.
-- [ ] 10 biegów dodanych zgodnie z potwierdzoną listą.
+- [ ] 10 biegów z regulaminu Korony 4.0 dodanych jako dane początkowe, plus Bieg 7 Dolin oznaczony jako wycofany (`retired`), bez danych o ukończeniu.
+- [ ] Autorzy początkowi: Damian i Grzegorz.
 - [ ] Przykładowy wpis testowy przechodzi walidację (do usunięcia przed publikacją).
 - [ ] Schemat jest udokumentowany w `docs/architecture.md`.
 
