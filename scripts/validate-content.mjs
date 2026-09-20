@@ -1,6 +1,7 @@
 // Walidacja referencji między kolekcjami (Astro tylko loguje błąd referencji, kod wyjścia 0).
 // Sprawdza: posts[].authors, posts[].run oraz runs[].results[].author. Uruchamiany przed build/check.
-// Dodatkowo OSTRZEGA (bez przerywania, DEC-010), gdy bieg nie liczy się jako ukończony wspólnie.
+// Dodatkowo OSTRZEGA (bez przerywania): gdy bieg nie liczy się jako ukończony wspólnie (DEC-010)
+// oraz gdy liczba biegów aktywnych (retired != true) różni się od 10 (DEC-012).
 import { readdirSync, readFileSync } from 'node:fs';
 import { basename, extname, join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -8,6 +9,8 @@ import yaml from 'js-yaml'; // zależność Astro (parsowanie frontmatter), bez 
 
 const root = fileURLToPath(new URL('..', import.meta.url));
 const contentDir = join(root, 'src', 'content');
+// Liczba biegów Korony 4.0 (jak CROWN_TOTAL w src/lib/progress.ts).
+const CROWN_TOTAL = 10;
 const errors = [];
 const warnings = [];
 
@@ -113,8 +116,10 @@ const idsIn = (dir) =>
 const authorIds = idsIn(join(contentDir, 'authors'));
 const runIds = idsIn(join(contentDir, 'runs'));
 
+let activeRuns = 0;
 for (const file of listFiles(join(contentDir, 'runs'), '.json')) {
   const run = readJson(file);
+  if (run && run.retired !== true) activeRuns += 1;
   if (run) checkTogether(file, run, authorIds);
   if (!Array.isArray(run?.results)) continue;
   run.results.forEach((result, index) =>
@@ -125,6 +130,13 @@ for (const file of listFiles(join(contentDir, 'runs'), '.json')) {
       authorIds,
       'authors',
     ),
+  );
+}
+
+// Lista Korony 4.0 ma dokładnie 10 biegów; inna liczba aktywnych to najczęściej pomyłka (np. brak flagi `retired`).
+if (activeRuns !== CROWN_TOTAL) {
+  warnings.push(
+    `src/content/runs: liczba biegów aktywnych (bez flagi "retired") to ${activeRuns}, a lista Korony 4.0 ma ${CROWN_TOTAL}. Sprawdź flagę "Poza listą Korony 4.0" (retired) i czy nie brakuje pliku biegu.`,
   );
 }
 

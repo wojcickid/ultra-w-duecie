@@ -17,6 +17,7 @@ export function getRunBadges(run: RunLike): RunStatus[] {
 
 interface RunTermSource {
   typicalMonth?: string;
+  expectedYear?: number;
   plannedDate?: Date;
   results?: readonly {
     outcome: 'finished' | 'dnf' | 'dns';
@@ -24,18 +25,36 @@ interface RunTermSource {
   }[];
 }
 
+/**
+ * Rodzaj terminu biegu (DEC-012):
+ * - `confirmed` — znana data (z wyników albo `plannedDate`),
+ * - `approximate` — termin orientacyjny (`typicalMonth`, opcjonalnie z `expectedYear`),
+ * - `tbd` — termin do ustalenia (brak jakichkolwiek danych o terminie).
+ */
+export type RunTermKind = 'confirmed' | 'approximate' | 'tbd';
+
 export interface RunTerm {
+  kind: RunTermKind;
+  /** Etykieta terminu: „Ukończono” / „Podejście” / „Pierwsze podejście” (z wyników) albo „Termin”. */
   label: string;
+  /** Tekst do wyświetlenia: „3 października 2026”, „październik 2027”, „październik”, „Termin do ustalenia”. */
   value: string;
-  /** Data w formacie YYYY-MM-DD (dla `<time>`); brak przy terminie orientacyjnym. */
+  /** Data w formacie YYYY-MM-DD (dla `<time>`); tylko przy `kind: 'confirmed'`. */
   isoDate?: string;
+  /** Prawda dla terminu orientacyjnego (miesiąc i/lub rok), nigdy dla potwierdzonej daty. */
+  approximate: boolean;
+  /** Dopisek „termin orientacyjny”: tylko gdy termin orientacyjny nie ma roku (sam miesiąc). */
+  qualifier?: string;
 }
 
-// Jedno źródło prawdy dla terminu biegu (oś czasu, /biegi, /biegi/<id>).
-// Data z wyników (najwcześniejsza) ma pierwszeństwo przed `plannedDate` i `typicalMonth`.
-// Etykieta: „Ukończono” (wszyscy z datą ukończyli tego samego dnia), „Podejście” (ten sam dzień,
-// ale np. DNF/DNS), „Pierwsze podejście” (wyniki z różnych dni, DEC-010).
-export function getRunTerm(run: RunTermSource): RunTerm | undefined {
+const APPROXIMATE_QUALIFIER = 'termin orientacyjny';
+const TBD_TEXT = 'Termin do ustalenia';
+
+// Jedno źródło prawdy dla terminu biegu (oś czasu, /biegi, /biegi/<id>, karta „Najbliższy start”).
+// Kolejność: data z wyników (najwcześniejsza) > `plannedDate` > `typicalMonth` (+ `expectedYear`) > do ustalenia.
+// Etykieta dla wyników: „Ukończono” (wszyscy z datą ukończyli tego samego dnia), „Podejście” (ten sam dzień,
+// ale np. DNF/DNS), „Pierwsze podejście” (wyniki z różnych dni, DEC-010). Zawsze zwraca wartość (nigdy `undefined`).
+export function getRunTerm(run: RunTermSource): RunTerm {
   const dated = (run.results ?? []).flatMap((result) =>
     result.completedDate
       ? [{ outcome: result.outcome, date: result.completedDate }]
@@ -48,6 +67,7 @@ export function getRunTerm(run: RunTermSource): RunTerm | undefined {
     const days = new Set(dated.map((result) => toDayKey(result.date)));
     const allFinished = dated.every((result) => result.outcome === 'finished');
     return {
+      kind: 'confirmed',
       label:
         days.size > 1
           ? 'Pierwsze podejście'
@@ -55,20 +75,47 @@ export function getRunTerm(run: RunTermSource): RunTerm | undefined {
             ? 'Ukończono'
             : 'Podejście',
       value: formatDate(earliest),
-      isoDate: earliest.toISOString().slice(0, 10),
+      isoDate: toDayKey(earliest),
+      approximate: false,
     };
   }
   if (run.plannedDate) {
     return {
+      kind: 'confirmed',
       label: 'Termin',
       value: formatDate(run.plannedDate),
-      isoDate: run.plannedDate.toISOString().slice(0, 10),
+      isoDate: toDayKey(run.plannedDate),
+      approximate: false,
     };
   }
-  if (run.typicalMonth) {
-    return { label: 'Termin', value: `orientacyjnie: ${run.typicalMonth}` };
+  const month = run.typicalMonth?.trim();
+  if (month) {
+    return {
+      kind: 'approximate',
+      label: 'Termin',
+      value:
+        run.expectedYear === undefined ? month : `${month} ${run.expectedYear}`,
+      approximate: true,
+      qualifier:
+        run.expectedYear === undefined ? APPROXIMATE_QUALIFIER : undefined,
+    };
   }
-  return undefined;
+  if (run.expectedYear !== undefined) {
+    return {
+      kind: 'approximate',
+      label: 'Termin',
+      value: String(run.expectedYear),
+      approximate: true,
+      qualifier: APPROXIMATE_QUALIFIER,
+    };
+  }
+  return { kind: 'tbd', label: 'Termin', value: TBD_TEXT, approximate: false };
+}
+
+// Termin jako jeden tekst, gdy widok nie ma osobnego miejsca na dopisek:
+// „3 października 2026”, „październik 2027”, „październik (termin orientacyjny)”, „Termin do ustalenia”.
+export function formatRunTerm(term: RunTerm): string {
+  return term.qualifier ? `${term.value} (${term.qualifier})` : term.value;
 }
 
 interface RunFactsSource extends RunTermSource {
@@ -87,7 +134,11 @@ export function getRunFacts(run: RunFactsSource) {
   }
   if (run.location) facts.push({ label: 'Miejsce', value: run.location });
   const term = getRunTerm(run);
-  if (term) facts.push({ label: term.label, value: term.value });
+  facts.push({
+    label: term.label,
+    // „Termin: do ustalenia” zamiast powtórzenia słowa „Termin”.
+    value: term.kind === 'tbd' ? 'do ustalenia' : formatRunTerm(term),
+  });
   return facts;
 }
 

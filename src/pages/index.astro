@@ -9,7 +9,12 @@ import Timeline from '../components/Timeline.astro';
 import type { TimelineItem } from '../components/Timeline.astro';
 import { joinNames } from '../lib/blog';
 import { formatDate } from '../lib/format';
-import { getResultSummaries, getRunBadges, getRunTerm } from '../lib/runs';
+import {
+  formatRunTerm,
+  getResultSummaries,
+  getRunBadges,
+  getRunTerm,
+} from '../lib/runs';
 import {
   CROWN_TOTAL,
   countCompletedTogether,
@@ -74,9 +79,9 @@ const timelineItems: TimelineItem[] = runs.map((run) => {
       data.distanceKm !== undefined
         ? `${distanceFormat.format(data.distanceKm)} km`
         : undefined,
-    termLabel: term?.label ?? 'Termin',
-    term: term?.value ?? 'Termin nieznany',
-    isoDate: term?.isoDate,
+    termLabel: term.label,
+    term: formatRunTerm(term),
+    isoDate: term.isoDate,
     note,
     results: together ? [] : getResultSummaries(data.results, authorNames),
   };
