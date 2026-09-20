@@ -2,7 +2,7 @@
 
 ## Status
 
-in-progress
+done
 
 ## Owner
 
@@ -50,7 +50,7 @@ FR-1, FR-3 z `docs/requirements.md`. Podstrony generowane statycznie z kolekcji 
 
 ### Review
 
-- Not reviewed
+- Lead (2026-09-20): diff tylko w zakresie (dodatkowo uzasadniony `src/lib/runs.ts`); build (15 stron), lint, format:check i astro check uruchomione niezależnie, bez błędów. Zaakceptowane. Uwagi do dokumentacji (RunCard, stany puste, trasy `/biegi`) — Lead uzupełni po scaleniu TASK-005..007.
 
 ## Outcome
 
@@ -60,4 +60,4 @@ Complete this section before moving the task to `done`.
 - Tests: lint, format:check, astro check, build bez błędów; weryfikacja na danych tymczasowych i w Chrome headless (320/360/1280 px) — patrz Validation.
 - Important files: `src/pages/biegi/index.astro`, `src/pages/biegi/[id].astro`, `src/components/RunCard.astro`, `src/lib/runs.ts`.
 - Commit: gałąź `agent/frontend/TASK-006-runs-pages` (skrót w historii gałęzi).
-- Follow-up tasks:
+- Follow-up tasks: TASK-013 doda Biegowi 7 Dolin wynik i status `completed`; decyzja, czy na liście pokazywać faktyczną datę ukończenia zamiast terminu orientacyjnego.
