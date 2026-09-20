@@ -41,14 +41,15 @@ ZAKAZ: nie tworzyć, nie edytować, nie usuwać wpisów bloga (`src/content/post
 
 ## Implementation notes
 
-Nowe pliki:  (, ; werdykt „razem?” i powód z danych, korzysta z ), komponenty , , , , , . Zmienione:  (przyjmuje teraz  + , nie gotowe elementy),  (),  („Dotyczy biegu:”), strony , , ,  („Dotyczy biegu:” zamiast „Powiązany bieg:”), . Jedyny dodatek do istniejącej biblioteki:  w . Brak zmian w .
+Nowe pliki: `src/lib/run-verdict.ts` (`getTogetherVerdict`, `getRetiredNote`; werdykt „razem?” i powód z danych, korzysta z `isCompletedTogether`), komponenty `Section`, `RunTerm`, `RunFacts`, `RunVerdict`, `RunResultsTable`, `PostTeaser`. Zmienione: `Timeline` (przyjmuje teraz `runs` + `authors`, nie gotowe elementy), `RunCard` (`headingLevel`), `PostCard` („Dotyczy biegu:”), strony `index`, `biegi/index`, `biegi/[id]`, `blog/[id]` („Dotyczy biegu:” zamiast „Powiązany bieg:”), `docs/ui.md`. Jedyny dodatek do istniejącej biblioteki: `getPostRun` w `src/lib/blog.ts`. Brak zmian w `src/content/`.
 
 Decyzje i odstępstwa:
-- Strona biegu: punkt rozszerzenia = komentarz „SEKCJE STRONY BIEGU” + komponent ; sekcja „Oficjalne wyniki” widoczna tylko przy  (linki per osoba są w wierszu „Wyniki oficjalne” tabeli, żeby ich nie dublować). W danych żaden bieg nie ma jeszcze  biegu, więc sekcja się nie pojawia.
-- Tabela wyników poniżej  ma układ blokowy ( na elementach tabeli); część czytników ekranu może wtedy tracić semantykę tabeli (dopuszczone w zleceniu). Kolumny mają też widoczne imię w komórce.
-- Nagłówek „Miejsce” z  (lokalizacja) nie jest używany w widokach; nowy  nazywa ją „Lokalizacja”, bo „Miejsce” oznacza teraz miejsce w klasyfikacji ().  zostaje tylko do opisu meta strony.
-- Skrypt „Najbliższy start”: , bez zależności; po dniu startu (Europe/Warsaw) ukrywa kartę i pokazuje „Kolejny termin do ustalenia” (przetestowane z zegarem 2026-10-03 i 2026-10-04).
-- Zauważone w danych (bez zmian, poza zakresem): SGS i Ultra Granią Tatr mają wyniki, ale , więc znacznik to „Do ustalenia”, choć bieg się odbył; werdykt „Nie ukończyliśmy tego biegu razem” to wyjaśnia. Sugestia dla właściciela: rozważyć status /nowy status dla „podejście bez ukończenia”.
+
+- Strona biegu: punkt rozszerzenia = komentarz „SEKCJE STRONY BIEGU” + komponent `Section`; sekcja „Oficjalne wyniki” widoczna tylko przy `run.resultsUrl` (linki per osoba są w wierszu „Wyniki oficjalne” tabeli, żeby ich nie dublować). W danych żaden bieg nie ma jeszcze `resultsUrl` biegu, więc sekcja się nie pojawia.
+- Tabela wyników poniżej `sm` ma układ blokowy (`display:block` na elementach tabeli); część czytników ekranu może wtedy tracić semantykę tabeli (dopuszczone w zleceniu). Komórki mają też widoczne imię.
+- Etykieta „Miejsce” z `getRunFacts` (lokalizacja) nie jest używana w widokach; nowy `RunFacts` nazywa ją „Lokalizacja”, bo „Miejsce” oznacza teraz miejsce w klasyfikacji (`place`). `getRunFacts` zostaje tylko do opisu meta strony.
+- Skrypt „Najbliższy start”: `is:inline`, bez zależności; po dniu startu (Europe/Warsaw) ukrywa kartę i pokazuje „Kolejny termin do ustalenia” (przetestowane z zegarem 2026-10-03 i 2026-10-04).
+- Zauważone w danych (bez zmian, poza zakresem): SGS i Ultra Granią Tatr mają wyniki, ale `status: unplanned`, więc znacznik to „Do ustalenia”, choć bieg się odbył; werdykt „Nie ukończyliśmy tego biegu razem” to wyjaśnia. Do decyzji właściciela: status takich biegów.
 
 ## Validation
 
