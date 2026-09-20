@@ -4,7 +4,7 @@ Patrz też: `docs/decisions.md` (DEC-001 … DEC-005).
 
 ## Przegląd
 
-Strona statyczna generowana przez Astro, hostowana na Cloudflare Pages. Treść (wpisy bloga i dane biegów) to pliki w repozytorium GitHub, edytowane przez panel CMS (Decap CMS lub kompatybilny Sveltia CMS), który zapisuje zmiany jako commity. Każdy commit uruchamia automatyczną budowę i publikację strony.
+Strona statyczna generowana przez Astro, hostowana na Cloudflare Pages. Treść (wpisy bloga i dane biegów) to pliki w repozytorium GitHub, edytowane przez panel CMS (Sveltia CMS, DEC-009), który zapisuje zmiany jako commity. Każdy commit uruchamia automatyczną budowę i publikację strony.
 
 ```text
 Autor (admin/moderator)
@@ -37,7 +37,17 @@ Brak własnego backendu, bazy danych i serwera do utrzymania.
 
 ## Backend
 
-Brak własnego backendu. Jedyny element serwerowy to niewielka funkcja (Cloudflare Pages Function / Worker) obsługująca logowanie OAuth przez GitHub dla panelu CMS — wybór dokładnego rozwiązania w TASK-001.
+Brak własnego backendu. Jedyny element serwerowy to niewielka funkcja (Cloudflare Pages Function) obsługująca logowanie OAuth przez GitHub dla panelu CMS (DEC-009). Instrukcja wdrożenia: `docs/cms-setup.md`.
+
+- **Panel CMS:** Sveltia CMS (wersja przypięta w `public/admin/index.html`, ładowana z CDN jsDelivr z sumą SRI); konfiguracja w `public/admin/config.yml` (backend GitHub, repozytorium `wojcickid/ultra-w-duecie`, gałąź `main`, zapis wprost jako commity). Wpisy to pakiety `src/content/posts/<slug>/index.md` z obrazami obok (ścieżki względne zgodne z `image()`); pełną konfigurację kolekcji dodaje TASK-008.
+- **Funkcje OAuth** (`functions/`, routing plikowy Pages Functions, bez zależności i bez kroku budowy):
+  - `GET /api/auth` — sprawdza `provider=github`, domenę (`site_id`) i konfigurację, losuje `state` (128 bitów, ciasteczko `oauth_state`: HttpOnly, Secure, SameSite=Lax, Path=/api, 10 minut) i przekierowuje (302) na `https://github.com/login/oauth/authorize` z `client_id`, `redirect_uri` (`<origin>/api/callback`), `scope=public_repo`, `state`, `allow_signup=false`.
+  - `GET /api/callback` — porównuje `state` z zapytania z ciasteczkiem (porównanie w stałym czasie), wymienia `code` na token (`POST https://github.com/login/oauth/access_token`) i zwraca stronę, która przekazuje token do okna panelu przez `postMessage` (protokół `authorizing:github` / `authorization:github:success|error:<JSON>`), wyłącznie originowi z listy dozwolonych.
+  - `functions/_shared/oauth.ts` — wspólny kod (odczyt konfiguracji, `state`, ciasteczka, odpowiedź HTML z CSP z nonce).
+- **Zmienne środowiskowe** (Cloudflare Pages → Settings → Variables and Secrets, środowisko Production):
+  - `GITHUB_CLIENT_ID` (tekst) i `GITHUB_CLIENT_SECRET` (Secret) — dane aplikacji OAuth z GitHuba,
+  - `ALLOWED_ORIGIN` — origin panelu, np. `https://korona.damianwojcicki.com` (kilka wartości po przecinku; gdy brak, przyjmowany jest origin żądania).
+- **Lokalne uruchomienie funkcji:** `npm run build`, potem `npx wrangler pages dev dist --binding GITHUB_CLIENT_ID=... --binding GITHUB_CLIENT_SECRET=... --binding ALLOWED_ORIGIN=...` (bez logowania do Cloudflare; wartości testowe).
 
 ## Baza danych
 
@@ -60,7 +70,9 @@ Brak. Źródłem danych są pliki Markdown/JSON w repozytorium (kolekcje treści
 - Publiczna strona jest statyczna: brak formularzy, sesji i danych użytkowników — minimalna powierzchnia ataku.
 - Dostęp do zapisu treści ma wyłącznie osoba z uprawnieniami zapisu w repozytorium GitHub; logowanie do panelu przez konto GitHub (zalecane włączenie 2FA). Na start jedno konto (właściciel); drugi autor może zostać dodany później jako współpracownik repozytorium.
 - Sekrety (identyfikator i sekret aplikacji OAuth GitHub) przechowywane wyłącznie w ustawieniach Cloudflare, nigdy w repozytorium.
-- Ochrona gałęzi `main` (wymóg PR lub przynajmniej brak force-push).
+- Funkcje OAuth (DEC-009): losowy `state` z ciasteczka HttpOnly chroni przed CSRF; stały, minimalny zakres `public_repo` (zakres z żądania jest ignorowany); token trafia tylko do originu z `ALLOWED_ORIGIN` (weryfikowany po stronie okna logowania na podstawie `event.origin`, którego nie da się podrobić), dodatkowo sprawdzana jest domena (`site_id`); sekrety i tokeny nie są logowane ani zwracane w błędach (komunikaty stałe); odpowiedzi mają `Cache-Control: no-store`, `Referrer-Policy: no-referrer` i CSP z nonce. Zalogować przez aplikację OAuth może każdy użytkownik GitHuba, ale zapis w repozytorium zależy od uprawnień jego konta na GitHubie.
+- `/admin` ma nagłówki `X-Robots-Tag: noindex`, `X-Frame-Options: DENY`, `Referrer-Policy: same-origin` (`public/_headers`) i `<meta name="robots">`; skrypt panelu jest przypięty do wersji i chroniony sumą SRI.
+- Ochrona gałęzi `main`: blokada force-push i usuwania gałęzi. Wymóg pull requesta zablokowałby zapis z panelu (commity wprost na `main`), więc na MVP go nie włączamy.
 - Brak danych wrażliwych i osobowych czytelników.
 
 ## Kopie zapasowe
