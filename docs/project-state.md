@@ -16,7 +16,7 @@ M2 — Strona działa publicznie na https://korona.damianwojcicki.com (Worker + 
 
 ## Aktywne zadania
 
-- TASK-001 (kod i instrukcja gotowe i scalone; czeka na wdrożenie i weryfikację na żywo z właścicielem).
+- TASK-001, TASK-008, TASK-017 czekają na potwierdzenie przez właściciela na produkcji (test panelu: zapis wpisu ze zdjęciem, wyniki biegu, outcome DNF/DNS, odmowa zapisu bez uprawnień).
 
 ## Ostatnio ukończone
 
@@ -28,7 +28,7 @@ M2 — Strona działa publicznie na https://korona.damianwojcicki.com (Worker + 
 
 ## Ważne decyzje
 
-- Patrz `docs/decisions.md` (DEC-001…DEC-009).
+- Patrz `docs/decisions.md` (DEC-001…DEC-011): m.in. DEC-010 (ukończony wspólnie = obaj finished z tą samą datą), DEC-011 (wynik osoby: outcome finished/dnf/dns).
 - Język: o obu autorach piszemy „obaj”, „obu”, „dwóch” (nie „oboje”, „dwoje”).
 - Licznik postępu: tylko biegi ukończone wspólnie (DEC-007); Bieg 7 Dolin jako wycofany (DEC-008).
 - Zewnętrzne kroki (Cloudflare, GitHub OAuth) odłożone do TASK-001/008/009, gdy będzie co wdrażać.
