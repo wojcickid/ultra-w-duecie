@@ -2,7 +2,7 @@
 
 ## Status
 
-in-progress
+done
 
 ## Owner
 
@@ -64,7 +64,7 @@ FR-4 z `docs/requirements.md`. Zdjęcia w repozytorium — zoptymalizować przez
 
 ### Review
 
-- Not reviewed
+- Lead (2026-09-20): diff w zakresie (dodatkowo uzasadnione `src/lib/blog.ts` i `Prose.astro`); jedyna nowa zależność to oficjalny `@astrojs/rss`; build, lint, format:check i astro check uruchomione niezależnie, bez błędów; RSS i link alternate zweryfikowane w dist/. Decyzja: podświetlanie składni Shiki zostaje domyślne. Zaakceptowane.
 
 ## Outcome
 
@@ -73,5 +73,5 @@ Complete this section before moving the task to `done`.
 - Summary: Lista wpisów z paginacją (10/stronę, `/blog` i `/blog/strona/<n>`), strona wpisu (Markdown, galeria, powiązany bieg), kanał RSS (`/rss.xml`) i link RSS w `<head>`; stan pusty obsłużony.
 - Tests: build, lint, format:check, check bez błędów; weryfikacja na danych tymczasowych (paginacja, obraz, dwóch autorów, bieg, stan pusty) i Chrome headless 360/1280 px — szczegóły w Validation.
 - Important files: `src/pages/blog/*`, `src/pages/rss.xml.ts`, `src/components/PostCard.astro`, `src/components/Prose.astro`, `src/lib/blog.ts`, `src/layouts/BaseLayout.astro`, `package.json`.
-- Commit:
-- Follow-up tasks:
+- Commit: fda45aa (gałąź agent/frontend/TASK-007-blog)
+- Follow-up tasks: unikać identyfikatora wpisu `strona`; własne `description` wpisu wymagałoby nowego pola w schemacie (na razie generowane z treści); usunąć wpis testowy przed publikacją (TASK-010).
