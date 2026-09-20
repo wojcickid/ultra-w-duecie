@@ -2,13 +2,14 @@
 import {
   STATE_COOKIE,
   getAllowedOrigins,
+  isOAuthConfigured,
   popupResponse,
   readCookie,
   timingSafeEqual,
   type Context,
-} from '../_shared/oauth';
+} from './oauth';
 
-export const onRequestGet = async ({
+export const handleCallback = async ({
   request,
   env,
 }: Context): Promise<Response> => {
@@ -26,7 +27,7 @@ export const onRequestGet = async ({
       'CSRF_DETECTED',
     );
   }
-  if (!env.GITHUB_CLIENT_ID || !env.GITHUB_CLIENT_SECRET) {
+  if (!isOAuthConfigured(env)) {
     return fail(
       'Logowanie nie jest skonfigurowane po stronie serwera.',
       'MISCONFIGURED_CLIENT',

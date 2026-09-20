@@ -1,4 +1,4 @@
-// Wspólny kod funkcji OAuth (GitHub) dla panelu CMS. Opis: docs/architecture.md, docs/cms-setup.md.
+// Wspólny kod obsługi OAuth (GitHub) dla panelu CMS. Opis: docs/architecture.md, docs/cms-setup.md.
 
 export interface Env {
   GITHUB_CLIENT_ID?: string;
@@ -12,10 +12,23 @@ export interface Context {
   env: Env;
 }
 
+// Wartość zastępcza z wrangler.jsonc (przed wpisaniem prawdziwego Client ID) — traktowana jak brak konfiguracji.
+export const CLIENT_ID_PLACEHOLDER = 'ZMIEN_NA_CLIENT_ID_Z_GITHUBA';
+
 // Minimalny zakres: zapis w repozytoriach publicznych; nie daje dostępu do prywatnych repozytoriów konta.
 export const OAUTH_SCOPE = 'public_repo';
 export const STATE_COOKIE = 'oauth_state';
 const COOKIE_ATTRS = 'HttpOnly; Secure; SameSite=Lax; Path=/api';
+
+export function isOAuthConfigured(
+  env: Env,
+): env is Env & { GITHUB_CLIENT_ID: string; GITHUB_CLIENT_SECRET: string } {
+  return Boolean(
+    env.GITHUB_CLIENT_ID &&
+    env.GITHUB_CLIENT_ID !== CLIENT_ID_PLACEHOLDER &&
+    env.GITHUB_CLIENT_SECRET,
+  );
+}
 
 export function getAllowedOrigins(env: Env, request: Request): string[] {
   const configured = (env.ALLOWED_ORIGIN ?? '')
