@@ -1,15 +1,14 @@
-# Claude Code Agent Team Template
+# Ultra w duecie
 
-A starter repository structure for coordinating a Lead Claude Code agent with specialized backend, frontend, database and QA agents.
+Strona, na której dwóch biegaczy dokumentuje drogę do zdobycia Korony Polskich Ultramaratonów 4.0 (Kingrunner): postęp w 10 biegach i blog. Projekt rozwija zespół agentów Claude Code (Lead, Backend, Frontend, Database, QA) na podstawie szablonu zespołu agentów.
 
 ## Start here
 
-1. Fill in `docs/requirements.md`.
-2. Fill in `docs/architecture.md`.
-3. Point `docs/ui.md` at your frontend template/reference.
-4. Read `CLAUDE.md`.
-5. Start Claude Code with the Lead Agent and use the planning prompt from the project setup instructions.
-6. Review the generated tasks before allowing implementation.
+1. Przeczytaj `CLAUDE.md`.
+2. Wymagania: `docs/requirements.md`; architektura: `docs/architecture.md`; UI: `docs/ui.md`; decyzje: `docs/decisions.md`.
+3. Aktualny stan projektu: `docs/project-state.md`.
+4. Zadania: `tasks/` (backlog -> ready -> in-progress -> review -> done).
+5. Materiał wyjściowy właściciela: `docs/project-brief.md`.
 
 ## Agent roles
 

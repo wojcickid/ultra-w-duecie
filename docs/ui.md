@@ -1,41 +1,48 @@
-# UI Guidelines
+# Wytyczne UI — Ultra w duecie
 
-> Replace this with the actual UI template/reference.
+> Brak gotowego szablonu. Poniżej propozycja wyjściowa; szczegóły wizualne (kolory, typografia) ustala TASK-004 i zatwierdza użytkownik.
 
-## Source of truth
+## Źródło prawdy
 
-Template repository/path:
+Szablon/repozytorium: brak (własny, minimalny system w Tailwind CSS).
 
-`TODO`
+Materiały referencyjne: brak. Inspiracja treściowa: kingrunner.com (Korona Polskich Ultramaratonów).
 
-Reference screenshots/assets:
+## System designu
 
-`TODO`
+- Biblioteka: **Tailwind CSS**, własne, małe komponenty Astro (bez dużej biblioteki UI).
+- Kolory, typografia, odstępy: definiowane raz jako tokeny (zmienne CSS / konfiguracja Tailwind) w TASK-004.
+- Charakter: prosty, czytelny, „outdoorowy”; nacisk na czytelność treści i zdjęć.
+- Komponenty do zbudowania: nagłówek z nawigacją, stopka, karta biegu, znacznik statusu biegu (ukończony / planowany / bez planu), oś czasu postępu, licznik X/10, karta i treść wpisu, paginacja.
+- Ikony: jeden zestaw SVG (bez ikon z wielu źródeł).
+- Nawigacja: Start, Biegi, Blog. Panel `/admin` bez linku w publicznej nawigacji.
+- Formularze i tabele: brak w części publicznej; panel CMS ma własny interfejs (nie stylizujemy go).
+- Stany: pusta lista wpisów, strona 404, brak zdjęcia.
 
-## Design system
+## Zasady
 
-Document:
-- colors
-- typography
-- spacing
-- components
-- icons
-- navigation
-- forms
-- tables
-- feedback states
+- Ponownie używaj istniejących komponentów.
+- Nie wprowadzaj drugiego systemu designu.
+- Zachowuj ustalone układy i wzorce interakcji.
+- Nowe komponenty muszą stosować istniejące konwencje i tokeny.
 
-## Rules
+## Responsywność
 
-- Reuse existing components whenever possible.
-- Do not introduce a second design system.
-- Preserve established layout and interaction patterns.
-- New components should follow existing conventions.
+- Podejście mobile-first.
+- Wspierane szerokości: od 360 px (telefon) do szerokich ekranów desktopowych.
+- Oś czasu i lista biegów przebudowują się na jedną kolumnę na telefonie.
+- Zdjęcia responsywne (`srcset`), leniwe ładowanie.
 
-## Responsive behavior
+## Dostępność
 
-Document supported viewport sizes and expected behavior.
+Proponowany standard: **WCAG 2.1 AA** w zakresie praktycznym dla strony treściowej:
+- kontrast tekstu min. 4.5:1,
+- semantyczny HTML i poprawna hierarchia nagłówków,
+- pełna obsługa klawiaturą i widoczny fokus,
+- teksty alternatywne zdjęć,
+- atrybut `lang="pl"`,
+- status biegu nie może być komunikowany wyłącznie kolorem.
 
-## Accessibility
+## Język
 
-Document required accessibility standards and project-specific rules.
+Interfejs i treści po polsku.

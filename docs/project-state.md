@@ -1,39 +1,44 @@
-# Project State
+# Stan projektu — Ultra w duecie
 
-This file is a compact recovery point for long-running agent work.
+Punkt odzyskiwania stanu dla długotrwałej pracy agentów.
 
-## Current milestone
+## Aktualny kamień milowy
 
-TODO
+M0 — Planowanie zakończone; oczekuje na akceptację planu przez użytkownika.
 
-## Current status
+## Aktualny status
 
-TODO
+- Zebrano wymagania (`docs/project-brief.md`), uzupełniono `requirements.md`, `architecture.md`, `ui.md`, `decisions.md`.
+- Przygotowano backlog zadań TASK-001 … TASK-013 w `tasks/backlog/`.
+- Implementacja nie rozpoczęta. Żadne zadanie nie jest w `tasks/ready/`.
 
-## Active tasks
+## Aktywne zadania
 
-- TODO
+- Brak
 
-## Recently completed
+## Ostatnio ukończone
 
-- TODO
+- Inicjalizacja repozytorium z szablonem zespołu agentów.
+- Ustalenie architektury (DEC-001…DEC-004).
 
-## Blocked
+## Zablokowane
 
-- None
+- Brak zadań zablokowanych. Do startu implementacji potrzebne odpowiedzi użytkownika (patrz „Następna zalecana akcja”).
 
-## Important decisions
+## Ważne decyzje
 
-- See `docs/decisions.md`
+- Patrz `docs/decisions.md`.
 
-## Last validation
+## Ostatnia walidacja
 
-- Tests: TODO
-- Build: TODO
-- Lint/type checks: TODO
+- Testy: n/d (brak kodu)
+- Build: n/d
+- Lint/typy: n/d
 
-## Next recommended action
+## Następna zalecana akcja
 
-TODO
+1. Użytkownik przegląda plan zadań w `tasks/backlog/` i odpowiada na pytania otwarte z `docs/requirements.md`.
+2. Użytkownik zakłada: repozytorium GitHub (zdalne), konto Cloudflare oraz upewnia się, że obaj autorzy mają konta GitHub (2FA).
+3. Lead przenosi TASK-001 i TASK-002 do `tasks/ready/`.
 
-> Update this file before ending a substantial work session or when the project state changes materially.
+> Aktualizuj ten plik przed zakończeniem większej sesji pracy lub po istotnej zmianie stanu projektu.

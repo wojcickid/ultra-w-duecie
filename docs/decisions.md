@@ -1,27 +1,130 @@
-# Architecture and Product Decisions
+# Decyzje architektoniczne i produktowe
 
-Record important decisions that affect future implementation.
+Rejestr ważnych decyzji wpływających na dalszą implementację.
 
-Use this format:
+Format wpisu:
 
-## DEC-XXX — Short title
+## DEC-XXX — Krótki tytuł
 
 Date: YYYY-MM-DD
 Status: proposed | accepted | superseded
 
 ### Decision
+### Context
+### Alternatives considered
+### Consequences
 
-What was decided.
+---
+
+## DEC-001 — Strona statyczna z CMS opartym na Git
+
+Date: 2026-09-20
+Status: accepted
+
+### Decision
+
+Astro (generowanie statyczne) na Cloudflare Pages. Treść (wpisy i dane biegów) jako pliki w repozytorium GitHub, edytowane przez panel CMS (Decap CMS lub kompatybilny Sveltia CMS) z logowaniem przez GitHub. Bez własnego backendu i bazy danych.
 
 ### Context
 
-Why the decision was needed.
+Projekt hobbystyczny: koszt ograniczony do domeny (~11 USD/rok), minimalne utrzymanie, brak zbierania danych użytkowników, 2 osoby edytujące treść. Wstępne założenia użytkownika (Python, SQLite, logowanie e-mail+hasło) zostały zastąpione po analizie kosztów i utrzymania.
 
 ### Alternatives considered
 
-- Alternative A
-- Alternative B
+- Django + SQLite na VPS (mikr.us): gotowy panel z hasłem, ale koszt VPS, łatanie, backupy, wysyłka maili do resetu hasła.
+- Cloudflare Pages + Workers + D1 z własnym logowaniem: darmowe, ale więcej kodu i odpowiedzialności za bezpieczeństwo.
 
 ### Consequences
 
-What this decision means for the project.
+- Koszt: tylko domena.
+- Backup i historia zmian: Git.
+- Brak e-mail/hasła i resetu haseł; logowanie przez GitHub, więc obaj autorzy potrzebują kont GitHub.
+- Rozróżnienie admin/moderator wynika z uprawnień GitHub, nie z logiki aplikacji.
+- Role Backend i Database Agent nie są używane w tym projekcie.
+- Dokładny wybór CMS i sposobu logowania OAuth potwierdza TASK-001.
+
+## DEC-002 — Analityka: Cloudflare Web Analytics
+
+Date: 2026-09-20
+Status: accepted
+
+### Decision
+
+Do statystyk odwiedzin używamy Cloudflare Web Analytics.
+
+### Context
+
+Wymóg minimalnej komplikacji prawnej i brak zbierania danych użytkowników.
+
+### Alternatives considered
+
+- Google Analytics: wymaga baneru zgody na cookies i polityki prywatności w UE.
+- Brak analityki.
+
+### Consequences
+
+Bez cookies i bez baneru zgody. Dane dostępne w panelu Cloudflare.
+
+## DEC-003 — Workflow Git agentów
+
+Date: 2026-09-20
+Status: accepted
+
+### Decision
+
+Agenci commitują na gałęziach `agent/<obszar>/<TASK-ID>-<nazwa>`; scalenie do `main` wykonuje użytkownik. Brak pushu do `main` przez agentów.
+
+### Context
+
+Zgodność z `CLAUDE.md` i chęć zachowania kontroli nad zmianami przez użytkownika.
+
+### Alternatives considered
+
+- Commity bezpośrednio na `main`.
+- Brak commitów agentów.
+
+### Consequences
+
+Każda zmiana jest przeglądana przed scaleniem; Cloudflare Pages tworzy podglądy gałęzi.
+
+## DEC-004 — Zasady pytania użytkownika
+
+Date: 2026-09-20
+Status: accepted
+
+### Decision
+
+Agenci pytają użytkownika o decyzje kluczowe (architektura, zakres, bezpieczeństwo, koszty, zewnętrznie widoczne zachowanie). Decyzje rutynowe podejmują samodzielnie i dokumentują.
+
+### Context
+
+Wskazanie użytkownika w `docs/project-brief.md`, sekcja 8.
+
+### Alternatives considered
+
+- Pytanie przed każdą większą decyzją.
+
+### Consequences
+
+Mniej przerw w pracy; ważne wybory pozostają pod kontrolą użytkownika.
+
+## DEC-005 — Język dokumentacji i kodu
+
+Date: 2026-09-20
+Status: proposed
+
+### Decision
+
+Dokumentacja, komentarze, treści interfejsu i komunikaty commitów po polsku. Identyfikatory w kodzie i nazwy plików technicznych po angielsku (konwencja ekosystemu Astro/TypeScript).
+
+### Context
+
+Użytkownik wskazał język polski dla dokumentacji i kodu. Podział na identyfikatory angielskie jest propozycją agenta i wymaga potwierdzenia.
+
+### Alternatives considered
+
+- Wszystko po polsku, łącznie z identyfikatorami w kodzie.
+
+### Consequences
+
+Do potwierdzenia przez użytkownika przed startem implementacji.
