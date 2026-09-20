@@ -17,3 +17,25 @@ Strona, na której dwóch biegaczy dokumentuje drogę do zdobycia Korony Polskic
 - Frontend: UI/application frontend
 - Database: schema/migrations
 - QA: verification/testing
+
+## Uruchomienie lokalne
+
+Wymagany Node.js >= 22.12 (testowane na Node 24) i npm.
+
+```bash
+npm install        # instalacja zależności
+npm run dev        # serwer deweloperski: http://localhost:4321
+npm run build      # budowa statyczna do katalogu dist/
+npm run preview    # podgląd zbudowanej strony
+```
+
+Kontrola jakości:
+
+```bash
+npm run check         # typy (astro check)
+npm run lint          # ESLint
+npm run format:check  # sprawdzenie formatowania (Prettier)
+npm run format        # automatyczne formatowanie
+```
+
+Adres strony (`site`) jest ustawiony w jednym miejscu: `astro.config.mjs`. Linki wewnętrzne są względne.
