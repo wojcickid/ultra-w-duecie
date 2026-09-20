@@ -2,7 +2,7 @@
 
 ## Status
 
-in-progress
+done
 
 ## Owner
 
@@ -73,7 +73,7 @@ Dokumentacja: https://developers.cloudflare.com/workers/static-assets/migration-
 
 ### Review
 
-- Not reviewed
+- Lead (2026-09-20): diff w zakresie; build (17 stron), lint, format:check, astro check i `wrangler deploy --dry-run` bez błędów; test lokalny `wrangler dev --local` powtórzony niezależnie (trasy statyczne, 302 do GitHuba z `scope=public_repo` i cookie `Path=/api`, `UNSUPPORTED_DOMAIN`, `CSRF_DETECTED`, nagłówki `/admin`); procesy testowe zatrzymane po PID. Kryteria wymagające kont (wdrożenie, domena, Web Analytics, logowanie) zweryfikowane zostaną na żywo w TASK-001/TASK-009. Zaakceptowane.
 
 ## Outcome
 
@@ -82,5 +82,5 @@ Complete this section before moving the task to `done`.
 - Summary:
 - Tests:
 - Important files:
-- Commit:
-- Follow-up tasks:
+- Commit: 777f3b5, 76bb693 (gałąź agent/frontend/TASK-016-workers-migration)
+- Follow-up tasks: TASK-009 (wdrożenie i Web Analytics na żywo); rozważyć `workers_dev: false` po uruchomieniu domeny; jeśli Web Analytics nie wstrzyknie się automatycznie, mały skrypt w układzie strony.
