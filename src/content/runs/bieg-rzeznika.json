@@ -1,10 +1,24 @@
 {
   "name": "Bieg Rzeźnika",
   "distanceKm": 84,
+  "location": "Komańcza, Cisna, Bieszczady",
   "typicalMonth": "Boże Ciało",
-  "status": "unplanned",
+  "status": "completed",
   "retired": false,
   "order": 4,
   "notes": "Dane orientacyjne z regulaminu Korony 4.0 (kingrunner.com) - wymagają weryfikacji z regulaminem.",
-  "results": []
+  "results": [
+    {
+      "author": "damian",
+      "completedDate": "2024-05-31",
+      "time": "16:46:15",
+      "resultsUrl": "https://wyniki.b4sport.pl/xxi-bieg-rzeznika/r5431.html?FiltersForm%5Bnumber%5D=&FiltersForm%5Bname1%5D=&FiltersForm%5Bname2%5D=W%C3%B3jcicki&FiltersForm%5Bteam%5D=&FiltersForm%5Btime_1%5D=&FiltersForm%5Bplace_1%5D=&FiltersForm%5Btime_rel_2%5D=&FiltersForm%5Btime_2%5D=&FiltersForm%5Btime_pk_2%5D=&FiltersForm%5Bplace_2%5D=&FiltersForm%5Btime_rel_3%5D=&FiltersForm%5Btime_3%5D=&FiltersForm%5Bplace_3%5D=&FiltersForm%5Btime_rel_4%5D=&FiltersForm%5Btime_4%5D=&FiltersForm%5Bplace_4%5D=&FiltersForm%5Btime_rel_5%5D=&FiltersForm%5Btime_5%5D=&FiltersForm%5Bplace_5%5D=&FiltersForm%5Btime_rel_6%5D=&FiltersForm%5Btime_6%5D=&FiltersForm%5Btime_7%5D=&FiltersForm%5Bplace_7%5D=&FiltersForm%5Bpenalty%5D=&FiltersForm%5Btempo_minkm%5D=&FiltersForm%5Btempo_kmh%5D=&format=html&type=html"
+    },
+    {
+      "author": "grzegorz",
+      "completedDate": "2024-05-31",
+      "time": "16:46:15",
+      "resultsUrl": "https://wyniki.b4sport.pl/xxi-bieg-rzeznika/r5431.html?FiltersForm%5Bnumber%5D=&FiltersForm%5Bname1%5D=Kudrej&FiltersForm%5Bname2%5D=&FiltersForm%5Bteam%5D=&FiltersForm%5Btime_1%5D=&FiltersForm%5Bplace_1%5D=&FiltersForm%5Btime_rel_2%5D=&FiltersForm%5Btime_2%5D=&FiltersForm%5Btime_pk_2%5D=&FiltersForm%5Bplace_2%5D=&FiltersForm%5Btime_rel_3%5D=&FiltersForm%5Btime_3%5D=&FiltersForm%5Bplace_3%5D=&FiltersForm%5Btime_rel_4%5D=&FiltersForm%5Btime_4%5D=&FiltersForm%5Bplace_4%5D=&FiltersForm%5Btime_rel_5%5D=&FiltersForm%5Btime_5%5D=&FiltersForm%5Bplace_5%5D=&FiltersForm%5Btime_rel_6%5D=&FiltersForm%5Btime_6%5D=&FiltersForm%5Btime_7%5D=&FiltersForm%5Bplace_7%5D=&FiltersForm%5Bpenalty%5D=&FiltersForm%5Btempo_minkm%5D=&FiltersForm%5Btempo_kmh%5D=&format=html&type=html"
+    }
+  ]
 }
