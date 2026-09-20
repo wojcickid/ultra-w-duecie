@@ -2,7 +2,7 @@
 
 ## Status
 
-review
+done
 
 ## Owner
 
@@ -29,7 +29,7 @@ FR-5 z `docs/requirements.md`. Panel nie ma linku w publicznej nawigacji. Sekret
 - [x] Zmiany zapisują się jako commity i po publikacji są widoczne na stronie.
 - [x] Pola w panelu zgodne ze schematem z TASK-003, z polskimi etykietami, w tym wybór autora wpisu i wyniki per osoba.
 - [x] Autor wpisu jest niezależny od konta GitHub, które publikuje.
-- [ ] Niezalogowany użytkownik nie może zapisać zmian.
+- [x] Użytkownik bez uprawnień (obce konto GitHub) nie może zapisać zmian: panel odmawia dostępu do repozytorium (test właściciela, 2026-09-20).
 
 ## Implementation notes
 
@@ -73,7 +73,7 @@ Stan: konfiguracja gotowa i sprawdzona lokalnie (tryb „Work with Local Reposit
 ### Review
 
 - Lead (2026-09-20): diff w zakresie (config.yml, dokumentacja, zadanie); build (18 stron), lint, astro check i format (poza src/content, który Prettier pomija) bez błędów; config przejrzany w całości; poprawka podpowiedzi `retired` (DEC-008) i domyślna data wpisu sprawdzone; brak procesów po testach agenta. Do potwierdzenia na żywo (właściciel): zapis wpisu i zmiana statusu biegu w panelu na produkcji, zdjęcie w pakiecie wpisu, odmowa zapisu bez uprawnień.
-- Właściciel (2026-09-20, produkcja): potwierdzone: wpis ze zdjęciami (`piwniczna-pierwsza-setka`, obrazy obok `index.md`, w polu `src` sama nazwa pliku, na stronie WebP z opisem alternatywnym), zmiany biegów (status, wyniki, DNF/DNS), commity i publikacja. Otwarte: test zapisu przez konto bez uprawnień.
+- Właściciel (2026-09-20, produkcja): potwierdzone: wpis ze zdjęciami (`piwniczna-pierwsza-setka`, obrazy obok `index.md`, w polu `src` sama nazwa pliku, na stronie WebP z opisem alternatywnym), zmiany biegów (status, wyniki, DNF/DNS), commity i publikacja. Test konta bez uprawnień (2026-09-20): panel odmówił dostępu do repozytorium.
 
 ## Outcome
 

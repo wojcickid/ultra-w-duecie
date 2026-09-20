@@ -2,7 +2,7 @@
 
 ## Status
 
-review
+done
 
 ## Owner
 
@@ -27,7 +27,7 @@ DEC-001 przyjmuje architekturę statyczną z CMS opartym na Git. Ryzyko: konfigu
 - [x] Panel `/admin` pozwala zalogować się kontem GitHub i zapisać zmianę jako commit (potwierdzone na produkcji przez właściciela, 2026-09-20).
 - [x] Wybrano CMS (Decap lub Sveltia) i zapisano uzasadnienie w `docs/decisions.md` (nowe DEC).
 - [x] Instrukcja konfiguracji OAuth krok po kroku (bez sekretów) dodana do dokumentacji.
-- [ ] Zweryfikowano, że osoba bez uprawnień zapisu w repozytorium nie może zapisać zmian.
+- [x] Zweryfikowano, że osoba bez uprawnień zapisu w repozytorium nie może zapisać zmian (2026-09-20: przy logowaniu innym kontem GitHub panel pokazał „Wystąpił błąd podczas ładowania danych witryny: nie masz dostępu do repozytorium ultra-w-duecie”; zapis niemożliwy).
 
 ## Implementation notes
 
