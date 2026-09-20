@@ -1,14 +1,19 @@
 ---
 import '../styles/global.css';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 
 interface Props {
   title?: string;
   description?: string;
+  /** Ukrywa stronę przed wyszukiwarkami (strony pomocnicze, np. /styleguide). */
+  noindex?: boolean;
 }
 
 const {
   title = 'Ultra w duecie',
   description = 'Dwóch biegaczy w drodze po Koronę Polskich Ultramaratonów.',
+  noindex = false,
 } = Astro.props;
 ---
 
@@ -18,12 +23,24 @@ const {
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex" />}
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <title>{title}</title>
   </head>
-  <body class="min-h-screen bg-white text-slate-900">
-    <main class="mx-auto max-w-3xl px-4 py-12">
+  <body class="flex min-h-screen flex-col">
+    <a
+      href="#main"
+      class="sr-only rounded-md bg-brand-strong px-4 py-2 font-semibold text-white focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50"
+    >
+      Przejdź do treści
+    </a>
+    <SiteHeader />
+    <main
+      id="main"
+      class="mx-auto w-full max-w-5xl flex-1 px-4 py-10 sm:px-6 sm:py-14"
+    >
       <slot />
     </main>
+    <SiteFooter />
   </body>
 </html>

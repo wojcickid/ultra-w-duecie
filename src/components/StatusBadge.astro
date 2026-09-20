@@ -1,0 +1,59 @@
+---
+import Icon from './Icon.astro';
+import type { IconName } from './Icon.astro';
+
+/**
+ * Znacznik statusu biegu. Status jest komunikowany tekstem ORAZ ikoną,
+ * a nie samym kolorem (WCAG 1.4.1).
+ */
+export type RunStatus = 'completed' | 'planned' | 'unplanned' | 'withdrawn';
+
+interface Props {
+  status: RunStatus;
+}
+
+const { status } = Astro.props;
+
+const variants: Record<
+  RunStatus,
+  { label: string; icon: IconName; classes: string }
+> = {
+  completed: {
+    label: 'Ukończony',
+    icon: 'check-circle',
+    classes:
+      'bg-status-completed-bg text-status-completed-fg border-status-completed-fg',
+  },
+  planned: {
+    label: 'Planowany',
+    icon: 'calendar',
+    classes:
+      'bg-status-planned-bg text-status-planned-fg border-status-planned-fg',
+  },
+  unplanned: {
+    label: 'Bez planu',
+    icon: 'circle-dashed',
+    classes:
+      'bg-status-unplanned-bg text-status-unplanned-fg border-status-unplanned-fg border-dashed',
+  },
+  withdrawn: {
+    label: 'Wycofany',
+    icon: 'ban',
+    classes:
+      'bg-status-withdrawn-bg text-status-withdrawn-fg border-status-withdrawn-fg',
+  },
+};
+
+const { label, icon, classes } = variants[status];
+---
+
+<span
+  class:list={[
+    'inline-flex items-center gap-1.5 rounded-pill border px-2.5 py-0.5 text-sm font-semibold whitespace-nowrap',
+    classes,
+  ]}
+  data-status={status}
+>
+  <Icon name={icon} class="size-4 shrink-0" />
+  {label}
+</span>
