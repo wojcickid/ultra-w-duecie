@@ -25,8 +25,8 @@ FR-5 z `docs/requirements.md`. Panel nie ma linku w publicznej nawigacji. Sekret
 
 - [x] Wpisy zapisywane w układzie pakietu `src/content/posts/<slug>/index.md` z obrazami obok (ścieżki względne, zgodne z `image()` w schemacie `posts`; DEC-009).
 - [x] Pole autorów we wpisie to relacja do kolekcji `authors` (zamiast tymczasowego `select` z TASK-001), a wyniki biegów wskazują autora tak samo.
-- [ ] Zalogowany autor dodaje i edytuje wpis oraz zmienia status biegu przez panel.
-- [ ] Zmiany zapisują się jako commity i po publikacji są widoczne na stronie.
+- [x] Zalogowany autor dodaje i edytuje wpis oraz zmienia status biegu przez panel.
+- [x] Zmiany zapisują się jako commity i po publikacji są widoczne na stronie.
 - [x] Pola w panelu zgodne ze schematem z TASK-003, z polskimi etykietami, w tym wybór autora wpisu i wyniki per osoba.
 - [x] Autor wpisu jest niezależny od konta GitHub, które publikuje.
 - [ ] Niezalogowany użytkownik nie może zapisać zmian.
@@ -73,6 +73,7 @@ Stan: konfiguracja gotowa i sprawdzona lokalnie (tryb „Work with Local Reposit
 ### Review
 
 - Lead (2026-09-20): diff w zakresie (config.yml, dokumentacja, zadanie); build (18 stron), lint, astro check i format (poza src/content, który Prettier pomija) bez błędów; config przejrzany w całości; poprawka podpowiedzi `retired` (DEC-008) i domyślna data wpisu sprawdzone; brak procesów po testach agenta. Do potwierdzenia na żywo (właściciel): zapis wpisu i zmiana statusu biegu w panelu na produkcji, zdjęcie w pakiecie wpisu, odmowa zapisu bez uprawnień.
+- Właściciel (2026-09-20, produkcja): potwierdzone: wpis ze zdjęciami (`piwniczna-pierwsza-setka`, obrazy obok `index.md`, w polu `src` sama nazwa pliku, na stronie WebP z opisem alternatywnym), zmiany biegów (status, wyniki, DNF/DNS), commity i publikacja. Otwarte: test zapisu przez konto bez uprawnień.
 
 ## Outcome
 
