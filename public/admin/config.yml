@@ -1,5 +1,5 @@
-# Konfiguracja panelu CMS (Sveltia CMS). Minimalna kolekcja `posts` do testu zapisu (TASK-001);
-# pełną konfigurację kolekcji (etykiety, biegi, wyniki, autorzy jako relacje) wykona TASK-008.
+# Konfiguracja panelu CMS (Sveltia CMS). Pola i wymagalność muszą odpowiadać schematowi
+# w src/content.config.ts (źródło prawdy); opis: docs/architecture.md (sekcja o panelu CMS).
 
 backend:
   name: github
@@ -16,10 +16,23 @@ display_url: https://korona.damianwojcicki.com
 media_folder: /src/assets/posts
 public_folder: /assets/posts
 
+# Adres wpisu: sam ASCII (ł -> l, ó -> o, spacje -> myślniki), do 60 znaków.
+slug:
+  encoding: ascii
+  clean_accents: true
+  maxlength: 60
+
+# Puste pola opcjonalne są pomijane w pliku (bez "", null i []), bo schemat Zod
+# nie przyjmuje pustego tekstu w polach z z.url() i z.coerce.date().
+output:
+  omit_empty_optional_fields: true
+
 collections:
+  # --- Wpisy ---
   - name: posts
     label: Wpisy
     label_singular: Wpis
+    description: 'Wpisy na blogu. Każdy wpis to osobny folder z tekstem i zdjęciami.'
     # Każdy wpis to pakiet: src/content/posts/<slug>/index.md + obrazy w tym samym katalogu.
     # Astro image() wymaga ścieżek względnych od pliku wpisu; Sveltia zapisuje wtedy samą nazwę pliku.
     # Identyfikator wpisu w Astro to <slug> (przyrostek /index jest pomijany).
@@ -30,22 +43,180 @@ collections:
     create: true
     media_folder: ''
     public_folder: ''
+    summary: '{{title}} ({{date}})'
+    sortable_fields:
+      fields: [date, title]
+      default:
+        field: date
+        direction: descending
     fields:
       - { name: title, label: Tytuł, widget: string }
-      - { name: date, label: Data, widget: datetime, type: date }
+      - {
+          name: date,
+          label: Data,
+          widget: datetime,
+          type: date,
+          default: '{{now}}',
+        }
       - name: authors
         label: Autorzy
-        widget: select
+        widget: relation
+        collection: authors
+        value_field: '{{slug}}'
+        display_fields: ['displayName']
+        search_fields: ['displayName']
         multiple: true
         min: 1
-        options:
-          - { label: Damian, value: damian }
-          - { label: Grzegorz, value: grzegorz }
+        hint: 'Wybierz autora lub obu autorów. Autor wpisu nie zależy od konta GitHub, którym publikujesz.'
+      - name: run
+        label: Bieg
+        widget: relation
+        collection: runs
+        value_field: '{{slug}}'
+        display_fields: ['name']
+        search_fields: ['name']
+        required: false
+        hint: 'Opcjonalnie. Wybierz, jeśli wpis dotyczy konkretnego biegu Korony.'
       - name: images
         label: Zdjęcia
+        label_singular: Zdjęcie
         widget: list
         required: false
+        hint: 'Opcjonalnie. Każde zdjęcie wymaga opisu alternatywnego (dla osób niewidzących).'
         fields:
-          - { name: src, label: Plik, widget: image }
-          - { name: alt, label: Opis alternatywny, widget: string }
+          - { name: src, label: Plik, widget: image, choose_url: false }
+          - {
+              name: alt,
+              label: Opis alternatywny,
+              widget: string,
+              hint: 'Krótki opis tego, co widać na zdjęciu.',
+            }
       - { name: body, label: Treść, widget: markdown }
+
+  # --- Biegi ---
+  # Lista biegów Korony jest stała: w panelu edytuje się istniejące biegi (status, wyniki),
+  # nowe biegi dodaje deweloper jako pliki src/content/runs/<slug>.json.
+  - name: runs
+    label: Biegi
+    label_singular: Bieg
+    description: 'Biegi Korony Polskich Ultramaratonów. Tu zmieniasz status biegu i dodajesz wyniki.'
+    folder: src/content/runs
+    format: json
+    create: false
+    delete: false
+    identifier_field: name
+    summary: '{{name}} ({{status}})'
+    sortable_fields:
+      fields: [order, name, status]
+      default:
+        field: order
+    view_filters:
+      - { label: Ukończone, field: status, pattern: '^completed$' }
+      - { label: Planowane, field: status, pattern: '^planned$' }
+      - { label: Bez planu, field: status, pattern: '^unplanned$' }
+      - { label: Wycofane z listy Korony, field: retired, pattern: true }
+    fields:
+      - { name: name, label: Nazwa, widget: string }
+      - {
+          name: distanceKm,
+          label: Dystans (km),
+          widget: number,
+          value_type: float,
+          min: 0,
+          required: false,
+          hint: 'Opcjonalnie, np. 54.7.',
+        }
+      - { name: location, label: Miejsce, widget: string, required: false }
+      - {
+          name: typicalMonth,
+          label: Orientacyjny termin,
+          widget: string,
+          required: false,
+          hint: 'Opcjonalnie, tekstem, np. "luty", "kwiecień/maj", "Boże Ciało".',
+        }
+      - name: status
+        label: Status
+        widget: select
+        options:
+          - { label: Ukończony, value: completed }
+          - { label: Planowany, value: planned }
+          - { label: Bez planu, value: unplanned }
+        default: unplanned
+        hint: 'Status „Ukończony” wymaga co najmniej jednego wyniku (poniżej). Licznik na stronie głównej liczy tylko biegi z wynikami obu autorów.'
+      - name: retired
+        label: Wycofany z listy Korony
+        widget: boolean
+        required: false
+        default: false
+        hint: 'Zaznacz dla biegu, który nie jest już na liście Korony (np. Bieg 7 Dolin). Taki bieg nadal liczy się do postępu, jeśli obaj autorzy go ukończyli.'
+      - {
+          name: plannedDate,
+          label: Planowana data,
+          widget: datetime,
+          type: date,
+          required: false,
+          hint: 'Opcjonalnie. Ustaw dla biegów ze statusem Planowany.',
+        }
+      - {
+          name: order,
+          label: Kolejność,
+          widget: number,
+          value_type: int,
+          required: false,
+          hint: 'Opcjonalnie. Numer pozycji na liście i w kalendarzu (małe liczby pierwsze).',
+        }
+      - { name: notes, label: Notatki, widget: text, required: false }
+      - name: results
+        label: Wyniki
+        label_singular: Wynik
+        widget: list
+        required: false
+        summary: '{{author}} - {{time}}'
+        hint: 'Osobny wynik dla każdego autora; jeden wynik na osobę.'
+        fields:
+          - name: author
+            label: Autor
+            widget: relation
+            collection: authors
+            value_field: '{{slug}}'
+            display_fields: ['displayName']
+            search_fields: ['displayName']
+          - {
+              name: completedDate,
+              label: Data ukończenia,
+              widget: datetime,
+              type: date,
+            }
+          - name: time
+            label: Czas oficjalny
+            widget: string
+            use_emoji_autocomplete: false
+            pattern:
+              [
+                '^\d{1,3}:[0-5]\d:[0-5]\d$',
+                'Czas musi mieć format HH:MM:SS (np. 12:34:56).',
+              ]
+            hint: 'Format HH:MM:SS, np. 12:34:56 lub 105:12:00.'
+          - {
+              name: resultsUrl,
+              label: Link do wyników,
+              widget: string,
+              type: url,
+              required: false,
+              hint: 'Opcjonalnie, pełny adres (https://...).',
+            }
+
+  # --- Autorzy ---
+  # Tylko dwóch autorów; kolekcja służy jako źródło relacji (wpisy, wyniki). Nazwa pliku = identyfikator autora.
+  - name: authors
+    label: Autorzy
+    label_singular: Autor
+    description: 'Dwóch autorów strony. Zmieniasz tylko nazwę wyświetlaną; identyfikator (nazwa pliku) zostaje.'
+    folder: src/content/authors
+    format: json
+    create: false
+    delete: false
+    identifier_field: displayName
+    summary: '{{displayName}}'
+    fields:
+      - { name: displayName, label: Nazwa wyświetlana, widget: string }
