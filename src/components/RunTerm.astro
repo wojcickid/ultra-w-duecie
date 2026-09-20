@@ -1,0 +1,18 @@
+---
+import type { RunTerm } from '../lib/runs';
+
+/**
+ * Termin biegu z `getRunTerm`: potwierdzona data jako `<time>`, termin orientacyjny bez roku
+ * z dopiskiem „termin orientacyjny” mniejszym, stonowanym tekstem (DEC-012).
+ */
+interface Props {
+  term: RunTerm;
+}
+
+const { term } = Astro.props;
+---
+
+{term.isoDate ? <time datetime={term.isoDate}>{term.value}</time> : term.value}
+{term.qualifier && (
+  <span class="text-xs text-ink-muted"> ({term.qualifier})</span>
+)}

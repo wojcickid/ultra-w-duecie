@@ -1,24 +1,26 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import Card from './Card.astro';
+import RunFacts from './RunFacts.astro';
+import RunVerdict from './RunVerdict.astro';
 import StatusBadge from './StatusBadge.astro';
 import { isCompletedTogether } from '../lib/progress';
-import { getResultSummaries, getRunBadges, getRunFacts } from '../lib/runs';
+import { getResultSummaries, getRunBadges } from '../lib/runs';
+import type { AuthorRef } from '../lib/run-verdict';
 
 interface Props {
   run: CollectionEntry<'runs'>;
-  /** Autorzy (id + nazwa) do zwięzłego opisu wyników osób i reguły „wspólnie”. */
-  authors: { id: string; name: string }[];
+  /** Autorzy (id + nazwa) do werdyktu „razem?” i zwięzłego opisu wyników osób. */
+  authors: AuthorRef[];
+  /** Poziom nagłówka nazwy biegu (dopasuj do sekcji, domyślnie 3). */
+  headingLevel?: 2 | 3 | 4;
 }
 
-const { run, authors } = Astro.props;
-const { name } = run.data;
-const details = getRunFacts(run.data);
-const together = isCompletedTogether(
+const { run, authors, headingLevel = 3 } = Astro.props;
+const results = isCompletedTogether(
   run,
   authors.map((author) => author.id),
-);
-const results = together
+)
   ? []
   : getResultSummaries(
       run.data.results,
@@ -26,27 +28,25 @@ const results = together
     );
 ---
 
-<Card title={name} headingLevel={2} href={`/biegi/${run.id}`}>
+<Card
+  title={run.data.name}
+  headingLevel={headingLevel}
+  href={`/biegi/${run.id}`}
+>
   <div class="flex flex-wrap gap-2">
     {getRunBadges(run.data).map((status) => (
       <StatusBadge status={status} />
     ))}
   </div>
+  <div class="mt-3">
+    <RunVerdict run={run} authors={authors} />
+  </div>
+  <RunFacts run={run.data} class="mt-3 text-sm" />
   {results.length > 0 && (
     <ul class="mt-3 text-sm">
       {results.map((line) => (
         <li>{line}</li>
       ))}
     </ul>
-  )}
-  {details.length > 0 && (
-    <dl class="mt-3 space-y-1 text-sm">
-      {details.map(({ label, value }) => (
-        <div class="flex gap-2">
-          <dt class="font-semibold text-ink">{label}:</dt>
-          <dd>{value}</dd>
-        </div>
-      ))}
-    </dl>
   )}
 </Card>

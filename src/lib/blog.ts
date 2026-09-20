@@ -1,4 +1,9 @@
-import { getCollection, getEntries, type CollectionEntry } from 'astro:content';
+import {
+  getCollection,
+  getEntries,
+  getEntry,
+  type CollectionEntry,
+} from 'astro:content';
 
 export const POSTS_PER_PAGE = 10;
 
@@ -19,6 +24,11 @@ export async function getAuthorNames(post: Post): Promise<string[]> {
   return authors
     .filter((author) => author !== undefined)
     .map((author) => author.data.displayName);
+}
+
+// Bieg, którego dotyczy wpis (pole `run`); undefined, gdy wpis nie jest powiązany z biegiem.
+export async function getPostRun(post: Post) {
+  return post.data.run ? await getEntry(post.data.run) : undefined;
 }
 
 // "Damian", "Damian i Grzegorz", "A, B i C".

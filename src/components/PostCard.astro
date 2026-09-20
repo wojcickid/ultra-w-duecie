@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import Card from './Card.astro';
 import { formatDate } from '../lib/format';
-import { getAuthorNames, joinNames, type Post } from '../lib/blog';
+import { getAuthorNames, getPostRun, joinNames, type Post } from '../lib/blog';
 
 interface Props {
   post: Post;
@@ -10,6 +10,7 @@ interface Props {
 
 const { post } = Astro.props;
 const authors = joinNames(await getAuthorNames(post));
+const run = await getPostRun(post);
 const thumbnail = post.data.images?.[0];
 ---
 
@@ -25,12 +26,22 @@ const thumbnail = post.data.images?.[0];
         class="aspect-video w-full shrink-0 rounded-md object-cover sm:w-40"
       />
     )}
-    <p class="text-sm">
-      <time datetime={post.data.date.toISOString()}>
-        {formatDate(post.data.date)}
-      </time>
-      {authors && <span aria-hidden="true"> · </span>}
-      {authors}
-    </p>
+    <div class="min-w-0">
+      <p class="text-sm">
+        <time datetime={post.data.date.toISOString()}>
+          {formatDate(post.data.date)}
+        </time>
+        {authors && <span aria-hidden="true"> · </span>}
+        {authors}
+      </p>
+      {run && (
+        <p class="mt-1 text-sm">
+          Dotyczy biegu:{' '}
+          <a href={`/biegi/${run.id}`} class="link relative z-10">
+            {run.data.name}
+          </a>
+        </p>
+      )}
+    </div>
   </div>
 </Card>

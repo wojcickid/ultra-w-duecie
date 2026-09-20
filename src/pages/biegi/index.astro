@@ -2,9 +2,9 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import RunCard from '../../components/RunCard.astro';
-import { sortRuns } from '../../lib/progress';
+import { splitCrownAndHistory } from '../../lib/progress';
 
-const runs = sortRuns(await getCollection('runs'));
+const { crown, history } = splitCrownAndHistory(await getCollection('runs'));
 const authors = (await getCollection('authors'))
   .map((author) => ({ id: author.id, name: author.data.displayName }))
   .sort((a, b) => a.id.localeCompare(b.id));
@@ -12,18 +12,47 @@ const authors = (await getCollection('authors'))
 
 <BaseLayout
   title="Biegi — Ultra w duecie"
-  description="Lista biegów Korony Polskich Ultramaratonów: status, dystans, miejsce i termin każdego z nich."
+  description="Lista biegów Korony Polskich Ultramaratonów 4.0: status, dystans, lokalizacja i termin każdego z nich."
 >
-  <h1 class="text-3xl font-bold sm:text-4xl">Biegi Korony</h1>
+  <h1 class="text-3xl font-bold sm:text-4xl">Biegi</h1>
   <p class="mt-4 max-w-prose text-lg text-ink-muted">
-    Wszystkie biegi, które składają się na naszą Koronę Polskich Ultramaratonów,
-    razem z ich statusem.
+    Dziesięć biegów Korony Polskich Ultramaratonów 4.0 w kolejności sezonu, z
+    informacją, czy ukończyliśmy je razem.
   </p>
-  <ul class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-    {runs.map((run) => (
-      <li>
-        <RunCard run={run} authors={authors} />
-      </li>
-    ))}
-  </ul>
+
+  <section aria-labelledby="crown-heading" class="mt-10">
+    <h2 id="crown-heading" class="text-2xl font-semibold">
+      Korona 4.0 — 10 biegów
+    </h2>
+    {crown.length === 0 ? (
+      <p class="mt-4 text-ink-muted">Lista biegów pojawi się wkrótce.</p>
+    ) : (
+      <ul class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {crown.map((run) => (
+          <li>
+            <RunCard run={run} authors={authors} headingLevel={3} />
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+
+  {history.length > 0 && (
+    <section aria-labelledby="history-heading" class="mt-12">
+      <h2 id="history-heading" class="text-2xl font-semibold">
+        Historia projektu
+      </h2>
+      <p class="mt-2 max-w-prose text-ink-muted">
+        Biegi spoza listy 10 biegów Korony 4.0. Ukończone wspólnie zaliczają się
+        do naszego postępu wg regulaminu Korony.
+      </p>
+      <ul class="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {history.map((run) => (
+          <li>
+            <RunCard run={run} authors={authors} headingLevel={3} />
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
 </BaseLayout>

@@ -1,0 +1,52 @@
+---
+import { formatDate } from '../lib/format';
+import {
+  excerpt,
+  getAuthorNames,
+  getPostRun,
+  joinNames,
+  type Post,
+} from '../lib/blog';
+
+/**
+ * Zajawka wpisu (strona główna, „Relacja” na stronie biegu): tytuł z linkiem, data, autorzy,
+ * krótki fragment treści i (opcjonalnie) „Dotyczy biegu: …”. Treści wpisu nie zmienia.
+ */
+interface Props {
+  post: Post;
+  /** Poziom nagłówka tytułu (dopasuj do sekcji, domyślnie 3). */
+  headingLevel?: 3 | 4;
+  /** Pokaż powiązany bieg; na stronie tego biegu jest zbędny. */
+  showRun?: boolean;
+}
+
+const { post, headingLevel = 3, showRun = true } = Astro.props;
+const Heading = `h${headingLevel}` as 'h3' | 'h4';
+const authors = joinNames(await getAuthorNames(post));
+const run = showRun ? await getPostRun(post) : undefined;
+const teaser = excerpt(post.body, 140);
+---
+
+<article>
+  <Heading class="text-lg font-semibold">
+    <a href={`/blog/${post.id}`} class="link">
+      {post.data.title}
+    </a>
+  </Heading>
+  <p class="mt-1 text-sm text-ink-muted">
+    <time datetime={post.data.date.toISOString()}>
+      {formatDate(post.data.date)}
+    </time>
+    {authors && <span aria-hidden="true"> · </span>}
+    {authors}
+  </p>
+  {teaser && <p class="mt-2 max-w-prose">{teaser}</p>}
+  {run && (
+    <p class="mt-2 text-sm text-ink-muted">
+      Dotyczy biegu:{' '}
+      <a href={`/biegi/${run.id}`} class="link">
+        {run.data.name}
+      </a>
+    </p>
+  )}
+</article>

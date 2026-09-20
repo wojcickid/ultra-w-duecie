@@ -1,0 +1,20 @@
+---
+/**
+ * Sekcja strony z nagłówkiem h2 (spójny odstęp i powiązanie nagłówka przez aria-labelledby).
+ * Dodanie nowej sekcji do widoku = jeden blok `<Section id="..." title="...">` (np. na stronie biegu).
+ */
+interface Props {
+  /** Unikalny na stronie identyfikator; nagłówek dostaje `${id}-heading`. */
+  id: string;
+  title: string;
+}
+
+const { id, title } = Astro.props;
+---
+
+<section aria-labelledby={`${id}-heading`} class="mt-12">
+  <h2 id={`${id}-heading`} class="text-2xl font-semibold">
+    {title}
+  </h2>
+  <slot />
+</section>
