@@ -197,3 +197,36 @@ W chwili ukończenia był biegiem podstawowym Korony. Regulamin 4.0 nie zawiera 
 ### Consequences
 
 Model danych ma flagę `retired` dla biegu. Zasadę wliczania do licznika, gdy aktualna lista zawiera 10 innych biegów, trzeba doprecyzować przy TASK-005 po sprawdzeniu regulaminu.
+
+## DEC-009 — Panel CMS: Sveltia CMS z własnym proxy OAuth (Cloudflare Pages Function)
+
+Date: 2026-09-20
+Status: accepted
+
+### Decision
+
+Panel CMS to **Sveltia CMS** w przypiętej wersji (0.217.0, ładowany z CDN jsDelivr z sumą SRI) w `public/admin/`. Logowanie GitHub OAuth obsługuje własna, krótka **Cloudflare Pages Function** w `functions/api/` (`/api/auth`, `/api/callback`), oparta na protokole Decap/Sveltia (przekierowanie do GitHuba, wymiana kodu na token, przekazanie tokenu do okna panelu przez `postMessage`). Zabezpieczenia: losowy `state` w ciasteczku HttpOnly, stały minimalny zakres `public_repo` (repozytorium jest publiczne), token wydawany wyłącznie originowi z `ALLOWED_ORIGIN`, sekrety tylko w zmiennych Cloudflare (`GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`), brak logowania tokenów i sekretów. Wpisy mają układ pakietu (`src/content/posts/<slug>/index.md` + obrazy obok), co daje ścieżki względne wymagane przez `image()` w Astro.
+
+### Context
+
+DEC-001 przewiduje CMS oparty na Git. Na Cloudflare Pages nie ma wbudowanego dostawcy OAuth (jak Netlify Identity/Git Gateway), więc GitHub OAuth wymaga własnego małego serwisu do wymiany kodu na token (sekret aplikacji nie może trafić do przeglądarki). Decap CMS i Sveltia CMS używają tego samego protokołu proxy OAuth, a konfiguracja (`config.yml`) jest w dużej mierze wspólna. Stan na 2026-09-20 (źródła: dokumentacja Sveltia CMS, README `sveltia-cms-auth`, npm, dokumentacja Cloudflare Pages):
+
+- Sveltia CMS 0.217.0 (MIT, wydanie z 2026-09-19, publikacja npm z atestacją pochodzenia, autor aktywnie utrzymuje projekt, deklaruje „feature complete”, ale wersja jest jeszcze 0.x). Plik ~2,1 MB (617 kB po kompresji gzip). Interfejs po polsku (język z ustawień przeglądarki), commity GitHub podpisywane, obsługa GraphQL, ochrona XSS (DOMPurify), zakres OAuth ustawiany opcją `auth_scope`, wbudowane logowanie tokenem osobistym (awaryjnie, bez proxy OAuth).
+- Decap CMS 3.16.2 (MIT, wydanie z 2026-09-14, repozytorium aktywne). Plik ~5,2 MB (1,5 MB gzip), według autorów Sveltia bez poprawki znanej luki XSS i z wieloma niezałatwionymi zgłoszeniami; brak wbudowanego dostawcy OAuth poza Netlify, dokumentacja odsyła do rozwiązań zewnętrznych.
+- Oficjalny `sveltia-cms-auth` działa jako osobny Cloudflare Worker (nie Pages Function) i wymaga wdrożenia drugiego serwisu; domyślnie prosi o szeroki zakres `repo,user`. Rozwiązania zewnętrzne dla Decap to głównie projekty społeczności, bez gwarancji utrzymania.
+
+### Alternatives considered
+
+- **Decap CMS + zewnętrzne proxy OAuth:** większy plik, wolniejszy i mniej dopracowany panel, dodatkowe rozwiązanie społeczności do zaufania.
+- **Sveltia CMS + `sveltia-cms-auth` jako osobny Worker:** sprawdzone, ale to drugi serwis (osobne wdrożenie, dodatkowy adres `workers.dev` lub trasa), szerszy domyślny zakres OAuth; osobne repozytorium do śledzenia aktualizacji.
+- **Sveltia CMS wyłącznie z tokenem osobistym (bez OAuth):** najmniej kodu i zero serwera; działa dla jednej osoby, ale token trzeba tworzyć i odnawiać ręcznie, a dla nietechnicznego drugiego autora jest niewygodny. Pozostaje metodą awaryjną.
+- **Zależność npm zamiast CDN:** eliminuje zaufanie do CDN w czasie działania, ale dodaje ~23 MB zależności i wymaga własnego skryptu ładującego; przy przypięciu wersji i SRI zysk jest niewielki.
+
+### Consequences
+
+- Jedyny element serwerowy: dwie krótkie funkcje (`functions/`, ok. 240 linii, bez zależności), część projektu Pages, bez osobnego wdrożenia.
+- Kod funkcji jest nasz: przy zmianach protokołu w Sveltia trzeba go dostosować; zmiany wersji panelu wymagają świadomej aktualizacji numeru wersji i SRI (`docs/cms-setup.md`).
+- Zakres `public_repo` wystarcza do zapisu w publicznym repozytorium i nie daje dostępu do prywatnych repozytoriów konta; przy zmianie repozytorium na prywatne potrzebny jest zakres `repo`.
+- Panel działa tylko na domenie z `ALLOWED_ORIGIN` (produkcyjna subdomena); podglądy `*.pages.dev` służą do sprawdzania strony, nie panelu.
+- Układ wpisów jako pakiet katalogu (`<slug>/index.md`): identyfikator wpisu w Astro to `<slug>` (przyrostek `/index` jest pomijany), a obrazy leżą obok wpisu i są wskazywane samą nazwą pliku (Astro `image()` przyjmuje taką ścieżkę). Istniejący płaski plik `testowy-wpis.md` nie jest widoczny w panelu (do usunięcia przed publikacją).
+- Instrukcja dla właściciela: `docs/cms-setup.md`. Weryfikacja logowania i zapisu na żywo oraz odmowy zapisu dla osoby bez uprawnień pozostaje do wykonania po wdrożeniu (TASK-001), pełną konfigurację kolekcji robi TASK-008.

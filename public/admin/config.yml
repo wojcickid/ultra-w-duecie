@@ -1,0 +1,51 @@
+# Konfiguracja panelu CMS (Sveltia CMS). Minimalna kolekcja `posts` do testu zapisu (TASK-001);
+# pełną konfigurację kolekcji (etykiety, biegi, wyniki, autorzy jako relacje) wykona TASK-008.
+
+backend:
+  name: github
+  repo: wojcickid/ultra-w-duecie
+  branch: main
+  # Adres funkcji OAuth (Cloudflare Pages Function: /api/auth, /api/callback).
+  base_url: https://korona.damianwojcicki.com/api
+  auth_scope: public_repo
+
+site_url: https://korona.damianwojcicki.com
+display_url: https://korona.damianwojcicki.com
+
+# Wymagane na poziomie globalnym; kolekcja `posts` używa mediów obok wpisu (patrz niżej).
+media_folder: /src/assets/posts
+public_folder: /assets/posts
+
+collections:
+  - name: posts
+    label: Wpisy
+    label_singular: Wpis
+    # Każdy wpis to pakiet: src/content/posts/<slug>/index.md + obrazy w tym samym katalogu.
+    # Astro image() wymaga ścieżek względnych od pliku wpisu; Sveltia zapisuje wtedy samą nazwę pliku.
+    # Identyfikator wpisu w Astro to <slug> (przyrostek /index jest pomijany).
+    folder: src/content/posts
+    path: '{{slug}}/index'
+    extension: md
+    format: frontmatter
+    create: true
+    media_folder: ''
+    public_folder: ''
+    fields:
+      - { name: title, label: Tytuł, widget: string }
+      - { name: date, label: Data, widget: datetime, type: date }
+      - name: authors
+        label: Autorzy
+        widget: select
+        multiple: true
+        min: 1
+        options:
+          - { label: Damian, value: damian }
+          - { label: Grzegorz, value: grzegorz }
+      - name: images
+        label: Zdjęcia
+        widget: list
+        required: false
+        fields:
+          - { name: src, label: Plik, widget: image }
+          - { name: alt, label: Opis alternatywny, widget: string }
+      - { name: body, label: Treść, widget: markdown }
