@@ -1,5 +1,5 @@
 import type { RunStatus } from '../components/StatusBadge.astro';
-import { formatDate } from './format';
+import { formatDate, toDayKey } from './format';
 
 interface RunLike {
   status: 'completed' | 'planned' | 'unplanned';
@@ -15,14 +15,68 @@ export function getRunBadges(run: RunLike): RunStatus[] {
     : ['withdrawn'];
 }
 
-interface RunFactsSource {
-  distanceKm?: number;
-  location?: string;
+interface RunTermSource {
   typicalMonth?: string;
   plannedDate?: Date;
+  results?: readonly {
+    outcome: 'finished' | 'dnf' | 'dns';
+    completedDate?: Date;
+  }[];
 }
 
-// Dane biegu do wyświetlenia (Dystans / Miejsce / Termin); brakujące pola są pomijane.
+export interface RunTerm {
+  label: string;
+  value: string;
+  /** Data w formacie YYYY-MM-DD (dla `<time>`); brak przy terminie orientacyjnym. */
+  isoDate?: string;
+}
+
+// Jedno źródło prawdy dla terminu biegu (oś czasu, /biegi, /biegi/<id>).
+// Data z wyników (najwcześniejsza) ma pierwszeństwo przed `plannedDate` i `typicalMonth`.
+// Etykieta: „Ukończono” (wszyscy z datą ukończyli tego samego dnia), „Podejście” (ten sam dzień,
+// ale np. DNF/DNS), „Pierwsze podejście” (wyniki z różnych dni, DEC-010).
+export function getRunTerm(run: RunTermSource): RunTerm | undefined {
+  const dated = (run.results ?? []).flatMap((result) =>
+    result.completedDate
+      ? [{ outcome: result.outcome, date: result.completedDate }]
+      : [],
+  );
+  if (dated.length > 0) {
+    const earliest = new Date(
+      Math.min(...dated.map((result) => result.date.getTime())),
+    );
+    const days = new Set(dated.map((result) => toDayKey(result.date)));
+    const allFinished = dated.every((result) => result.outcome === 'finished');
+    return {
+      label:
+        days.size > 1
+          ? 'Pierwsze podejście'
+          : allFinished
+            ? 'Ukończono'
+            : 'Podejście',
+      value: formatDate(earliest),
+      isoDate: earliest.toISOString().slice(0, 10),
+    };
+  }
+  if (run.plannedDate) {
+    return {
+      label: 'Termin',
+      value: formatDate(run.plannedDate),
+      isoDate: run.plannedDate.toISOString().slice(0, 10),
+    };
+  }
+  if (run.typicalMonth) {
+    return { label: 'Termin', value: `orientacyjnie: ${run.typicalMonth}` };
+  }
+  return undefined;
+}
+
+interface RunFactsSource extends RunTermSource {
+  distanceKm?: number;
+  location?: string;
+}
+
+// Dane biegu do wyświetlenia (Dystans / Miejsce / termin); brakujące pola są pomijane.
 export function getRunFacts(run: RunFactsSource) {
   const facts: { label: string; value: string }[] = [];
   if (run.distanceKm !== undefined) {
@@ -32,14 +86,8 @@ export function getRunFacts(run: RunFactsSource) {
     });
   }
   if (run.location) facts.push({ label: 'Miejsce', value: run.location });
-  if (run.plannedDate) {
-    facts.push({ label: 'Termin', value: formatDate(run.plannedDate) });
-  } else if (run.typicalMonth) {
-    facts.push({
-      label: 'Termin',
-      value: `orientacyjnie: ${run.typicalMonth}`,
-    });
-  }
+  const term = getRunTerm(run);
+  if (term) facts.push({ label: term.label, value: term.value });
   return facts;
 }
 
