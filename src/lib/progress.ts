@@ -1,4 +1,5 @@
-// Logika postępu Korony (DEC-007, DEC-008): czyste funkcje bez zależności od Astro.
+// Logika postępu Korony (DEC-007, DEC-008, DEC-010, DEC-011): czyste funkcje bez zależności od Astro.
+import { toDayKey } from './format';
 
 // Liczba biegów Korony Polskich Ultramaratonów 4.0 (mianownik licznika).
 export const CROWN_TOTAL = 10;
@@ -7,7 +8,11 @@ interface RunLike {
   id: string;
   data: {
     order?: number;
-    results: { author: { id: string } }[];
+    results: {
+      author: { id: string };
+      outcome: 'finished' | 'dnf' | 'dns';
+      completedDate?: Date;
+    }[];
   };
 }
 
@@ -20,14 +25,22 @@ export function sortRuns<T extends RunLike>(runs: readonly T[]): T[] {
   );
 }
 
-// Bieg ukończony wspólnie = każdy autor ma wynik (bieg wycofany też się liczy, DEC-008).
+// Bieg ukończony wspólnie = każdy autor ma wynik "finished" z tą samą datą ukończenia
+// (DEC-010). Bieg wycofany też się liczy (DEC-008); DNF i DNS nigdy (DEC-011).
 export function isCompletedTogether(
   run: RunLike,
   authorIds: readonly string[],
 ): boolean {
   if (authorIds.length === 0) return false;
-  const done = new Set(run.data.results.map((result) => result.author.id));
-  return authorIds.every((id) => done.has(id));
+  const days = new Set<string>();
+  for (const id of authorIds) {
+    const result = run.data.results.find(
+      (candidate) => candidate.author.id === id,
+    );
+    if (result?.outcome !== 'finished' || !result.completedDate) return false;
+    days.add(toDayKey(result.completedDate));
+  }
+  return days.size === 1;
 }
 
 export function countCompletedTogether(

@@ -13,18 +13,50 @@ const authors = defineCollection({
 });
 
 // Wynik jednej osoby w danym biegu (wyniki zapisywane osobno dla każdego autora).
-const runResult = z.object({
-  author: reference('authors'),
-  completedDate: z.coerce.date(),
-  // Czas oficjalny w formacie HH:MM:SS (godziny mogą mieć 1-3 cyfry, np. 9:05:30 lub 105:12:00).
-  time: z
-    .string()
-    .regex(
-      /^\d{1,3}:[0-5]\d:[0-5]\d$/,
-      'Czas musi mieć format HH:MM:SS (np. 12:34:56)',
-    ),
-  resultsUrl: z.url().optional(),
-});
+// outcome: finished = ukończył, dnf = nie ukończył (Did Not Finish), dns = nie wystartował (Did Not Start).
+const runResult = z
+  .object({
+    author: reference('authors'),
+    outcome: z.enum(['finished', 'dnf', 'dns']).default('finished'),
+    // Dla finished: data ukończenia (wymagana); dla dnf/dns: data podejścia (opcjonalna).
+    completedDate: z.coerce.date().optional(),
+    // Czas oficjalny w formacie HH:MM:SS (godziny mogą mieć 1-3 cyfry, np. 9:05:30 lub 105:12:00).
+    time: z
+      .string()
+      .regex(
+        /^\d{1,3}:[0-5]\d:[0-5]\d$/,
+        'Czas musi mieć format HH:MM:SS (np. 12:34:56)',
+      )
+      .optional(),
+    resultsUrl: z.url().optional(),
+    // Krótka notatka, np. "zejście na 62. km", "kontuzja".
+    note: z.string().optional(),
+  })
+  .superRefine((result, ctx) => {
+    if (result.outcome === 'finished') {
+      if (result.completedDate === undefined) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['completedDate'],
+          message: 'Wynik "Ukończył" wymaga daty ukończenia (completedDate).',
+        });
+      }
+      if (result.time === undefined) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['time'],
+          message: 'Wynik "Ukończył" wymaga czasu oficjalnego (time).',
+        });
+      }
+    }
+    if (result.outcome === 'dns' && result.time !== undefined) {
+      ctx.addIssue({
+        code: 'custom',
+        path: ['time'],
+        message: 'Wynik "Nie wystartował (DNS)" nie może mieć czasu (time).',
+      });
+    }
+  });
 
 // Biegi Korony Polskich Ultramaratonów 4.0 (+ bieg wycofany z listy). Identyfikator = nazwa pliku.
 const runs = defineCollection({
@@ -58,12 +90,15 @@ const runs = defineCollection({
         }
         seen.add(authorId);
       });
-      if (run.status === 'completed' && run.results.length === 0) {
+      if (
+        run.status === 'completed' &&
+        !run.results.some((result) => result.outcome === 'finished')
+      ) {
         ctx.addIssue({
           code: 'custom',
           path: ['results'],
           message:
-            'Bieg ze statusem "completed" musi mieć co najmniej jeden wynik.',
+            'Bieg ze statusem "completed" musi mieć co najmniej jeden wynik "Ukończył" (outcome: finished).',
         });
       }
     }),
