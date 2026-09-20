@@ -1,4 +1,4 @@
-# TASK-009 — Wdrożenie na Cloudflare Pages, domena i analityka
+# TASK-009 — Wdrożenie na Cloudflare (Worker ze static assets), domena i analityka
 
 ## Status
 
@@ -15,7 +15,7 @@ lead-agent
 
 ## Description
 
-Podłączyć repozytorium do Cloudflare Pages (automatyczna publikacja z `main`, podglądy gałęzi), podpiąć subdomenę istniejącej domeny właściciela oraz włączyć Cloudflare Web Analytics. Przygotować instrukcję kroków wykonywanych ręcznie przez użytkownika (DNS jest w Cloudflare, więc rekord subdomeny dodaje się automatycznie po podpięciu domeny w Pages).
+Wdrożyć repozytorium jako Worker ze static assets przez Workers Builds (automatyczna publikacja z `main`; budowy gałęzi innych niż `main` rozważyć wyłączyć, patrz `docs/cms-setup.md`), podpiąć subdomenę istniejącej domeny właściciela (Custom domain Workera) oraz włączyć Cloudflare Web Analytics. Przygotować instrukcję kroków wykonywanych ręcznie przez użytkownika (DNS jest w Cloudflare, więc rekord subdomeny dodaje się automatycznie po dodaniu Custom domain w Workerze).
 
 ## Context
 
