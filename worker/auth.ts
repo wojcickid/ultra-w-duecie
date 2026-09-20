@@ -2,13 +2,14 @@
 import {
   OAUTH_SCOPE,
   getAllowedOrigins,
+  isOAuthConfigured,
   popupResponse,
   randomState,
   stateCookie,
   type Context,
-} from '../_shared/oauth';
+} from './oauth';
 
-export const onRequestGet = ({ request, env }: Context): Response => {
+export const handleAuth = ({ request, env }: Context): Response => {
   const url = new URL(request.url);
   const allowedOrigins = getAllowedOrigins(env, request);
   const fail = (error: string, errorCode: string) =>
@@ -24,7 +25,7 @@ export const onRequestGet = ({ request, env }: Context): Response => {
       'UNSUPPORTED_DOMAIN',
     );
   }
-  if (!env.GITHUB_CLIENT_ID || !env.GITHUB_CLIENT_SECRET) {
+  if (!isOAuthConfigured(env)) {
     return fail(
       'Logowanie nie jest skonfigurowane po stronie serwera.',
       'MISCONFIGURED_CLIENT',

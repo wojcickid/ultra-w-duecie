@@ -1,16 +1,16 @@
 # Architektura — Ultra w duecie
 
-Patrz też: `docs/decisions.md` (DEC-001 … DEC-005).
+Patrz też: `docs/decisions.md` (DEC-001 … DEC-009).
 
 ## Przegląd
 
-Strona statyczna generowana przez Astro, hostowana na Cloudflare Pages. Treść (wpisy bloga i dane biegów) to pliki w repozytorium GitHub, edytowane przez panel CMS (Sveltia CMS, DEC-009), który zapisuje zmiany jako commity. Każdy commit uruchamia automatyczną budowę i publikację strony.
+Strona statyczna generowana przez Astro, hostowana na Cloudflare jako **Worker ze statycznymi plikami** (Workers Static Assets; DEC-009, aktualizacja). Treść (wpisy bloga i dane biegów) to pliki w repozytorium GitHub, edytowane przez panel CMS (Sveltia CMS, DEC-009), który zapisuje zmiany jako commity. Każdy commit uruchamia automatyczną budowę i publikację strony.
 
 ```text
 Autor (admin/moderator)
    |  logowanie przez GitHub
    v
-Panel CMS (/admin)  --commit-->  Repozytorium GitHub  --webhook-->  Cloudflare Pages (build Astro)
+Panel CMS (/admin)  --commit-->  Repozytorium GitHub  --webhook-->  Cloudflare Workers Builds (build Astro)
                                                                         |
 Czytelnik  <---------------- statyczne HTML/CSS/JS z CDN Cloudflare <---+
 ```
@@ -37,17 +37,19 @@ Brak własnego backendu, bazy danych i serwera do utrzymania.
 
 ## Backend
 
-Brak własnego backendu. Jedyny element serwerowy to niewielka funkcja (Cloudflare Pages Function) obsługująca logowanie OAuth przez GitHub dla panelu CMS (DEC-009). Instrukcja wdrożenia: `docs/cms-setup.md`.
+Brak własnego backendu. Jedyny element serwerowy to niewielki skrypt Workera (`worker/`) obsługujący logowanie OAuth przez GitHub dla panelu CMS (DEC-009). Wszystko inne to statyczne pliki z `dist/`. Instrukcja wdrożenia: `docs/cms-setup.md`.
 
 - **Panel CMS:** Sveltia CMS (wersja przypięta w `public/admin/index.html`, ładowana z CDN jsDelivr z sumą SRI); konfiguracja w `public/admin/config.yml` (backend GitHub, repozytorium `wojcickid/ultra-w-duecie`, gałąź `main`, zapis wprost jako commity). Wpisy to pakiety `src/content/posts/<slug>/index.md` z obrazami obok (ścieżki względne zgodne z `image()`); pełną konfigurację kolekcji dodaje TASK-008.
-- **Funkcje OAuth** (`functions/`, routing plikowy Pages Functions, bez zależności i bez kroku budowy):
+- **Worker OAuth** (`worker/`, wdrażany razem ze stroną; konfiguracja w `wrangler.jsonc`; kod bez zależności czasu działania, własne lekkie typy; `wrangler` jest tylko w devDependencies):
+  - `worker/index.ts` — punkt wejścia (`export default { fetch }`): `GET /api/auth` i `GET /api/callback` trafiają do handlerów; inna metoda na tych ścieżkach → 405 (`Allow: GET`), inna ścieżka pod `/api/` → 404 (puste odpowiedzi, `no-store`); pozostały ruch to zabezpieczenie `env.ASSETS.fetch(request)`. Statyczne pliki zwykle w ogóle nie uruchamiają Workera: `assets.run_worker_first` to `["/api/*"]`.
   - `GET /api/auth` — sprawdza `provider=github`, domenę (`site_id`) i konfigurację, losuje `state` (128 bitów, ciasteczko `oauth_state`: HttpOnly, Secure, SameSite=Lax, Path=/api, 10 minut) i przekierowuje (302) na `https://github.com/login/oauth/authorize` z `client_id`, `redirect_uri` (`<origin>/api/callback`), `scope=public_repo`, `state`, `allow_signup=false`.
   - `GET /api/callback` — porównuje `state` z zapytania z ciasteczkiem (porównanie w stałym czasie), wymienia `code` na token (`POST https://github.com/login/oauth/access_token`) i zwraca stronę, która przekazuje token do okna panelu przez `postMessage` (protokół `authorizing:github` / `authorization:github:success|error:<JSON>`), wyłącznie originowi z listy dozwolonych.
-  - `functions/_shared/oauth.ts` — wspólny kod (odczyt konfiguracji, `state`, ciasteczka, odpowiedź HTML z CSP z nonce).
-- **Zmienne środowiskowe** (Cloudflare Pages → Settings → Variables and Secrets, środowisko Production):
-  - `GITHUB_CLIENT_ID` (tekst) i `GITHUB_CLIENT_SECRET` (Secret) — dane aplikacji OAuth z GitHuba,
-  - `ALLOWED_ORIGIN` — origin panelu, np. `https://korona.damianwojcicki.com` (kilka wartości po przecinku; gdy brak, przyjmowany jest origin żądania).
-- **Lokalne uruchomienie funkcji:** `npm run build`, potem `npx wrangler pages dev dist --binding GITHUB_CLIENT_ID=... --binding GITHUB_CLIENT_SECRET=... --binding ALLOWED_ORIGIN=...` (bez logowania do Cloudflare; wartości testowe).
+  - `worker/auth.ts`, `worker/callback.ts` — handlery; `worker/oauth.ts` — wspólny kod (odczyt konfiguracji, `state`, ciasteczka, odpowiedź HTML z CSP z nonce).
+- **Konfiguracja Workera** (`wrangler.jsonc`): `name: ultra-w-duecie` (musi być identyczna z nazwą Workera w panelu Cloudflare), `main: worker/index.ts`, `assets.directory: ./dist`, `assets.not_found_handling: 404-page` (nieistniejące adresy dostają `dist/404.html` ze statusem 404), `assets.binding: ASSETS`, `observability` wyłączone (adres `/api/callback` zawiera jednorazowy kod z GitHuba). `public/_headers` trafia do `dist/` i działa natywnie w static assets (nagłówki dla `/admin`); pliki `_headers` nie są serwowane jako zwykłe pliki. `html_handling: drop-trailing-slash`: adresy bez ukośnika na końcu (`/biegi`, `/admin`) są serwowane wprost, a wersje z ukośnikiem przekierowują na nie (zgodnie z linkami w serwisie i dawnym zachowaniem Pages; domyślne `auto-trailing-slash` dawałoby przekierowanie przy każdym kliknięciu w menu).
+- **Zmienne i sekrety:**
+  - `ALLOWED_ORIGIN` — jawna zmienna w `wrangler.jsonc` (`vars`): origin panelu `https://korona.damianwojcicki.com` (kilka wartości po przecinku; gdy brak, przyjmowany jest origin żądania),
+  - `GITHUB_CLIENT_ID` i `GITHUB_CLIENT_SECRET` — **Secrets** wpisywane w panelu Cloudflare (Worker → Settings → Variables and Secrets), nigdy w repozytorium. Nie ma ich w `wrangler.jsonc`, więc `wrangler deploy` ich nie nadpisuje (sekrety z dashboardu przeżywają kolejne wdrożenia; zwykłe zmienne z dashboardu, których nie ma w `wrangler.jsonc`, byłyby usuwane, bo plik konfiguracji jest źródłem prawdy dla `vars`; `keep_vars` celowo nie jest włączone). Bez obu sekretów Worker wdraża się poprawnie, a `/api/auth` zwraca błąd `MISCONFIGURED_CLIENT` („Logowanie nie jest skonfigurowane po stronie serwera”).
+- **Lokalne uruchomienie Workera:** `npm run build`, potem `npx wrangler dev --local` (bez logowania do Cloudflare). Wartości testowe sekretów w `.dev.vars` (w `.gitignore`, nigdy nie commitować), np. `GITHUB_CLIENT_ID=...` i `GITHUB_CLIENT_SECRET=...`; origin lokalny: `--var ALLOWED_ORIGIN:http://127.0.0.1:8787` (i `site_id=127.0.0.1` w adresie `/api/auth`).
 
 ## Baza danych
 
@@ -55,13 +57,13 @@ Brak. Źródłem danych są pliki Markdown/JSON w repozytorium (kolekcje treści
 
 ## Analityka
 
-**Cloudflare Web Analytics** — bez cookies i bez zbierania danych osobowych (DEC-002).
+**Cloudflare Web Analytics** — bez cookies i bez zbierania danych osobowych (DEC-002). Dla Workera włączane w panelu Web Analytics (dodanie witryny `korona.damianwojcicki.com`, automatyczne wstrzykiwanie skryptu dla domeny przechodzącej przez proxy Cloudflare); jeśli automatyczne wstrzykiwanie nie zadziała, awaryjnie ręczny fragment skryptu w układzie strony (patrz `docs/cms-setup.md`).
 
 ## Wdrożenie
 
 - **Dev:** lokalnie (`astro dev`), opcjonalnie na własnym serwerze (Proxmox) — nie jest wymagane.
-- **Prod:** Cloudflare Pages pod subdomeną istniejącej domeny właściciela (DEC-006); dedykowana domena może zastąpić subdomenę później. Automatyczna publikacja po zmianie na gałęzi `main`.
-- **Podgląd:** Cloudflare Pages tworzy adresy podglądu dla gałęzi (do sprawdzania zmian przed merge).
+- **Prod:** Cloudflare Worker `ultra-w-duecie` ze statycznymi plikami, podpięty jako Custom Domain do subdomeny istniejącej domeny właściciela (DEC-006; strefa `damianwojcicki.com` jest w Cloudflare); dedykowana domena może zastąpić subdomenę później. Budowa i wdrożenie przez **Workers Builds** (integracja z GitHubem): po zmianie na gałęzi `main` uruchamiane są `npm run build` i `npx wrangler deploy`. Adres `ultra-w-duecie.<konto>.workers.dev` też działa (strona tak, panel nie, bo `ALLOWED_ORIGIN`).
+- **Podgląd:** gałęzie inne niż `main` budowane są poleceniem `npx wrangler versions upload` (wersja z adresem podglądu, bez zmiany produkcji).
 - Środowiska: dev (lokalnie) i prod. Środowisko testowe zastępują podglądy gałęzi.
 - Repozytorium: GitHub (prywatne lub publiczne — do decyzji użytkownika; przy publicznym treść źródłowa jest jawna, nie zawiera sekretów).
 
@@ -69,8 +71,9 @@ Brak. Źródłem danych są pliki Markdown/JSON w repozytorium (kolekcje treści
 
 - Publiczna strona jest statyczna: brak formularzy, sesji i danych użytkowników — minimalna powierzchnia ataku.
 - Dostęp do zapisu treści ma wyłącznie osoba z uprawnieniami zapisu w repozytorium GitHub; logowanie do panelu przez konto GitHub (zalecane włączenie 2FA). Na start jedno konto (właściciel); drugi autor może zostać dodany później jako współpracownik repozytorium.
-- Sekrety (identyfikator i sekret aplikacji OAuth GitHub) przechowywane wyłącznie w ustawieniach Cloudflare, nigdy w repozytorium.
-- Funkcje OAuth (DEC-009): losowy `state` z ciasteczka HttpOnly chroni przed CSRF; stały, minimalny zakres `public_repo` (zakres z żądania jest ignorowany); token trafia tylko do originu z `ALLOWED_ORIGIN` (weryfikowany po stronie okna logowania na podstawie `event.origin`, którego nie da się podrobić), dodatkowo sprawdzana jest domena (`site_id`); sekrety i tokeny nie są logowane ani zwracane w błędach (komunikaty stałe); odpowiedzi mają `Cache-Control: no-store`, `Referrer-Policy: no-referrer` i CSP z nonce. Zalogować przez aplikację OAuth może każdy użytkownik GitHuba, ale zapis w repozytorium zależy od uprawnień jego konta na GitHubie.
+- Identyfikator i sekret aplikacji OAuth GitHub przechowywane wyłącznie jako Secrets w ustawieniach Workera w Cloudflare, nigdy w repozytorium.
+- Worker OAuth (DEC-009): losowy `state` z ciasteczka HttpOnly chroni przed CSRF; stały, minimalny zakres `public_repo` (zakres z żądania jest ignorowany); token trafia tylko do originu z `ALLOWED_ORIGIN` (weryfikowany po stronie okna logowania na podstawie `event.origin`, którego nie da się podrobić), dodatkowo sprawdzana jest domena (`site_id`); sekrety i tokeny nie są logowane ani zwracane w błędach (komunikaty stałe); odpowiedzi mają `Cache-Control: no-store`, `Referrer-Policy: no-referrer` i CSP z nonce. Zalogować przez aplikację OAuth może każdy użytkownik GitHuba, ale zapis w repozytorium zależy od uprawnień jego konta na GitHubie.
+- Wyłączone logi Workera (`observability`): adres `/api/callback` zawiera jednorazowy kod z GitHuba; kod i tak wymaga sekretu aplikacji do wymiany na token, ale nie ma powodu go zapisywać.
 - `/admin` ma nagłówki `X-Robots-Tag: noindex`, `X-Frame-Options: DENY`, `Referrer-Policy: same-origin` (`public/_headers`) i `<meta name="robots">`; skrypt panelu jest przypięty do wersji i chroniony sumą SRI.
 - Ochrona gałęzi `main`: blokada force-push i usuwania gałęzi. Wymóg pull requesta zablokowałby zapis z panelu (commity wprost na `main`), więc na MVP go nie włączamy.
 - Brak danych wrażliwych i osobowych czytelników.
@@ -81,6 +84,6 @@ Wszystko (treść, obrazy, kod) jest w repozytorium Git. Zalecana dodatkowa kopi
 
 ## Obserwowalność
 
-- Logi budowy i wdrożeń: panel Cloudflare Pages.
+- Logi budowy i wdrożeń: panel Cloudflare (Worker → Deployments / Builds). Logi działania Workera są wyłączone; do diagnozy można tymczasowo włączyć `observability` w `wrangler.jsonc` lub użyć `npx wrangler tail` (wymaga logowania do Cloudflare, poza zakresem agentów).
 - Statystyki odwiedzin: Cloudflare Web Analytics.
 - Monitoring dostępności: opcjonalnie darmowy monitor zewnętrzny (poza zakresem MVP).

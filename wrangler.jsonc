@@ -1,0 +1,21 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  // Nazwa musi być identyczna z nazwą Workera w panelu Cloudflare (inaczej budowa się nie uda).
+  "name": "ultra-w-duecie",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-09-18",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "not_found_handling": "404-page",
+    "html_handling": "drop-trailing-slash",
+    // Do Workera trafia wyłącznie /api/*; reszta idzie prosto ze statycznych plików.
+    "run_worker_first": ["/api/*"],
+  },
+  // Jawne zmienne. GITHUB_CLIENT_ID i GITHUB_CLIENT_SECRET NIE są tutaj: to Secrets wpisywane w panelu Cloudflare.
+  "vars": {
+    "ALLOWED_ORIGIN": "https://korona.damianwojcicki.com",
+  },
+  // Logi Workera wyłączone: adres /api/callback zawiera jednorazowy kod z GitHuba.
+  "observability": { "enabled": false },
+}

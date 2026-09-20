@@ -25,6 +25,7 @@ build/
 npm-debug.log*
 *.log
 
-# Cloudflare Wrangler (lokalne uruchomienie funkcji)
+# Cloudflare Wrangler (lokalne uruchomienie Workera)
 .wrangler/
 .dev.vars
+.dev.vars.*
