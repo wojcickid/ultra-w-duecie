@@ -1,0 +1,32 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Card from './Card.astro';
+import StatusBadge from './StatusBadge.astro';
+import { getRunBadges, getRunFacts } from '../lib/runs';
+
+interface Props {
+  run: CollectionEntry<'runs'>;
+}
+
+const { run } = Astro.props;
+const { name } = run.data;
+const details = getRunFacts(run.data);
+---
+
+<Card title={name} headingLevel={2} href={`/biegi/${run.id}`}>
+  <div class="flex flex-wrap gap-2">
+    {getRunBadges(run.data).map((status) => (
+      <StatusBadge status={status} />
+    ))}
+  </div>
+  {details.length > 0 && (
+    <dl class="mt-3 space-y-1 text-sm">
+      {details.map(({ label, value }) => (
+        <div class="flex gap-2">
+          <dt class="font-semibold text-ink">{label}:</dt>
+          <dd>{value}</dd>
+        </div>
+      ))}
+    </dl>
+  )}
+</Card>
