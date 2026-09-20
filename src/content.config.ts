@@ -28,6 +28,9 @@ const runResult = z
         'Czas musi mieć format HH:MM:SS (np. 12:34:56)',
       )
       .optional(),
+    // Miejsce w klasyfikacji (liczba całkowita dodatnia); opcjonalne (DEC-012).
+    place: z.number().int().positive().optional(),
+    // Link do wyników tej osoby (np. jej wiersz w wynikach na żywo).
     resultsUrl: z.url().optional(),
     // Krótka notatka, np. "zejście na 62. km", "kontuzja".
     note: z.string().optional(),
@@ -68,10 +71,15 @@ const runs = defineCollection({
       location: z.string().optional(),
       // Orientacyjny termin jako tekst, np. "luty", "kwiecień/maj", "Boże Ciało".
       typicalMonth: z.string().optional(),
+      // Rok terminu orientacyjnego (np. 2027); z `typicalMonth` daje „październik 2027” (DEC-012).
+      expectedYear: z.number().int().min(2000).max(2100).optional(),
       status: z.enum(['completed', 'planned', 'unplanned']),
       // Bieg wycofany z listy Korony (DEC-008), np. Bieg 7 Dolin.
       retired: z.boolean().default(false),
+      // Potwierdzona data startu (w odróżnieniu od orientacyjnych `typicalMonth` / `expectedYear`).
       plannedDate: z.coerce.date().optional(),
+      // Link do wyników całego biegu; wyniki osób mają własne `resultsUrl`.
+      resultsUrl: z.url().optional(),
       notes: z.string().optional(),
       // Pozycja do sortowania (kolejność na liście / w kalendarzu).
       order: z.number().int().optional(),

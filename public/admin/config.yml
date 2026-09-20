@@ -112,9 +112,9 @@ collections:
         field: order
     view_filters:
       - { label: Ukończone, field: status, pattern: '^completed$' }
-      - { label: Planowane, field: status, pattern: '^planned$' }
-      - { label: Bez planu, field: status, pattern: '^unplanned$' }
-      - { label: Wycofane z listy Korony, field: retired, pattern: true }
+      - { label: Zaplanowane, field: status, pattern: '^planned$' }
+      - { label: Do ustalenia, field: status, pattern: '^unplanned$' }
+      - { label: Poza listą Korony 4.0, field: retired, pattern: true }
     fields:
       - { name: name, label: Nazwa, widget: string }
       - {
@@ -129,33 +129,51 @@ collections:
       - { name: location, label: Miejsce, widget: string, required: false }
       - {
           name: typicalMonth,
-          label: Orientacyjny termin,
+          label: Orientacyjny termin (miesiąc),
           widget: string,
           required: false,
-          hint: 'Opcjonalnie, tekstem, np. "luty", "kwiecień/maj", "Boże Ciało".',
+          hint: 'Opcjonalnie, tekstem, np. "luty", "kwiecień/maj", "Boże Ciało". Strona pokaże to jako termin orientacyjny; bez roku z dopiskiem „termin orientacyjny”. Potwierdzoną datę wpisz w polu „Potwierdzona data startu”.',
+        }
+      - {
+          name: expectedYear,
+          label: Rok orientacyjnego terminu,
+          widget: number,
+          value_type: int,
+          min: 2000,
+          max: 2100,
+          required: false,
+          hint: 'Opcjonalnie, np. 2027. Razem z miesiącem daje na stronie „październik 2027”. Wpisz tylko wtedy, gdy rok jest sensownie znany.',
         }
       - name: status
         label: Status
         widget: select
         options:
           - { label: Ukończony, value: completed }
-          - { label: Planowany, value: planned }
-          - { label: Bez planu, value: unplanned }
+          - { label: Zaplanowany, value: planned }
+          - { label: Do ustalenia, value: unplanned }
         default: unplanned
         hint: 'Status biegu to wspólne podejście lub plan. Status „Ukończony” wymaga co najmniej jednego wyniku „Ukończył” (poniżej). Licznik na stronie głównej liczy tylko biegi, w których obaj autorzy mają wynik „Ukończył” z tą samą datą ukończenia; DNF i DNS się nie liczą.'
       - name: retired
-        label: Wycofany z listy Korony
+        label: Poza listą Korony 4.0
         widget: boolean
         required: false
         default: false
-        hint: 'Zaznacz dla biegu, który nie jest już na liście Korony (np. Bieg 7 Dolin). Taki bieg nadal liczy się do postępu, jeśli obaj autorzy go ukończyli tego samego dnia.'
+        hint: 'Zaznacz dla biegu, który nie jest już na liście Korony 4.0 (np. Bieg 7 Dolin). Strona pokaże go w osobnej sekcji „Historia projektu”, poza listą 10 biegów. Nadal liczy się do postępu, jeśli obaj autorzy go ukończyli tego samego dnia.'
       - {
           name: plannedDate,
-          label: Planowana data,
+          label: Potwierdzona data startu,
           widget: datetime,
           type: date,
           required: false,
-          hint: 'Opcjonalnie. Ustaw dla biegów ze statusem Planowany.',
+          hint: 'Opcjonalnie. Wpisz dopiero, gdy data jest potwierdzona (np. w regulaminie biegu). Strona wybiera z niej „Najbliższy start”.',
+        }
+      - {
+          name: resultsUrl,
+          label: Link do wyników biegu,
+          widget: string,
+          type: url,
+          required: false,
+          hint: 'Opcjonalnie, pełny adres (https://...) do wyników całego biegu. Wyniki osób mają osobne pole w liście Wyniki.',
         }
       - {
           name: order,
@@ -211,12 +229,21 @@ collections:
               ]
             hint: 'Wymagany dla „Ukończył” (HH:MM:SS, np. 12:34:56 lub 105:12:00); dla DNF opcjonalny; dla DNS zostaw puste.'
           - {
+              name: place,
+              label: Miejsce,
+              widget: number,
+              value_type: int,
+              min: 1,
+              required: false,
+              hint: 'Opcjonalnie, miejsce w klasyfikacji ogólnej (liczba całkowita, np. 87). Nie wymyślaj: zostaw puste, jeśli nie znasz.',
+            }
+          - {
               name: resultsUrl,
               label: Link do wyników,
               widget: string,
               type: url,
               required: false,
-              hint: 'Opcjonalnie, pełny adres (https://...).',
+              hint: 'Opcjonalnie, pełny adres (https://...) do wyniku tej osoby.',
             }
           - {
               name: note,

@@ -147,7 +147,7 @@ Dane biegów Korony są w dziale **Biegi**. Lista biegów jest stała: w panelu 
 
 ### Jak edytować bieg
 
-1. **Biegi** → kliknij bieg na liście. Listę można filtrować: **Ukończone**, **Planowane**, **Bez planu**, **Wycofane z listy Korony**.
+1. **Biegi** → kliknij bieg na liście. Listę można filtrować: **Ukończone**, **Zaplanowane**, **Do ustalenia**, **Poza listą Korony 4.0**.
 2. Zmień pola i kliknij **Zapisz**.
 3. Po 1-2 minutach zmiana jest na stronie.
 
@@ -158,10 +158,25 @@ Pole **Status** opisuje wspólne podejście albo plan:
 | Status w panelu | Znaczenie |
 | --- | --- |
 | **Ukończony** | Bieg został przebiegnięty i ma wpisany co najmniej jeden wynik „Ukończył”. |
-| **Planowany** | Jest plan na ten bieg. Ustaw też **Planowana data**, jeśli ją znacie. |
-| **Bez planu** | Domyślny status: na razie nie ma planu. |
+| **Zaplanowany** | Jest plan na ten bieg. Ustaw też **Potwierdzona data startu**, jeśli jest znana. |
+| **Do ustalenia** | Domyślny status: na razie nie ma planu ani potwierdzonego terminu. |
 
-Inne przydatne pola: **Orientacyjny termin** (tekst, np. „luty”), **Notatki**, **Kolejność** (pozycja na liście). Pole **Wycofany z listy Korony** opisano niżej.
+Wartości w plikach danych nie zmieniły się (`completed`, `planned`, `unplanned`); zmieniły się tylko nazwy widoczne w panelu i na stronie.
+
+### Termin biegu
+
+Strona pokazuje jeden z trzech rodzajów terminu:
+
+| Co wpisano | Jak wygląda na stronie |
+| --- | --- |
+| **Potwierdzona data startu** (albo data w wyniku) | „3 października 2026” |
+| **Orientacyjny termin (miesiąc)** oraz **Rok orientacyjnego terminu** | „październik 2027” |
+| Tylko **Orientacyjny termin (miesiąc)** | „październik” z dopiskiem „termin orientacyjny” |
+| Nic z powyższego | „Termin do ustalenia” |
+
+**Potwierdzoną datę** wpisujemy dopiero wtedy, gdy jest pewna (np. w regulaminie biegu). Tylko z niej strona wybiera kartę **Najbliższy start** (bieg spoza listy Korony 4.0 i bieg już ukończony wspólnie są pomijane). Rok wpisuj tylko wtedy, gdy jest sensownie znany.
+
+Inne przydatne pola: **Link do wyników biegu** (opcjonalnie, adres do wyników całego biegu), **Notatki**, **Kolejność** (pozycja na liście, kolejność sezonu). Pole **Poza listą Korony 4.0** opisano niżej.
 
 ### Wynik każdego autora
 
@@ -187,8 +202,8 @@ DNF (Did Not Finish) to start bez dobiegnięcia do mety. DNS (Did Not Start) to 
    - Przykład, który się NIE liczy: Damian „Ukończył”, a Grzegorz „Nie wystartował (DNS)”.
 3. **Biegli razem po północy?** Jeśli bieg trwał przez noc i mety mieliście w różnych dniach kalendarzowych, wpisz **obu tę samą datę** (np. datę startu albo mety, byle taką samą). Inaczej licznik uzna to za dwa osobne podejścia.
 4. **DNF i DNS nie liczą się do licznika, ale są widoczne** na stronie biegu, na liście, na osi czasu i w wynikach indywidualnych (zawsze z tekstem i ikoną).
-5. **Bieg wycofany z listy Korony.** Zaznacz **Wycofany z listy Korony** dla biegu, którego już nie ma na liście (np. Bieg 7 Dolin, którego edycja 2026 została odwołana, a wg regulaminu Korony ukończenie do edycji 2025 włącznie nadal się zalicza). Taki bieg nadal liczy się do postępu, jeśli obaj autorzy ukończyli go tego samego dnia.
-6. Jeśli bieg nie jest ukończony wspólnie (np. tylko Damian ukończył), ustaw **Status** zgodnie z tym, co jest prawdą dla następnego podejścia (zwykle **Bez planu** albo **Planowany**), a wynik Damiana zostaw w **Wynikach**. Status **Ukończony** przy wyniku tylko jednej osoby zbuduje się, ale w logu budowy pojawi się ostrzeżenie, że bieg nie liczy się jako wspólny.
+5. **Bieg poza listą Korony 4.0.** Zaznacz **Poza listą Korony 4.0** dla biegu, którego już nie ma na liście (np. Bieg 7 Dolin, którego edycja 2026 została odwołana, a wg regulaminu Korony ukończenie do edycji 2025 włącznie nadal się zalicza). Strona pokazuje taki bieg w osobnej sekcji „Historia projektu”, pod listą 10 biegów Korony 4.0. Nadal liczy się do postępu, jeśli obaj autorzy ukończyli go tego samego dnia. Jeśli liczba biegów bez tej flagi jest inna niż 10, w logu budowy pojawi się ostrzeżenie (nie zatrzymuje budowy).
+6. Jeśli bieg nie jest ukończony wspólnie (np. tylko Damian ukończył), ustaw **Status** zgodnie z tym, co jest prawdą dla następnego podejścia (zwykle **Do ustalenia** albo **Zaplanowany**), a wynik Damiana zostaw w **Wynikach**. Status **Ukończony** przy wyniku tylko jednej osoby zbuduje się, ale w logu budowy pojawi się ostrzeżenie, że bieg nie liczy się jako wspólny.
 
 ### Gotowe przykłady
 
@@ -201,19 +216,19 @@ DNF (Did Not Finish) to start bez dobiegnięcia do mety. DNS (Did Not Start) to 
 
 **Przykład 2. Damian ukończył, Grzegorz nie wystartował (tak wygląda SGS 2025).**
 
-- **Status**: bez zmian (bieg nie jest ukończony wspólnie), tu: Bez planu.
+- **Status**: bez zmian (bieg nie jest ukończony wspólnie), tu: Do ustalenia.
 - Wynik 1: **Autor** Damian, **Wynik** Ukończył, **Data ukończenia** 2025-06-28, **Czas oficjalny** 09:49:42, **Link do wyników**.
 - Wynik 2: **Autor** Grzegorz, **Wynik** Nie wystartował (DNS), **Data ukończenia** 2025-06-28 (opcjonalna, data podejścia), **Czas oficjalny** puste, **Notatka** z powodem.
 - Skutek: bieg NIE liczy się do licznika, ale wynik Damiana i DNS Grzegorza są widoczne na stronie.
 
 **Przykład 3. Obaj nie ukończyli (tak wygląda Bieg Ultra Granią Tatr 2025).**
 
-- **Status**: bez zmian, tu: Bez planu.
+- **Status**: bez zmian, tu: Do ustalenia.
 - Wynik 1: **Autor** Damian, **Wynik** Nie ukończył (DNF), **Data ukończenia** 2025-08-23, **Czas oficjalny** 11:29:57 (opcjonalny dla DNF), **Notatka** „Nie zdążyliśmy na drugi punkt kontrolny na Murowańcu (42km) w czasie.”
 - Wynik 2: **Autor** Grzegorz, dokładnie tak samo.
 - Skutek: bieg nie liczy się do licznika, ale próba jest widoczna na stronie.
 
-Gdy w przyszłości bieg z DNF zostanie ukończony w kolejnej edycji, ustaw status **Planowany**, a potem **Ukończony** i zmień wynik na **Ukończył** z nową datą i czasem. Stary wynik DNF/DNS trzeba wtedy ręcznie zamienić albo usunąć z listy **Wyniki** (jeden wynik na osobę).
+Gdy w przyszłości bieg z DNF zostanie ukończony w kolejnej edycji, ustaw status **Zaplanowany**, a potem **Ukończony** i zmień wynik na **Ukończył** z nową datą i czasem. Stary wynik DNF/DNS trzeba wtedy ręcznie zamienić albo usunąć z listy **Wyniki** (jeden wynik na osobę).
 
 ## 6. Gdy dane są błędne: co się dzieje i jak naprawić
 
@@ -235,7 +250,7 @@ Panel sprawdza część pól (np. format czasu), ale nie wszystkie zależności 
 | „Czas musi mieć format HH:MM:SS (np. 12:34:56)” | Pole **Czas oficjalny** ma zły format (np. `9:5:30`, `10.30.15` albo `9h 40m`). | Wpisz czas jako godziny:minuty:sekundy, z dwucyfrowymi minutami i sekundami, np. `09:49:42`. Godziny mogą mieć 1-3 cyfry. |
 | „Wynik "Ukończył" wymaga daty ukończenia (completedDate)” | Wynik **Ukończył** nie ma pola **Data ukończenia**. | Uzupełnij **Data ukończenia** (data mety). |
 | „Wynik "Ukończył" wymaga czasu oficjalnego (time)” | Wynik **Ukończył** nie ma pola **Czas oficjalny**. | Uzupełnij czas w formacie HH:MM:SS. Jeśli osoba w rzeczywistości nie ukończyła, zmień **Wynik** na **Nie ukończył (DNF)** albo **Nie wystartował (DNS)**. |
-| „Bieg ze statusem "completed" musi mieć co najmniej jeden wynik "Ukończył"” | **Status** to **Ukończony**, a nikt nie ma wyniku **Ukończył**. | Dodaj wynik **Ukończył** albo zmień **Status** na **Planowany** / **Bez planu**. |
+| „Bieg ze statusem "completed" musi mieć co najmniej jeden wynik "Ukończył"” | **Status** to **Ukończony**, a nikt nie ma wyniku **Ukończył**. | Dodaj wynik **Ukończył** albo zmień **Status** na **Zaplanowany** / **Do ustalenia**. |
 | „Wynik "Nie wystartował (DNS)" nie może mieć czasu (time)” | Wynik **Nie wystartował (DNS)** ma wpisany **Czas oficjalny**. | Usuń **Czas oficjalny** z tego wyniku. |
 | „Autor "damian" ma więcej niż jeden wynik w tym biegu” | Ten sam autor ma dwa wpisy na liście **Wyniki**. | Zostaw jeden wynik na autora, drugi usuń. |
 | „odwołuje się do nieistniejącego wpisu kolekcji” | Wpis lub wynik wskazuje autora albo bieg, którego nie ma (zwykle po ręcznej edycji plików). | Popraw nazwę na istniejącą (autorzy: `damian`, `grzegorz`; bieg: nazwa pliku z `src/content/runs`). |
@@ -244,10 +259,11 @@ Po naprawie w panelu kliknij **Zapisz** i poczekaj na kolejną budowę (zakładk
 
 ### Ostrzeżenia w logu budowy (nie zatrzymują budowy)
 
-W logu może pojawić się blok „Ostrzeżenia (src/content), budowa jest kontynuowana”. Strona się zbuduje, ale ostrzeżenie mówi, że coś nie liczy się do licznika. Dwa przypadki:
+W logu może pojawić się blok „Ostrzeżenia (src/content), budowa jest kontynuowana”. Strona się zbuduje, ale ostrzeżenie mówi, że coś nie liczy się do licznika. Trzy przypadki:
 
 - **Obaj mają „Ukończył”, ale w różne dni** (komunikat zawiera daty każdego autora). Bieg NIE liczy się jako ukończony wspólnie, a wyniki są pokazane jako indywidualne. Jeśli biegli razem, ustaw w obu wynikach tę samą **Data ukończenia**. Jeśli to naprawdę dwa osobne podejścia, nic nie zmieniaj.
 - **Status „Ukończony”, ale nie obaj mają „Ukończył”.** Bieg nie liczy się jako wspólny. Jeśli to prawda, zmień **Status** biegu. Jeśli brakuje wyniku, dodaj go.
+- **Liczba biegów aktywnych inna niż 10.** Lista Korony 4.0 ma dokładnie 10 biegów (bez flagi **Poza listą Korony 4.0**). Ostrzeżenie pojawia się np. po przypadkowym zaznaczeniu tej flagi przy zwykłym biegu albo gdy brakuje pliku biegu. Sprawdź flagę; jeśli lista faktycznie się zmieniła, trzeba to omówić z deweloperem (zmiana stałej `CROWN_TOTAL`).
 
 ## 7. Cofnięcie błędnej zmiany
 
@@ -349,6 +365,7 @@ Każdy bieg to plik `src/content/runs/<nazwa>.json`. Wyniki są w liście `resul
     "outcome": "finished",
     "completedDate": "2025-06-28",
     "time": "09:49:42",
+    "place": 87,
     "resultsUrl": "https://example.com/wyniki"
   },
   {
@@ -360,7 +377,7 @@ Każdy bieg to plik `src/content/runs/<nazwa>.json`. Wyniki są w liście `resul
 ]
 ```
 
-Wartości `outcome`: `finished` (Ukończył, wartość domyślna, gdy pole pominięto), `dnf` (Nie ukończył), `dns` (Nie wystartował). Status biegu w pliku to `completed`, `planned` albo `unplanned`; bieg wycofany z listy ma `"retired": true`. Reguły są takie same jak w rozdziale 5 i sprawdza je `npm run build`.
+Wartości `outcome`: `finished` (Ukończył, wartość domyślna, gdy pole pominięto), `dnf` (Nie ukończył), `dns` (Nie wystartował). Status biegu w pliku to `completed`, `planned` albo `unplanned`; bieg poza listą Korony 4.0 ma `"retired": true`. Opcjonalne pola biegu: `expectedYear` (rok terminu orientacyjnego, np. `2027`, razem z `typicalMonth`), `plannedDate` (potwierdzona data startu) i `resultsUrl` (link do wyników całego biegu); w wyniku osoby opcjonalne `place` (miejsce, liczba całkowita) i `resultsUrl`. Reguły są takie same jak w rozdziale 5 i sprawdza je `npm run build`.
 
 ### Test panelu na własnym komputerze
 
