@@ -8,10 +8,12 @@
   },
   "scripts": {
     "dev": "astro dev",
+    "prebuild": "node scripts/validate-content.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "check": "astro check",
+    "validate:content": "node scripts/validate-content.mjs",
+    "check": "npm run validate:content && astro check",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",

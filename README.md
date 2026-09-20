@@ -29,6 +29,9 @@ npm run build      # budowa statyczna do katalogu dist/
 npm run preview    # podgląd zbudowanej strony
 ```
 
+
+Walidacja treści: `npm run build` (przez `prebuild`) i `npm run check` uruchamiają `scripts/validate-content.mjs`, który przerywa działanie z komunikatem po polsku (plik, pole, brakujący identyfikator), gdy wpis lub wynik biegu odwołuje się do nieistniejącego autora lub biegu. Można go uruchomić osobno: `npm run validate:content`.
+
 Kontrola jakości:
 
 ```bash
