@@ -2,7 +2,7 @@
 
 ## Status
 
-review
+done
 
 ## Owner
 
@@ -59,5 +59,5 @@ Complete this section before moving the task to `done`.
 - Summary:
 - Tests:
 - Important files:
-- Commit:
-- Follow-up tasks:
+- Commit: d39a6d4 (dokument), commit z danymi (zob. historia, „Dane biegów: weryfikacja”)
+- Follow-up tasks: pytanie do redakcji Kingrunera (odłożone przez właściciela); notatki z limitami czasu (nie wprowadzone); sprawdzenie dystansu trasy 7 Dolin z 2024 r.; terminy Grań Tatr i Kaliska Setka (niska pewność).

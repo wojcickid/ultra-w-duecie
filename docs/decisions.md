@@ -185,7 +185,7 @@ Status: accepted
 
 ### Decision
 
-Bieg 7 Dolin (Piwniczna) 2024, ukończony wspólnie, pozostaje w danych jako bieg wycofany z listy Korony (od 2026 r. nie jest organizowany) i wlicza się do postępu. Wolnego miejsca nie zastępujemy innym biegiem na razie; decyzja o sposobie zaliczenia slotu zostaje odłożona.
+Bieg 7 Dolin (Piwniczna) 2024, ukończony wspólnie, pozostaje w danych jako bieg wycofany z listy Korony (wg regulaminu 4.0 ukończenie do edycji 2025 włącznie można zaliczyć do klasyfikacji; edycja 2026 odwołana przez organizatora) i wlicza się do postępu. Wolnego miejsca nie zastępujemy innym biegiem na razie; decyzja o sposobie zaliczenia slotu zostaje odłożona.
 
 ### Context
 
@@ -307,3 +307,7 @@ Właściciel podał przypadki: SGS 2025 (Damian ukończył, Grzegorz DNS) i Bieg
 - `completedDate` i `time` są opcjonalne na poziomie pola; ich wymagalność pilnuje schemat (panel Sveltia nie ma pól zależnych, więc pola są opcjonalne z podpowiedziami; błędne dane zatrzymują budowę z czytelnym komunikatem).
 - Bieg można później ustawić z powrotem na `planned` (kolejna edycja); wcześniejsze wyniki DNF/DNS zostają w `results` do ręcznego usunięcia.
 - Nowe tokeny kolorów `status-dnf-*` i `status-dns-*` oraz ikony `circle-x` i `circle-minus`.
+
+## DEC-008 — aktualizacja (2026-09-20, TASK-018)
+
+Weryfikacja w źródłach ([docs/run-data-proposals.md](run-data-proposals.md)) potwierdziła: regulamin Korony 4.0 (wersja z 07.12.2024) stanowi, że „wszyscy którzy przebiegli Bieg 7 Dolin Festiwalu Biegowego do edycji 2025 włącznie mogą zaliczyć ten bieg do klasyfikacji”. Organizator nie zakończył imprezy: odwołał edycję 2026 i zapowiedział propozycję na 2027. Regulamin nie wskazuje, który z 10 slotów zajmuje 7 Dolin (jest w nim niespójność „8 stałych + jeden z trzech”); właściciel odłożył pytanie do redakcji Kingrunera i pozostawia flagę `retired: true` oraz dotychczasowy licznik.

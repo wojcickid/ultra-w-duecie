@@ -36,7 +36,7 @@ Admin i moderator są w praktyce równorzędni: rozróżnienie wynika wyłączni
 - **FR-5 Panel logowania:** panel dostępny tylko dla moderatora i admina, umożliwiający dodawanie/edycję wpisów oraz zmianę statusu biegów.
 - **FR-6 Strona publiczna bez logowania,** działająca na komputerze i telefonie, w języku polskim.
 - **FR-7 Wyniki per osoba:** dla biegu można zapisać ukończenie osobno dla każdego z dwóch biegaczy (data, czas, link do wyników), ponieważ wyzwanie jest „w parze”, a zdarzają się biegi ukończone przez jedną osobę (np. SGS 2025). Każdy wynik ma `outcome`: ukończył (`finished`), nie ukończył (DNF) albo nie wystartował (DNS) (DEC-011); DNF/DNS pokazujemy przy osobie, ale nie liczą się do licznika (np. SGS 2025: Damian ukończył, Grzegorz DNS). Licznik postępu „w duecie” liczy tylko biegi ukończone wspólnie (DEC-007): obaj mają wynik „Ukończył” z tą samą datą ukończenia (DEC-010); wyniki indywidualne są widoczne osobno i nie wliczają się do licznika.
-- **FR-8 Bieg wycofany z listy:** bieg można oznaczyć jako wycofany z listy Korony (np. Bieg 7 Dolin, nieorganizowany od 2026 r.), przy zachowaniu jego wcześniejszego ukończenia w statystykach (DEC-008).
+- **FR-8 Bieg wycofany z listy:** bieg można oznaczyć jako wycofany z listy Korony (np. Bieg 7 Dolin, którego edycja 2026 została odwołana), przy zachowaniu jego wcześniejszego ukończenia w statystykach (DEC-008).
 
 Kryterium sukcesu MVP: strona działa publicznie (na subdomenie, DEC-006), ma wszystkie funkcje FR-1…FR-7, a właściciel potrafi samodzielnie dodać wpis i zmienić status biegu.
 
@@ -76,7 +76,7 @@ Kryterium sukcesu MVP: strona działa publicznie (na subdomenie, DEC-006), ma ws
 - Domena: MVP na subdomenie istniejącej domeny właściciela — zaakceptowane (DEC-006).
 - Ukończone przez obu: Bieg Rzeźnika 2024 oraz Bieg 7 Dolin (Piwniczna) 2024. Ukończony solo przez właściciela: Supermaraton Gór Stołowych 2025.
 - Licznik „w duecie” liczy tylko biegi ukończone wspólnie (obaj z wynikiem „Ukończył” i tą samą datą, DEC-010); wyniki indywidualne, DNF i DNS pokazywane osobno (DEC-007, DEC-011).
-- Bieg 7 Dolin był w chwili ukończenia biegiem podstawowym Korony; od 2026 r. nie jest organizowany i wypadł z listy. Zostaje ukończony w statystykach, a wolnego miejsca nie zastępujemy innym biegiem na razie (DEC-008).
+- Bieg 7 Dolin był w chwili ukończenia biegiem podstawowym Korony; wypadł z listy stałych biegów Korony 4.0 (edycja 2026 odwołana przez organizatora, powrót zapowiedziany na 2027). Zostaje ukończony w statystykach, a wolnego miejsca nie zastępujemy innym biegiem na razie (DEC-008).
 - Autorzy: Damian (właściciel) i Grzegorz.
 - Domena właściciela: damianwojcicki.com, DNS w Cloudflare.
 - Dane o ukończonych biegach (daty, czasy, linki) nie są potrzebne do startu MVP — dodajemy je w TASK-013.

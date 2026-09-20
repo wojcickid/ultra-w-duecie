@@ -1,5 +1,7 @@
 # Weryfikacja danych biegów — propozycje do akceptacji właściciela (TASK-018)
 
+> **Status (2026-09-20):** decyzje właściciela wprowadzone do danych (`src/content/runs`): przy rozbieżności bierzemy dłuższy dystans (SGS 55, Chudy Wawrzyniec 82,5, Bieg 7 Dolin 100,7 — uwaga: dla 7 Dolin to dystans obecnej trasy, trasy z 2024 r. nie sprawdzono), nazwy z regulaminu Korony, lokalizacja w formacie „start – meta”, bez `plannedDate` (nie zawsze planujemy najbliższy bieg), placeholdery w `notes` usunięte, notatki z limitami czasu nie zostały wprowadzone, pytanie do redakcji Kingrunera odłożone.
+
 ## Wstęp
 
 - **Data weryfikacji:** 2026-09-20 (stan źródeł na ten dzień).
