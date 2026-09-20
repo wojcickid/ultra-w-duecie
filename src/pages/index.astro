@@ -1,10 +1,215 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Card from '../components/Card.astro';
+import Icon from '../components/Icon.astro';
+import ProgressBar from '../components/ProgressBar.astro';
+import Timeline from '../components/Timeline.astro';
+import type { TimelineItem } from '../components/Timeline.astro';
+import { formatDate } from '../lib/format';
+import {
+  CROWN_TOTAL,
+  countCompletedTogether,
+  getAuthorResults,
+  isCompletedTogether,
+  sortRuns,
+} from '../lib/progress';
+
+const [authorEntries, runEntries, postEntries] = await Promise.all([
+  getCollection('authors'),
+  getCollection('runs'),
+  getCollection('posts'),
+]);
+
+const authors = [...authorEntries].sort((a, b) => a.id.localeCompare(b.id));
+const authorIds = authors.map((author) => author.id);
+const authorNames = new Map(
+  authors.map((author) => [author.id, author.data.displayName]),
+);
+const runs = sortRuns(runEntries);
+
+const completedTogether = countCompletedTogether(runs, authorIds);
+const progressLabel = `${completedTogether} z ${CROWN_TOTAL} biegów ukończonych wspólnie`;
+
+const distanceFormat = new Intl.NumberFormat('pl-PL');
+
+const timelineItems: TimelineItem[] = runs.map((run) => {
+  const { data } = run;
+  const together = isCompletedTogether(run, authorIds);
+  const finishers = data.results.map(
+    (result) => authorNames.get(result.author.id) ?? result.author.id,
+  );
+
+  // Ukończony bieg: data faktycznego startu; w przeciwnym razie data planowana.
+  const completedDates = data.results.map((result) =>
+    result.completedDate.getTime(),
+  );
+  const termDate =
+    completedDates.length > 0
+      ? new Date(Math.min(...completedDates))
+      : data.plannedDate;
+
+  let note: string | undefined;
+  if (data.retired) {
+    note = together
+      ? 'Wycofany z listy Korony; ukończony wspólnie, więc wlicza się do postępu.'
+      : 'Wycofany z listy Korony.';
+  } else if (together) {
+    note = 'Ukończony wspólnie.';
+  } else if (finishers.length > 0) {
+    note = `Ukończony indywidualnie: ${finishers.join(', ')}.`;
+  }
+
+  return {
+    id: run.id,
+    name: data.name,
+    status: data.retired ? 'withdrawn' : data.status,
+    distance:
+      data.distanceKm !== undefined
+        ? `${distanceFormat.format(data.distanceKm)} km`
+        : undefined,
+    term: termDate
+      ? formatDate(termDate)
+      : (data.typicalMonth ?? 'Termin nieznany'),
+    isoDate: termDate?.toISOString().slice(0, 10),
+    note,
+  };
+});
+
+const authorResults = authors.map((author) => ({
+  name: author.data.displayName,
+  results: getAuthorResults(runs, author.id, authorIds),
+}));
+
+const latestPosts = [...postEntries]
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3);
 ---
 
 <BaseLayout>
   <h1 class="text-3xl font-bold sm:text-4xl">Ultra w duecie</h1>
   <p class="mt-4 max-w-prose text-lg text-ink-muted">
-    Dwóch biegaczy w drodze po Koronę Polskich Ultramaratonów. Strona w budowie.
+    Damian i Grzegorz zdobywają razem Koronę Polskich Ultramaratonów 4.0 —
+    dziesięć biegów ultra, które chcą ukończyć w parze. Pomysł zrodził się po
+    wspólnym Biegu Rzeźnika w 2024 roku.
   </p>
+
+  <section aria-labelledby="progress-heading" class="mt-12">
+    <h2 id="progress-heading" class="text-2xl font-semibold">
+      Postęp w duecie
+    </h2>
+    <div class="mt-4 rounded-lg border border-line bg-surface p-5">
+      <p class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        <span class="font-heading text-4xl font-bold text-brand-strong">
+          {completedTogether}/{CROWN_TOTAL}
+        </span>
+        <span class="text-lg">{progressLabel}</span>
+      </p>
+      <div class="mt-4">
+        <ProgressBar
+          value={completedTogether}
+          max={CROWN_TOTAL}
+          label={progressLabel}
+        />
+      </div>
+      <p class="mt-3 text-sm text-ink-muted">
+        Licznik obejmuje tylko biegi ukończone przez oboje. Wyniki indywidualne
+        podajemy osobno.
+      </p>
+    </div>
+
+    <h3 class="mt-8 text-xl font-semibold">Oś czasu biegów</h3>
+    {runs.length === 0 ? (
+      <p class="mt-4 text-ink-muted">Lista biegów pojawi się wkrótce.</p>
+    ) : (
+      <Timeline items={timelineItems} />
+    )}
+    <p class="mt-6">
+      <a href="/biegi" class="link inline-flex min-h-11 items-center gap-2">
+        Wszystkie biegi
+        <Icon name="arrow-right" />
+      </a>
+    </p>
+  </section>
+
+  <section aria-labelledby="individual-heading" class="mt-12">
+    <h2 id="individual-heading" class="text-2xl font-semibold">
+      Wyniki indywidualne
+    </h2>
+    <p class="mt-2 max-w-prose text-ink-muted">
+      Biegi ukończone przez każdego z nas, także samodzielnie — poza licznikiem
+      wspólnego postępu.
+    </p>
+    <div class="mt-4 grid gap-4 sm:grid-cols-2">
+      {authorResults.map((author) => (
+        <Card title={author.name} headingLevel={3}>
+          {author.results.length === 0 ? (
+            <p>Jeszcze bez ukończonych biegów</p>
+          ) : (
+            <ul class="space-y-3">
+              {author.results.map(({ run, result, together }) => (
+                <li>
+                  <a href={`/biegi/${run.id}`} class="link font-semibold">
+                    {run.data.name}
+                  </a>
+                  <p class="text-sm">
+                    <time
+                      datetime={result.completedDate.toISOString().slice(0, 10)}
+                    >
+                      {formatDate(result.completedDate)}
+                    </time>
+                    <span aria-hidden="true"> · </span>
+                    <span class="sr-only">Czas: </span>
+                    {result.time}
+                    {together && (
+                      <>
+                        <span aria-hidden="true"> · </span>
+                        ukończony wspólnie
+                      </>
+                    )}
+                  </p>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Card>
+      ))}
+    </div>
+  </section>
+
+  <section aria-labelledby="posts-heading" class="mt-12">
+    <h2 id="posts-heading" class="text-2xl font-semibold">
+      Ostatnie wpisy
+    </h2>
+    {latestPosts.length === 0 ? (
+      <p class="mt-4 text-ink-muted">Wpisy pojawią się wkrótce.</p>
+    ) : (
+      <ul class="mt-4 divide-y divide-line rounded-lg border border-line bg-surface">
+        {latestPosts.map((post) => (
+          <li class="p-4">
+            <h3 class="text-lg font-semibold">
+              <a href={`/blog/${post.id}`} class="link">
+                {post.data.title}
+              </a>
+            </h3>
+            <p class="mt-1 text-sm text-ink-muted">
+              <time datetime={post.data.date.toISOString().slice(0, 10)}>
+                {formatDate(post.data.date)}
+              </time>
+              <span aria-hidden="true"> · </span>
+              {post.data.authors
+                .map((author) => authorNames.get(author.id) ?? author.id)
+                .join(', ')}
+            </p>
+          </li>
+        ))}
+      </ul>
+    )}
+    <p class="mt-6">
+      <a href="/blog" class="link inline-flex min-h-11 items-center gap-2">
+        Wszystkie wpisy
+        <Icon name="arrow-right" />
+      </a>
+    </p>
+  </section>
 </BaseLayout>
