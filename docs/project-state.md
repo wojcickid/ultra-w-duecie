@@ -4,45 +4,46 @@ Punkt odzyskiwania stanu dla długotrwałej pracy agentów.
 
 ## Aktualny kamień milowy
 
-M0 — Planowanie zakończone; oczekuje na akceptację planu przez użytkownika.
+M1 — Front MVP: szkielet, model treści i layout gotowe; trwa budowa stron (strona główna, biegi, blog).
 
 ## Aktualny status
 
-- Zebrano wymagania (`docs/project-brief.md`), uzupełniono `requirements.md`, `architecture.md`, `ui.md`, `decisions.md`.
-- Przygotowano backlog zadań TASK-001 … TASK-013 w `tasks/backlog/`.
-- Użytkownik odpowiedział na pytania: GitHub login, role równorzędne, język (DEC-005), autor wpisu, subdomena na MVP, jedno konto GitHub na start (DEC-006).
-- Rozstrzygnięte: licznik „w duecie” tylko biegi wspólne (DEC-007), Bieg 7 Dolin jako wycofany z listy (DEC-008), autorzy Damian i Grzegorz, domena damianwojcicki.com w Cloudflare.
-- Otwarte: nazwa subdomeny (wybór właściciela), wolny slot po Biegu 7 Dolin (odłożone), dane ukończonych biegów (po MVP, TASK-013).
-- Użytkownik zaakceptował TASK-001 i TASK-002; oba w `tasks/ready/`. MVP na subdomenie `korona.damianwojcicki.com` (do potwierdzenia przy TASK-009).
-- Implementacja nie rozpoczęta.
+- Zamknięte: TASK-002 (szkielet Astro 7 + Tailwind 4), TASK-003 (kolekcje `authors`/`runs`/`posts`), TASK-004 (layout, tokeny, komponenty; paleta tymczasowa, TASK-015).
+- Zescalone do `main` lokalnie; zdalne repo: `git@github.com:wojcickid/ultra-w-duecie.git` (push tylko na polecenie użytkownika).
+- Uruchomione równolegle: TASK-005 (strona główna), TASK-006 (biegi), TASK-007 (blog), każde na własnej gałęzi/worktree w `C:\Users\wojci\Claude\ultra-worktrees\`.
+- Wspólne narzędzie: `src/lib/format.ts` (`formatDate`, strefa Europe/Warsaw).
 
 ## Aktywne zadania
 
-- Brak
+- TASK-005, TASK-006, TASK-007 (patrz `tasks/in-progress/`)
 
 ## Ostatnio ukończone
 
-- Inicjalizacja repozytorium z szablonem zespołu agentów.
-- Ustalenie architektury (DEC-001…DEC-004).
+- TASK-002, TASK-003, TASK-004
 
 ## Zablokowane
 
-- Brak zadań zablokowanych. Do startu implementacji potrzebne odpowiedzi użytkownika (patrz „Następna zalecana akcja”).
+- Brak.
 
 ## Ważne decyzje
 
-- Patrz `docs/decisions.md`.
+- Patrz `docs/decisions.md` (DEC-001…DEC-008).
+- Licznik postępu: tylko biegi ukończone wspólnie (DEC-007); Bieg 7 Dolin jako wycofany (DEC-008).
+- Zewnętrzne kroki (Cloudflare, GitHub OAuth) odłożone do TASK-001/008/009, gdy będzie co wdrażać.
+
+## Do zrobienia po stronie użytkownika
+
+- Wybrać nazwę subdomeny (propozycja: `korona.damianwojcicki.com`).
+- Dostarczyć daty, czasy i linki do wyników ukończonych biegów (przed TASK-013).
+- Ewentualnie podać lokalizacje biegów (pole `location` jest puste).
 
 ## Ostatnia walidacja
 
-- Testy: n/d (brak kodu)
-- Build: n/d
-- Lint/typy: n/d
+- Build (3 strony), lint, format:check i astro check przechodzą na `main` po scaleniu TASK-002/003/004.
 
 ## Następna zalecana akcja
 
-1. Użytkownik zakłada zdalne repozytorium GitHub, włącza 2FA na koncie GitHub i wypycha `main` (oraz gałąź z dokumentacją).
-2. Start TASK-002 (szkielet Astro) — niczego nie wymaga od użytkownika.
-3. Start TASK-001 (logowanie do panelu CMS) po założeniu repozytorium GitHub.
+1. Przegląd i scalenie TASK-005/006/007.
+2. Potem: TASK-014 (walidacja referencji), TASK-001/008 (panel CMS), TASK-009 (wdrożenie), TASK-010 (QA).
 
 > Aktualizuj ten plik przed zakończeniem większej sesji pracy lub po istotnej zmianie stanu projektu.
