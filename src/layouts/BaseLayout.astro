@@ -1,0 +1,29 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'Ultra w duecie',
+  description = 'Dwóch biegaczy w drodze po Koronę Polskich Ultramaratonów.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen bg-white text-slate-900">
+    <main class="mx-auto max-w-3xl px-4 py-12">
+      <slot />
+    </main>
+  </body>
+</html>
