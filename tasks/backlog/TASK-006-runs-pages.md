@@ -23,6 +23,7 @@ FR-1, FR-3 z `docs/requirements.md`. Podstrony generowane statycznie z kolekcji 
 
 ## Acceptance criteria
 
+- [ ] Daty formatowane z jawną strefą czasową (Europe/Warsaw), bo daty w kolekcjach są parsowane jako UTC.
 - [ ] Lista pokazuje wszystkie biegi z kompletem danych i statusem.
 - [ ] Każdy bieg ma własną podstronę z poprawnym adresem URL.
 - [ ] Powiązane wpisy wyświetlane, gdy istnieją; poprawny stan pusty.

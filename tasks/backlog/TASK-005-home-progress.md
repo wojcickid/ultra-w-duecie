@@ -24,6 +24,7 @@ FR-1, FR-2 z `docs/requirements.md`. Dane z kolekcji `biegi` i `wpisy`. Status n
 
 ## Acceptance criteria
 
+- [ ] Daty formatowane z jawną strefą czasową (Europe/Warsaw), bo daty w kolekcjach są parsowane jako UTC.
 - [ ] Licznik X/10 liczony automatycznie z danych.
 - [ ] Oś czasu pokazuje biegi ze statusem i terminem, poprawnie na telefonie.
 - [ ] Sekcja ostatnich wpisów (obsługuje brak wpisów).

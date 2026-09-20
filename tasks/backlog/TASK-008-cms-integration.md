@@ -23,6 +23,7 @@ FR-5 z `docs/requirements.md`. Panel nie ma linku w publicznej nawigacji. Sekret
 
 ## Acceptance criteria
 
+- [ ] `media_folder` CMS wskazuje katalog w `src/` (np. `src/assets/posts`), zgodny z `image()` w schemacie `posts` (ścieżki względne od pliku wpisu).
 - [ ] Zalogowany autor dodaje i edytuje wpis oraz zmienia status biegu przez panel.
 - [ ] Zmiany zapisują się jako commity i po publikacji są widoczne na stronie.
 - [ ] Pola w panelu zgodne ze schematem z TASK-003, z polskimi etykietami, w tym wybór autora wpisu i wyniki per osoba.

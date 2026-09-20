@@ -23,6 +23,7 @@ FR-4 z `docs/requirements.md`. Zdjęcia w repozytorium — zoptymalizować przez
 
 ## Acceptance criteria
 
+- [ ] Daty formatowane z jawną strefą czasową (Europe/Warsaw), bo daty w kolekcjach są parsowane jako UTC.
 - [ ] Lista wpisów posortowana malejąco po dacie, z paginacją.
 - [ ] Strona wpisu renderuje Markdown i zdjęcia z tekstem alternatywnym.
 - [ ] Lista i strona wpisu pokazują autora (jednego lub obu).

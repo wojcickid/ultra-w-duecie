@@ -2,7 +2,7 @@
 
 ## Status
 
-in-progress
+done
 
 ## Owner
 
@@ -58,7 +58,7 @@ Pola `runs`: nazwa, dystans (km), miejsce, orientacyjny termin, status (ukończo
 
 ### Review
 
-- Not reviewed
+- Lead (2026-09-20): diff tylko w zakresie (content.config, dane, architecture.md); build, lint, format:check i astro check uruchomione niezależnie, bez błędów. Decyzje Leada: `image()` zostaje (obrazy w `src/`); `typicalMonth` jako tekst; brak wymuszania `completed` przy niepustych `results`; referencje nieistniejących autorów/biegów tylko logowane przez Astro — dodano TASK-014. Zaakceptowane.
 
 ## Outcome
 
@@ -67,5 +67,5 @@ Complete this section before moving the task to `done`.
 - Summary: Zdefiniowano kolekcje `authors`, `runs`, `posts` z walidacją Zod, dane początkowe (2 autorów, 10 biegów Korony 4.0 + Bieg 7 Dolin jako `retired`, wszystkie `unplanned` bez wyników) i testowy wpis; zaktualizowano `docs/architecture.md`.
 - Tests: build, lint, format:check, check - OK; testy negatywne walidacji opisane w Implementation notes.
 - Important files: `src/content.config.ts`, `src/content/authors/`, `src/content/runs/`, `src/content/posts/testowy-wpis.md`, `docs/architecture.md`.
-- Commit:
-- Follow-up tasks:
+- Commit: 0b18c47 (gałąź agent/frontend/TASK-003-content-model)
+- Follow-up tasks: TASK-014 (walidacja referencji w buildzie); daty formatować z jawną strefą (TASK-005..007); media_folder CMS zgodny z `image()` (TASK-008).
