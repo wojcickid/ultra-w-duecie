@@ -9,6 +9,7 @@ Strona, na której dwóch biegaczy dokumentuje drogę do zdobycia Korony Polskic
 3. Aktualny stan projektu: `docs/project-state.md`.
 4. Zadania: `tasks/` (backlog -> ready -> in-progress -> review -> done).
 5. Materiał wyjściowy właściciela: `docs/project-brief.md`.
+6. Instrukcja dla autorów (wpisy, postęp w biegach, cofanie zmian): `docs/authors-guide.md`.
 
 ## Agent roles
 
