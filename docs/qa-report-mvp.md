@@ -388,3 +388,19 @@ Brak.
 3. D-16: czy status „Bez planu” dla biegów z wynikami DNF/DNS/solo jest zamierzony (decyzja właściciela)?
 4. Czy metadane społecznościowe i sitemapa (D-09) wchodzą do zakresu MVP, czy po starcie?
 5. Kryterium „przepływ dodania wpisu i zmiany statusu” zamyka właściciel; checklista w sekcji 10.
+
+## 13. Status napraw (TASK-019)
+
+Poprawki z gałęzi `agent/frontend/TASK-019-qa-fixes`. Wynik „naprawione” oznacza sprawdzenie lokalne (`npm run build`, `wrangler dev --local`, headless Chrome); pozycje z zapisem „do potwierdzenia po wdrożeniu” wymagają powtórzenia kontroli na produkcji (tylko GET/HEAD).
+
+| Wada | Naprawa | Wynik |
+| ---- | ------- | ----- |
+| D-03 | Wspólny helper `getRunTerm` (`src/lib/runs.ts`) dla osi czasu, `/biegi` i `/biegi/<id>`: data z wyników („Ukończono”, „Podejście”, „Pierwsze podejście”), inaczej termin planowany lub orientacyjny | naprawione; przypadki sprawdzone na danych tymczasowych (wspólnie, różne daty, solo, DNF/DNS, plannedDate, typicalMonth) |
+| D-04 | `trailingSlash: false` w `rss()`: `<link>` i `<guid>` bez końcowego ukośnika | naprawione; do potwierdzenia po wdrożeniu (brak 307 dla adresów z RSS) |
+| D-05 | `overflow-wrap: anywhere` i `min-width: 0` w `Prose` | naprawione; 320 i 360 px bez poziomego przewijania dla wpisu z długim URL (bez poprawki 1462 px przy 360) |
+| D-06 | `/_astro/*`: `Cache-Control: public, max-age=31536000, immutable` | naprawione lokalnie; do potwierdzenia po wdrożeniu |
+| D-08 | `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy` dla `/*`; `/admin` zachowuje własne nagłówki (odpięcie `Referrer-Policy` z reguły ogólnej); bez CSP i HSTS | naprawione lokalnie; do potwierdzenia po wdrożeniu (w tym ładowanie `/admin`) |
+| D-12 | Zapis autorów przez `joinNames`: „Damian i Grzegorz” na `/` i `/biegi/<id>` | naprawione |
+| D-13 | Baner biegu wycofanego bez „od 2026 r.”: „Bieg wycofany z listy stałych biegów Korony.” | naprawione |
+
+Poza zakresem TASK-019 (bez zmian): D-01, D-02, D-07, D-09…D-11, D-14…D-22, status „Bez planu” (D-16), CSP.
