@@ -10,9 +10,16 @@
   "results": [
     {
       "author": "damian",
+      "outcome": "finished",
       "completedDate": "2025-06-28",
       "time": "09:49:42",
       "resultsUrl": "https://wyniki.b4sport.pl/sgs-ultra-54km/wojcicki-damian/e6438/chip_2NNXAG8.html"
+    },
+    {
+      "author": "grzegorz",
+      "outcome": "dns",
+      "completedDate": "2025-06-28",
+      "note": "Nie wystartował, bo wypadła inna konkurencyjna ważniejsza sprawa."
     }
   ]
 }
