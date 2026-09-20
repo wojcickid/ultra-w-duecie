@@ -2,7 +2,7 @@
 
 ## Status
 
-in-progress
+done
 
 ## Owner
 
@@ -46,7 +46,7 @@ Frontmatter parsuje `js-yaml` — zależność Astro (już w `node_modules`, ta 
 
 ### Review
 
-- Not reviewed
+- Lead (2026-09-20): diff w zakresie; build (17 stron), lint, format:check i astro check bez błędów; test negatywny powtórzony niezależnie po ostatniej poprawce agenta (kod wyjścia 1, czytelne komunikaty z plikiem, polem i dostępnymi id). Decyzja Leada: `js-yaml` dopisany jawnie do devDependencies (^4.3.2), zamiast polegać na zależności tranzytywnej. Zaakceptowane.
 
 ## Outcome
 
@@ -55,5 +55,5 @@ Complete this section before moving the task to `done`.
 - Summary: dodano `scripts/validate-content.mjs` przerywający `npm run build` (prebuild) i `npm run check` przy nieistniejącym autorze (wpis, wynik biegu) lub biegu (wpis); opis w README i docs/architecture.md.
 - Tests: build/lint/format:check/check OK; test negatywny: kod wyjścia 1 (szczegóły wyżej).
 - Important files: scripts/validate-content.mjs, package.json (skrypty prebuild, validate:content, check), README.md, docs/architecture.md.
-- Commit:
+- Commit: 1a11548 + commit z jawną zależnością js-yaml (gałąź agent/frontend/TASK-014-reference-validation)
 - Follow-up tasks:
