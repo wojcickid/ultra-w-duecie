@@ -1,9 +1,22 @@
+# Strony publiczne i zasoby. /admin dostaje własny zestaw niżej (reguły się łączą, więc nagłówek
+# z tej samej nazwy trzeba odpiąć `!`, inaczej wartości się sklejają).
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+
+# Zasoby z hashem w nazwie (Astro): można cache'ować bez rewalidacji.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
 /admin
+  ! Referrer-Policy
+  Referrer-Policy: same-origin
   X-Robots-Tag: noindex, nofollow
   X-Frame-Options: DENY
-  Referrer-Policy: same-origin
 
 /admin/*
+  ! Referrer-Policy
+  Referrer-Policy: same-origin
   X-Robots-Tag: noindex, nofollow
   X-Frame-Options: DENY
-  Referrer-Policy: same-origin
