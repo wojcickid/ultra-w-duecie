@@ -67,3 +67,12 @@ Włącz 2FA na koncie Cloudflare, jeśli jeszcze nie masz (steruje domeną i wdr
 
 - Dodawanie wpisów i wyników: panel `https://korona.damianwojcicki.com/admin/`, opis w `docs/authors-guide.md`.
 - Przed pracą z Gitem na komputerze zawsze `git pull` (panel commituje wprost na `main`).
+
+## 6. Po rundzie UX (TASK-020…022) — do uzupełnienia ręcznie
+
+- **Wpisy bloga:** nie były zmieniane. Relacje z biegów (np. Rzeźnik, SGS, Grań Tatr) piszesz sam; przy każdym wpisie wybierz „Bieg” w panelu, a pojawi się na karcie biegu w sekcji „Relacja” i przy wpisie jako „Dotyczy biegu”.
+- **Miejsce w klasyfikacji** (`place`) przy wynikach osób — wpisz w panelu tam, gdzie znasz (tabela na karcie biegu pokaże wiersz „Miejsce” dopiero po pierwszym wpisie).
+- **Link do wyników całego biegu** (`resultsUrl` na poziomie biegu) — sekcja „Oficjalne wyniki” pojawi się po dodaniu.
+- **Rok terminu orientacyjnego** (`expectedYear`) — tylko dla biegów, gdzie rok jest pewny (np. „luty 2027”); bez roku strona pokaże „luty (termin orientacyjny)”.
+- **Status SGS i Grań Tatr** („Do ustalenia” mimo wyników z 2025) — nadal Twoja decyzja (punkt 2.1); blok „Razem” na karcie tłumaczy, co się stało.
+- **Najbliższy start** po dniu startu znika sam (skrypt); nowa data pojawi się po zapisie w panelu (przebudowa strony).

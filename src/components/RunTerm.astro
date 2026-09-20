@@ -14,5 +14,5 @@ const { term } = Astro.props;
 
 {term.isoDate ? <time datetime={term.isoDate}>{term.value}</time> : term.value}
 {term.qualifier && (
-  <span class="text-xs text-ink-muted"> ({term.qualifier})</span>
+  <span class="text-sm text-ink-muted"> ({term.qualifier})</span>
 )}

@@ -55,7 +55,7 @@ const authorNames = new Map(authors.map((author) => [author.id, author.name]));
           <RunVerdict run={run} authors={authors} />
         </div>
         <p class="mt-2 text-ink-muted">
-          <span class="sr-only">{term.label}: </span>
+          {term.kind !== 'tbd' && <span class="sr-only">{term.label}: </span>}
           <RunTerm term={term} />
           {data.distanceKm !== undefined && (
             <>

@@ -6,9 +6,11 @@ Punkt odzyskiwania stanu dla długotrwałej pracy agentów.
 
 M3 — MVP działa publicznie na https://korona.damianwojcicki.com (Worker + static assets, Cloudflare), panel `/admin` z logowaniem GitHub działa i przetestowano go na produkcji (wpis ze zdjęciami, wyniki biegów z DNF/DNS, odmowa dla obcego konta). Raport QA: gotowe z uwagami (`docs/qa-report-mvp.md`). Zostały drobne prace właściciela (Cloudflare) i zadania opcjonalne.
 
+M4 (lokalnie, nie wypchnięte): runda UX (TASK-020…022) scalona do `main`: strona główna wg nowej hierarchii, Korona 4.0 (10) + „Historia projektu”, karty biegów z tabelą wyników, terminy potwierdzone/orientacyjne/do ustalenia, nowe pola `place`, `resultsUrl`, `expectedYear` (DEC-012). Raport: `docs/qa-report-ux-round.md` (gotowe z uwagami, 0 P0/P1).
+
 ## Aktualny status
 
-- Zamknięte i scalone do `main`: TASK-001…008, 010, 011 (do `review`, patrz niżej), 014, 016…019.
+- Zamknięte i scalone do `main`: TASK-001…008, 010, 011 (do `review`, patrz niżej), 014, 016…022.
 - Stan produkcji (zweryfikowany 2026-09-20): strony `/`, `/biegi`, `/biegi/<id>`, `/blog`, `/blog/<id>`, `/rss.xml`, `/404`; `/styleguide` i wpis testowy usunięte (404); nagłówki bezpieczeństwa i długi cache `/_astro/*` działają; RSS bez końcowego ukośnika.
 - Dane (`src/content`) edytuje właściciel przez panel na produkcji; agenci ich nie zmieniają poza uzgodnionymi zadaniami (np. TASK-018). Przed pracą na danych zawsze `git pull`.
 - Zdalne repo (publiczne): `git@github.com:wojcickid/ultra-w-duecie.git`. Push tylko na polecenie użytkownika.

@@ -19,6 +19,7 @@ interface Props {
 }
 
 const { results, authors, runName } = Astro.props;
+const caption = `Wyniki w biegu ${runName}: ${joinNames(authors.map((author) => author.name))}`;
 type Result = Props['results'][number];
 
 const people = authors.map((author) => ({
@@ -61,9 +62,7 @@ const headClass =
 
 <div class="mt-4 rounded-lg border border-line bg-surface p-4 sm:p-5">
   <table class="block w-full text-left sm:table">
-    <caption class="sr-only">
-      Wyniki w biegu{runName}:{joinNames(authors.map((author) => author.name))}
-    </caption>
+    <caption class="sr-only">{caption}</caption>
     <thead class="sr-only sm:not-sr-only sm:table-header-group">
       <tr class="sm:table-row">
         <th scope="col" class="sm:table-cell sm:py-2 sm:pr-4">
