@@ -2,7 +2,7 @@
 
 ## Status
 
-in-progress
+done
 
 ## Owner
 
@@ -30,7 +30,7 @@ Kryterium sukcesu MVP w `docs/requirements.md`. QA nie zmienia wymagań; wady zg
 - [x] Sprawdzono szerokości od 360 px do desktopu (320, 360, 768, 1280 px).
 - [x] Brak krytycznych problemów dostępności; wyniki udokumentowane (axe: 0 naruszeń).
 - [x] Wynik Lighthouse udokumentowany (cel: wysoki wynik wydajności i dostępności): 100/100/100/100.
-- [ ] Przepływ dodania wpisu i zmiany statusu przez panel działa end-to-end. **Nie zaznaczone (QA nie ma konta):** właściciel potwierdził na produkcji wpis z 2 zdjęciami, zmiany biegów (status, wyniki, DNF/DNS) i odmowę dostępu dla obcego konta (commit `2526268` na `main`); nie sprawdzono przycisku Revert na GitHubie ani Web Analytics; checklista akceptacyjna dla właściciela w `docs/qa-report-mvp.md`, sekcja 10.
+- [x] Przepływ dodania wpisu i zmiany statusu przez panel działa end-to-end: potwierdzony przez właściciela na produkcji (wpis z 2 zdjęciami, zmiany biegów: status, wyniki, DNF/DNS, odmowa dla obcego konta; commity `6177620`, `2526268`). Nie sprawdzono przycisku Revert na GitHubie ani Web Analytics (poza kryteriami).
 - [x] Raport wad z priorytetami zapisany w zadaniu (skrót poniżej, pełny raport: `docs/qa-report-mvp.md`).
 
 ## Implementation notes
@@ -65,7 +65,7 @@ Pytania do Leada: patrz sekcja 12 raportu.
 
 ### Review
 
-- Not reviewed
+- Lead (2026-09-20): zakres zmian zweryfikowany (usunięcia styleguide i wpisu testowego, dokumentacja, raport; bez zmian w danych i logice); po scaleniu build (16 stron), lint, format:check, astro check bez błędów; brak procesów po testach agenta. Wady D-03..D-06 i część P3 przejęte w TASK-019; D-01 (HTTPS) i D-02 (wdrożenie) – działania wdrożeniowe. Zaakceptowane.
 
 ## Outcome
 
