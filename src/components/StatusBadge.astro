@@ -3,26 +3,36 @@ import Icon from './Icon.astro';
 import type { IconName } from './Icon.astro';
 
 /**
- * Znacznik statusu biegu. Status jest komunikowany tekstem ORAZ ikoną,
+ * Znacznik statusu biegu albo wyniku osoby. Status jest komunikowany tekstem ORAZ ikoną,
  * a nie samym kolorem (WCAG 1.4.1).
  */
 export type RunStatus = 'completed' | 'planned' | 'unplanned' | 'withdrawn';
+/** Wynik osoby w biegu (pole `outcome`): ukończył / nie ukończył (DNF) / nie wystartował (DNS). */
+export type ResultOutcome = 'finished' | 'dnf' | 'dns';
+export type BadgeStatus = RunStatus | ResultOutcome;
 
 interface Props {
-  status: RunStatus;
+  status: BadgeStatus;
 }
 
 const { status } = Astro.props;
 
+const completedClasses =
+  'bg-status-completed-bg text-status-completed-fg border-status-completed-fg';
+
 const variants: Record<
-  RunStatus,
+  BadgeStatus,
   { label: string; icon: IconName; classes: string }
 > = {
   completed: {
     label: 'Ukończony',
     icon: 'check-circle',
-    classes:
-      'bg-status-completed-bg text-status-completed-fg border-status-completed-fg',
+    classes: completedClasses,
+  },
+  finished: {
+    label: 'Ukończył',
+    icon: 'check-circle',
+    classes: completedClasses,
   },
   planned: {
     label: 'Planowany',
@@ -41,6 +51,16 @@ const variants: Record<
     icon: 'ban',
     classes:
       'bg-status-withdrawn-bg text-status-withdrawn-fg border-status-withdrawn-fg',
+  },
+  dnf: {
+    label: 'Nie ukończył (DNF)',
+    icon: 'circle-x',
+    classes: 'bg-status-dnf-bg text-status-dnf-fg border-status-dnf-fg',
+  },
+  dns: {
+    label: 'Nie wystartował (DNS)',
+    icon: 'circle-minus',
+    classes: 'bg-status-dns-bg text-status-dns-fg border-status-dns-fg',
   },
 };
 

@@ -142,13 +142,13 @@ collections:
           - { label: Planowany, value: planned }
           - { label: Bez planu, value: unplanned }
         default: unplanned
-        hint: 'Status „Ukończony” wymaga co najmniej jednego wyniku (poniżej). Licznik na stronie głównej liczy tylko biegi z wynikami obu autorów.'
+        hint: 'Status biegu to wspólne podejście lub plan. Status „Ukończony” wymaga co najmniej jednego wyniku „Ukończył” (poniżej). Licznik na stronie głównej liczy tylko biegi, w których obaj autorzy mają wynik „Ukończył” z tą samą datą ukończenia; DNF i DNS się nie liczą.'
       - name: retired
         label: Wycofany z listy Korony
         widget: boolean
         required: false
         default: false
-        hint: 'Zaznacz dla biegu, który nie jest już na liście Korony (np. Bieg 7 Dolin). Taki bieg nadal liczy się do postępu, jeśli obaj autorzy go ukończyli.'
+        hint: 'Zaznacz dla biegu, który nie jest już na liście Korony (np. Bieg 7 Dolin). Taki bieg nadal liczy się do postępu, jeśli obaj autorzy go ukończyli tego samego dnia.'
       - {
           name: plannedDate,
           label: Planowana data,
@@ -171,8 +171,8 @@ collections:
         label_singular: Wynik
         widget: list
         required: false
-        summary: '{{author}} - {{time}}'
-        hint: 'Osobny wynik dla każdego autora; jeden wynik na osobę.'
+        summary: '{{author}} - {{outcome}} {{time}}'
+        hint: 'Osobny wynik dla każdego autora; jeden wynik na osobę. Bieg liczy się jako ukończony wspólnie tylko wtedy, gdy obaj mają wynik „Ukończył” z TĄ SAMĄ datą ukończenia (data mety). Jeśli biegli razem, wpisz obu tę samą datę; różne daty oznaczają wyniki indywidualne.'
         fields:
           - name: author
             label: Autor
@@ -181,22 +181,35 @@ collections:
             value_field: '{{slug}}'
             display_fields: ['displayName']
             search_fields: ['displayName']
+          - name: outcome
+            label: Wynik
+            widget: select
+            options:
+              - { label: Ukończył, value: finished }
+              - { label: Nie ukończył (DNF), value: dnf }
+              - { label: Nie wystartował (DNS), value: dns }
+            default: finished
+            required: false
+            hint: 'Ukończył = wynik z datą i czasem. Nie ukończył (DNF) = start bez mety. Nie wystartował (DNS) = zapisany, ale bez startu. DNF i DNS nie liczą się do licznika.'
           - {
               name: completedDate,
               label: Data ukończenia,
               widget: datetime,
               type: date,
+              required: false,
+              hint: 'Wymagana dla „Ukończył” (data mety). Obaj biegli razem = ta sama data; różne daty = wynik indywidualny. Dla DNF/DNS opcjonalnie data podejścia.',
             }
           - name: time
             label: Czas oficjalny
             widget: string
+            required: false
             use_emoji_autocomplete: false
             pattern:
               [
                 '^\d{1,3}:[0-5]\d:[0-5]\d$',
                 'Czas musi mieć format HH:MM:SS (np. 12:34:56).',
               ]
-            hint: 'Format HH:MM:SS, np. 12:34:56 lub 105:12:00.'
+            hint: 'Wymagany dla „Ukończył” (HH:MM:SS, np. 12:34:56 lub 105:12:00); dla DNF opcjonalny; dla DNS zostaw puste.'
           - {
               name: resultsUrl,
               label: Link do wyników,
@@ -204,6 +217,13 @@ collections:
               type: url,
               required: false,
               hint: 'Opcjonalnie, pełny adres (https://...).',
+            }
+          - {
+              name: note,
+              label: Notatka,
+              widget: text,
+              required: false,
+              hint: 'Opcjonalnie, np. „zejście na 62. km”, „kontuzja”.',
             }
 
   # --- Autorzy ---

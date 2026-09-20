@@ -41,6 +41,11 @@
   --color-status-unplanned-fg: #41493f;
   --color-status-withdrawn-bg: #f2e2dc;
   --color-status-withdrawn-fg: #6b2a14;
+  /* Wynik osoby: DNF (nie ukończył) i DNS (nie wystartował) */
+  --color-status-dnf-bg: #ecdcf0;
+  --color-status-dnf-fg: #4f1d63;
+  --color-status-dns-bg: #dbe6f3;
+  --color-status-dns-fg: #1b3a63;
 
   /* --- Typografia ------------------------------------------------------ */
   /* Stosy systemowe: bez zewnętrznych CDN i bez plików czcionek. */
