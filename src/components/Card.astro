@@ -1,0 +1,42 @@
+---
+/**
+ * Karta: powierzchnia z obramowaniem i tytułem.
+ * Z `href` cała karta jest klikalna (link na tytule rozciągnięty na kartę),
+ * dzięki czemu czytnik ekranu widzi jeden link, a nie całą kartę jako link.
+ */
+interface Props {
+  title?: string;
+  /** Poziom nagłówka tytułu (dopasuj do hierarchii strony). */
+  headingLevel?: 2 | 3 | 4;
+  href?: string;
+}
+
+const { title, headingLevel = 3, href } = Astro.props;
+const Heading = `h${headingLevel}` as 'h2' | 'h3' | 'h4';
+---
+
+<article
+  class:list={[
+    'relative rounded-lg border border-line bg-surface p-5 shadow-sm',
+    href &&
+      'transition-colors focus-within:outline-3 focus-within:outline-offset-2 focus-within:outline-focus hover:border-brand',
+  ]}
+>
+  {title && (
+    <Heading class="text-xl font-semibold">
+      {href ? (
+        <a
+          href={href}
+          class="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none"
+        >
+          {title}
+        </a>
+      ) : (
+        title
+      )}
+    </Heading>
+  )}
+  <div class:list={['text-ink-muted', title && 'mt-2']}>
+    <slot />
+  </div>
+</article>

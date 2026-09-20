@@ -1,1 +1,151 @@
 @import 'tailwindcss';
+
+/*
+ * Tokeny designu — JEDYNE miejsce definicji (TASK-004, opis w docs/ui.md).
+ * Kontrast (WCAG 2.1) policzono dla par tekst/tło; wartości w docs/ui.md.
+ * Nie używamy kolorów spoza tej listy (paleta domyślna Tailwinda jest wyłączona).
+ */
+@theme {
+  /* --- Kolory ---------------------------------------------------------- */
+  --color-*: initial;
+
+  --color-white: #ffffff;
+
+  /* Tło i powierzchnie */
+  --color-paper: #f7f5ef; /* tło strony (ciepły papier) */
+  --color-surface: #ffffff; /* karty, nagłówek */
+  --color-sand: #ece8db; /* stopka, wyróżnione bloki */
+
+  /* Tekst */
+  --color-ink: #1c2620; /* tekst podstawowy */
+  --color-ink-muted: #4b5850; /* tekst drugorzędny */
+
+  /* Marka (las) i akcent (rdza) */
+  --color-brand: #2d5a3d;
+  --color-brand-strong: #1f4230;
+  --color-accent: #a4491b;
+
+  /* Linie i obramowania */
+  --color-line: #d9d5c7; /* dekoracyjna linia (nie niesie informacji) */
+  --color-line-strong: #7b837a; /* obramowania elementów interaktywnych (>= 3:1) */
+
+  /* Fokus klawiatury */
+  --color-focus: #0b5cad;
+
+  /* Statusy biegu: tło + tekst (zawsze z etykietą tekstową i ikoną) */
+  --color-status-completed-bg: #dcecd7;
+  --color-status-completed-fg: #1d4a2a;
+  --color-status-planned-bg: #fbe9c4;
+  --color-status-planned-fg: #6f3b00;
+  --color-status-unplanned-bg: #e7e5de;
+  --color-status-unplanned-fg: #41493f;
+  --color-status-withdrawn-bg: #f2e2dc;
+  --color-status-withdrawn-fg: #6b2a14;
+
+  /* --- Typografia ------------------------------------------------------ */
+  /* Stosy systemowe: bez zewnętrznych CDN i bez plików czcionek. */
+  --font-sans:
+    system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  --font-heading:
+    Charter, 'Bitstream Charter', 'Sitka Text', Cambria, Georgia, serif;
+
+  /* Skala rozmiarów, wysokości linii i odstępów: domyślna skala Tailwinda
+     (text-sm…text-5xl; spacing = 0.25rem * n). Nie nadpisujemy jej. */
+
+  /* --- Promienie ------------------------------------------------------- */
+  --radius-*: initial;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.875rem;
+  --radius-pill: 9999px;
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    scroll-padding-top: 1rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    line-height: 1.6;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-heading);
+    line-height: 1.2;
+    color: var(--color-ink);
+    text-wrap: balance;
+  }
+
+  /* Widoczny fokus klawiatury dla wszystkich elementów interaktywnych. */
+  :focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  /* Ruch ograniczony na życzenie użytkownika. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Link w treści: podkreślony, kolor marki. */
+  .link {
+    color: var(--color-brand);
+    text-decoration: underline;
+    text-decoration-thickness: 0.08em;
+    text-underline-offset: 0.2em;
+  }
+  .link:hover {
+    color: var(--color-brand-strong);
+    text-decoration-thickness: 0.15em;
+  }
+
+  /* Przyciski (linki wyglądające jak przyciski). */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0.5rem 1.25rem;
+    border: 2px solid var(--color-brand);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    line-height: 1.25;
+    text-decoration: none;
+    transition: background-color 0.15s;
+  }
+  .btn-primary {
+    background-color: var(--color-brand);
+    color: var(--color-white);
+  }
+  .btn-primary:hover {
+    background-color: var(--color-brand-strong);
+    border-color: var(--color-brand-strong);
+  }
+  .btn-secondary {
+    background-color: transparent;
+    color: var(--color-brand);
+  }
+  .btn-secondary:hover {
+    background-color: var(--color-sand);
+  }
+}

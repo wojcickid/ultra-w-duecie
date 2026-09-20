@@ -1,0 +1,48 @@
+---
+import Icon from './Icon.astro';
+
+/**
+ * Nagłówek z nawigacją. Na wąskich ekranach logo i linki układają się w dwóch
+ * rzędach (3 krótkie pozycje mieszczą się od 320 px bez menu „hamburger” i bez JS);
+ * od `sm` w jednym rzędzie. Aktywna pozycja: aria-current="page".
+ */
+// Uwaga: /biegi i /blog to osobne zadania (TASK-005–007) — do czasu ich wdrożenia zwracają 404.
+const links = [
+  { href: '/', label: 'Start' },
+  { href: '/biegi', label: 'Biegi' },
+  { href: '/blog', label: 'Blog' },
+];
+
+const pathname = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const isCurrent = (href: string) =>
+  href === '/'
+    ? pathname === '/'
+    : pathname === href || pathname.startsWith(`${href}/`);
+---
+
+<header class="border-b border-line bg-surface">
+  <div class="mx-auto flex max-w-5xl flex-col gap-1 px-4 py-2 sm:flex-row sm:items-center sm:justify-between sm:gap-6 sm:px-6">
+    <a
+      href="/"
+      class="inline-flex min-h-11 items-center gap-2 self-start font-heading text-xl font-bold text-brand-strong no-underline"
+    >
+      <Icon name="mountain" class="size-6 text-brand" />
+      Ultra w duecie
+    </a>
+    <nav aria-label="Główna nawigacja">
+      <ul class="-mx-2 flex items-center gap-1">
+        {links.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              aria-current={isCurrent(link.href) ? 'page' : undefined}
+              class="inline-flex min-h-11 items-center rounded-md px-3 font-semibold text-ink underline-offset-8 hover:bg-sand aria-[current=page]:text-brand-strong aria-[current=page]:underline aria-[current=page]:decoration-2"
+            >
+              {link.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>
