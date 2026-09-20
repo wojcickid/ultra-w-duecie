@@ -1,0 +1,76 @@
+---
+// Wspólny widok listy wpisów: /blog (strona 1) i /blog/strona/<n> (kolejne).
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+import Icon from '../../components/Icon.astro';
+import { blogPageUrl, type Post } from '../../lib/blog';
+
+interface Props {
+  posts: Post[];
+  currentPage: number;
+  lastPage: number;
+}
+
+const { posts, currentPage, lastPage } = Astro.props;
+const title =
+  currentPage > 1
+    ? `Blog — strona ${currentPage} z ${lastPage} — Ultra w duecie`
+    : 'Blog — Ultra w duecie';
+const description =
+  'Wpisy z drogi po Koronę Polskich Ultramaratonów: relacje z biegów i przygotowań.';
+---
+
+<BaseLayout title={title} description={description}>
+  <h1 class="text-3xl font-bold sm:text-4xl">Blog</h1>
+
+  {posts.length === 0 ? (
+    <p class="mt-6 text-lg text-ink-muted">
+      Wpisów jeszcze nie ma. Zajrzyj wkrótce.
+    </p>
+  ) : (
+    <ul class="mt-8 grid gap-4">
+      {posts.map((post) => (
+        <li>
+          <PostCard post={post} />
+        </li>
+      ))}
+    </ul>
+  )}
+
+  {lastPage > 1 && (
+    <nav
+      aria-label="Paginacja wpisów"
+      class="mt-10 flex flex-wrap items-center justify-between gap-4"
+    >
+      <div class="min-w-44">
+        {currentPage > 1 && (
+          <a
+            href={blogPageUrl(currentPage - 1)}
+            rel="prev"
+            class="btn btn-secondary"
+            aria-label={`Poprzednia strona, strona ${currentPage - 1} z ${lastPage}`}
+          >
+            <Icon name="arrow-right" class="size-4 rotate-180" />
+            Poprzednia strona
+          </a>
+        )}
+      </div>
+      <p class="text-ink-muted">
+        Strona {currentPage} z {lastPage}
+      </p>
+      <div class="min-w-44 text-right">
+        {currentPage < lastPage && (
+          <a
+            href={blogPageUrl(currentPage + 1)}
+            rel="next"
+            class="btn btn-secondary"
+            aria-label={`Następna strona, strona ${currentPage + 1} z ${lastPage}`}
+          >
+            Następna strona
+            <Icon name="arrow-right" class="size-4" />
+          </a>
+        )}
+      </div>
+    </nav>
+  )}
+</BaseLayout>

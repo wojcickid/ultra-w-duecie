@@ -1,0 +1,21 @@
+---
+// Strony 2+ listy wpisów (/blog/strona/2, ...); strona 1 to /blog.
+import type { GetStaticPaths } from 'astro';
+import PostsPage from '../_PostsPage.astro';
+import { getSortedPosts, POSTS_PER_PAGE } from '../../../lib/blog';
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const posts = await getSortedPosts();
+  return paginate(posts, { pageSize: POSTS_PER_PAGE }).filter(
+    (route) => route.props.page.currentPage > 1,
+  );
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+---
+
+<PostsPage
+  posts={page.data}
+  currentPage={page.currentPage}
+  lastPage={page.lastPage}
+/>

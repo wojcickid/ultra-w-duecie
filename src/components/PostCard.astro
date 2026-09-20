@@ -1,0 +1,36 @@
+---
+import { Image } from 'astro:assets';
+import Card from './Card.astro';
+import { formatDate } from '../lib/format';
+import { getAuthorNames, joinNames, type Post } from '../lib/blog';
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const authors = joinNames(await getAuthorNames(post));
+const thumbnail = post.data.images?.[0];
+---
+
+<Card title={post.data.title} headingLevel={2} href={`/blog/${post.id}`}>
+  <div class="flex flex-col gap-4 sm:flex-row sm:items-start">
+    {thumbnail && (
+      <Image
+        src={thumbnail.src}
+        alt={thumbnail.alt}
+        width={320}
+        height={180}
+        densities={[1, 2]}
+        class="aspect-video w-full shrink-0 rounded-md object-cover sm:w-40"
+      />
+    )}
+    <p class="text-sm">
+      <time datetime={post.data.date.toISOString()}>
+        {formatDate(post.data.date)}
+      </time>
+      {authors && <span aria-hidden="true"> · </span>}
+      {authors}
+    </p>
+  </div>
+</Card>

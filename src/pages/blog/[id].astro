@@ -1,0 +1,92 @@
+---
+import { Image } from 'astro:assets';
+import { getEntry, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Prose from '../../components/Prose.astro';
+import Icon from '../../components/Icon.astro';
+import { formatDate } from '../../lib/format';
+import {
+  excerpt,
+  getAuthorNames,
+  getSortedPosts,
+  joinNames,
+} from '../../lib/blog';
+
+export const getStaticPaths = (async () => {
+  const posts = await getSortedPosts();
+  return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+const names = await getAuthorNames(post);
+const run = post.data.run ? await getEntry(post.data.run) : undefined;
+const images = post.data.images ?? [];
+const description =
+  excerpt(post.body) || `Wpis z bloga Ultra w duecie: ${post.data.title}.`;
+---
+
+<BaseLayout
+  title={`${post.data.title} — Ultra w duecie`}
+  description={description}
+>
+  <article>
+    <header class="max-w-prose">
+      <h1 class="text-3xl font-bold sm:text-4xl">{post.data.title}</h1>
+      <p class="mt-4 text-ink-muted">
+        <time datetime={post.data.date.toISOString()}>
+          {formatDate(post.data.date)}
+        </time>
+        {names.length > 0 && (
+          <>
+            <span aria-hidden="true"> · </span>
+            {names.length > 1 ? 'Autorzy' : 'Autor'}: {joinNames(names)}
+          </>
+        )}
+      </p>
+      {run && (
+        <p class="mt-2 text-ink-muted">
+          Powiązany bieg:{' '}
+          <a href={`/biegi/${run.id}`} class="link">
+            {run.data.name}
+          </a>
+        </p>
+      )}
+    </header>
+
+    <div class="mt-8">
+      <Prose>
+        <Content />
+      </Prose>
+    </div>
+
+    {images.length > 0 && (
+      <section aria-labelledby="gallery-heading" class="mt-12">
+        <h2 id="gallery-heading" class="text-2xl font-bold">
+          Zdjęcia
+        </h2>
+        <ul class="mt-4 grid gap-4 sm:grid-cols-2">
+          {images.map((image) => (
+            <li>
+              <Image
+                src={image.src}
+                alt={image.alt}
+                width={800}
+                layout="constrained"
+                class="h-auto w-full rounded-md"
+              />
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+  </article>
+
+  <p class="mt-12">
+    <a href="/blog" class="btn btn-secondary">
+      <Icon name="arrow-right" class="size-4 rotate-180" />
+      Wróć do bloga
+    </a>
+  </p>
+</BaseLayout>
