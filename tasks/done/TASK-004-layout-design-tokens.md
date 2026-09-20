@@ -2,7 +2,7 @@
 
 ## Status
 
-review
+done
 
 ## Owner
 
@@ -26,7 +26,7 @@ Patrz `docs/ui.md`: mobile-first, Tailwind, WCAG 2.1 AA, brak drugiego systemu d
 - [x] Tokeny designu zdefiniowane w jednym miejscu i opisane w `docs/ui.md`.
 - [x] Kontrast i fokus spełniają WCAG 2.1 AA.
 - [x] Strona 404.
-- [ ] Użytkownik zaakceptował kierunek wizualny.
+- [x] Użytkownik zaakceptował kierunek wizualny (2026-09-20) z zastrzeżeniem: paleta kolorów jest tymczasowa i może zostać zmieniona (TASK-015).
 
 ## Implementation notes
 
@@ -72,5 +72,5 @@ Complete this section before moving the task to `done`.
 - Summary: Layout z nagłówkiem/nawigacją/stopką, tokeny designu w `@theme`, komponenty `StatusBadge`, `Card`, `Icon`, strona 404 i strona podglądu `/styleguide`; `docs/ui.md` zaktualizowany. Czeka na akceptację kierunku wizualnego przez użytkownika.
 - Tests: build, lint, format:check, astro check — bez błędów; ręcznie Chrome headless 320–1280 px (bez poziomego przewijania) i fokus klawiaturą.
 - Important files: `src/styles/global.css`, `src/layouts/BaseLayout.astro`, `src/components/*`, `src/pages/404.astro`, `src/pages/styleguide.astro`, `docs/ui.md`.
-- Commit: patrz historia gałęzi `agent/frontend/TASK-004-layout-design-tokens`
-- Follow-up tasks:
+- Commit: baf341a, e7031fc (gałąź agent/frontend/TASK-004-layout-design-tokens)
+- Follow-up tasks: TASK-015 (rewizja palety kolorów); usunięcie `/styleguide` w TASK-010.
