@@ -49,7 +49,8 @@ Stan: konfiguracja gotowa i sprawdzona lokalnie (tryb „Work with Local Reposit
 
 - `retired` jest `required: false` z `default: false` (ma `.default(false)` w schemacie; pole zawsze zapisuje się jako `true/false`). `status` ma `default: unplanned`.
 - Autorzy i biegi: `create: false`, `delete: false`; `identifier_field` (`displayName`, `name`) i `summary` czytelne.
-- `date` wpisu bez zmian względem konfiguracji zweryfikowanej na produkcji (`widget: datetime, type: date`).
+- `date` wpisu: `widget: datetime, type: date` jak na produkcji, plus `default: '{{now}}'` (decyzja Leada po przeglądzie). Test: nowy wpis dostaje dzisiejszą datę w formacie `YYYY-MM-DD` (bez godziny i strefy), zapisany plik przechodzi walidację schematem (`z.coerce.date()`).
+- Podpowiedź przy `retired` zgodna z DEC-008: bieg wycofany z listy Korony nadal liczy się do postępu, jeśli obaj autorzy go ukończyli (poprawiono błędne „nie liczy się do licznika”; w dokumentacji i notatkach nie było tego błędu).
 - Reguł łączonych ze schematu (status „Ukończony” wymaga wyniku, jeden wynik na osobę) panel nie egzekwuje (Sveltia nie ma takich reguł); są w opisach pól, a wykrywa je budowa (`prebuild` i schemat Astro). Błędne dane z panelu mogą więc zatrzymać budowę do poprawki.
 
 ### Znane ograniczenia i uwagi

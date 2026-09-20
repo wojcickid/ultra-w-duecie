@@ -51,7 +51,13 @@ collections:
         direction: descending
     fields:
       - { name: title, label: Tytuł, widget: string }
-      - { name: date, label: Data, widget: datetime, type: date }
+      - {
+          name: date,
+          label: Data,
+          widget: datetime,
+          type: date,
+          default: '{{now}}',
+        }
       - name: authors
         label: Autorzy
         widget: relation
@@ -142,7 +148,7 @@ collections:
         widget: boolean
         required: false
         default: false
-        hint: 'Zaznacz dla biegu, który nie jest już na liście Korony (np. Bieg 7 Dolin). Taki bieg nie liczy się do licznika.'
+        hint: 'Zaznacz dla biegu, który nie jest już na liście Korony (np. Bieg 7 Dolin). Taki bieg nadal liczy się do postępu, jeśli obaj autorzy go ukończyli.'
       - {
           name: plannedDate,
           label: Planowana data,
