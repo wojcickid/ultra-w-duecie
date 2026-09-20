@@ -2,10 +2,12 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import RunCard from '../../components/RunCard.astro';
+import { sortRuns } from '../../lib/progress';
 
-const runs = (await getCollection('runs')).sort(
-  (a, b) => (a.data.order ?? Infinity) - (b.data.order ?? Infinity),
-);
+const runs = sortRuns(await getCollection('runs'));
+const authors = (await getCollection('authors'))
+  .map((author) => ({ id: author.id, name: author.data.displayName }))
+  .sort((a, b) => a.id.localeCompare(b.id));
 ---
 
 <BaseLayout
@@ -20,7 +22,7 @@ const runs = (await getCollection('runs')).sort(
   <ul class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
     {runs.map((run) => (
       <li>
-        <RunCard run={run} />
+        <RunCard run={run} authors={authors} />
       </li>
     ))}
   </ul>

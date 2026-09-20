@@ -6,6 +6,7 @@ interface RunLike {
   retired: boolean;
 }
 
+// Jedno źródło prawdy dla znaczników biegu (strona główna, /biegi, /biegi/<id>).
 // Bieg wycofany dostaje znacznik „Wycofany”; ukończony wycofany zachowuje też „Ukończony” (DEC-008).
 export function getRunBadges(run: RunLike): RunStatus[] {
   if (!run.retired) return [run.status];
@@ -40,4 +41,29 @@ export function getRunFacts(run: RunFactsSource) {
     });
   }
   return facts;
+}
+
+type Outcome = 'finished' | 'dnf' | 'dns';
+
+interface ResultLike {
+  author: { id: string };
+  outcome: Outcome;
+  time?: string;
+  note?: string;
+}
+
+// Zwięzły opis wyniku osoby (bez koloru): „Damian: ukończył 09:49:42”, „Grzegorz: nie wystartował (DNS)”, z notatką po myślniku.
+export function getResultSummaries(
+  results: readonly ResultLike[],
+  authorNames: ReadonlyMap<string, string>,
+): string[] {
+  return results.map((result) => {
+    const name = authorNames.get(result.author.id) ?? result.author.id;
+    const text = {
+      finished: `ukończył${result.time ? ` ${result.time}` : ''}`,
+      dnf: 'nie ukończył (DNF)',
+      dns: 'nie wystartował (DNS)',
+    }[result.outcome];
+    return `${name}: ${text}${result.note ? ` — ${result.note}` : ''}`;
+  });
 }

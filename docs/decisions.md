@@ -176,6 +176,8 @@ Formuła wyzwania to zdobycie całej korony w parze.
 
 Model danych przechowuje wyniki per osoba (FR-7). Licznik jest liczony automatycznie z danych.
 
+Doprecyzowane w DEC-010 (ten sam dzień ukończenia) i DEC-011 (liczą się tylko wyniki „Ukończył”).
+
 ## DEC-008 — Bieg 7 Dolin jako bieg wycofany z listy
 
 Date: 2026-09-20
@@ -247,3 +249,61 @@ Kreator Cloudflare dla nowych projektów tworzy **Workera** (build z Git przez W
 - skutek uboczny: adres `workers.dev` też serwuje stronę, ale panel działa tylko na domenie z `ALLOWED_ORIGIN`; `html_handling: drop-trailing-slash` (adresy bez ukośnika na końcu serwowane wprost, wersje z ukośnikiem przekierowują na nie; panel Sveltia ładuje `config.yml` z bezwzględnej ścieżki `/admin/config.yml`, więc nie zależy od ukośnika).
 
 Instrukcja dla właściciela: `docs/cms-setup.md`.
+
+## DEC-010 — „Ukończony wspólnie” = obaj mają wynik z tą samą datą ukończenia
+
+Date: 2026-09-20
+Status: accepted
+
+### Decision
+
+Bieg jest ukończony wspólnie (i liczy się do licznika X/10, DEC-007), gdy **każdy** autor ma wynik „Ukończył” (DEC-011), a wszystkie daty ukończenia (`completedDate`) są tym samym dniem kalendarzowym. Dni porównujemy w strefie Europe/Warsaw (tej samej, w której wyświetlamy daty, `toDayKey` w `src/lib/format.ts`); dla dat zapisanych jako `YYYY-MM-DD` to po prostu ta sama data. Bieg, w którym obaj mają wynik, ale daty się różnią, nie jest wspólny: jego wyniki pokazujemy jako indywidualne, a licznik ich nie liczy. `scripts/validate-content.mjs` ostrzega o takim przypadku (bez przerywania budowy), a panel podpowiada regułę przy polu wyników i dacie.
+
+### Context
+
+DEC-007 mówi, że licznik liczy biegi ukończone „wspólnie”, ale wcześniej sprawdzano tylko, czy obaj autorzy mają jakikolwiek wynik. Właściciel po teście na produkcji chce, żeby „wspólnie” oznaczało faktycznie ten sam start (ta sama edycja biegu, ten sam dzień).
+
+### Alternatives considered
+
+- Wystarczy posiadanie wyniku przez obu (dotychczasowa reguła): pozwala policzyć jako wspólne dwa osobne podejścia, np. różne edycje biegu.
+- Osobne pole `edition` (rok/edycja) w biegu lub wyniku: dokładniejsze, ale dodatkowe dane do utrzymania; ta sama data ukończenia jest prostym, jawnym zastępnikiem.
+
+### Consequences
+
+- Dane muszą mieć spójną datę: jeśli biegli razem, obaj wpisują tę samą datę (data mety lub startu biegu).
+- Bieg kończony po północy przez obu w różnych dniach kalendarzowych wymaga ręcznego wpisania tej samej daty; inaczej nie będzie wspólny.
+- Daty z godziną i przesunięciem (nietypowe; panel zapisuje sam dzień) porównujemy według dnia w Europe/Warsaw, czyli tak, jak są wyświetlane.
+- Nie wymaga migracji: dotychczasowe dane (Bieg Rzeźnika, Bieg 7 Dolin) mają identyczne daty obu autorów.
+
+## DEC-011 — Wynik osoby: `outcome` finished / dnf / dns
+
+Date: 2026-09-20
+Status: accepted
+
+### Decision
+
+Każdy wynik w `results` ma pole `outcome`: `finished` (Ukończył, domyślne), `dnf` (Nie ukończył, Did Not Finish) albo `dns` (Nie wystartował, Did Not Start). Status biegu (`completed` / `planned` / `unplanned`) pozostaje wspólnym podejściem lub planem. Reguły w schemacie (`src/content.config.ts`):
+
+- `finished`: wymaga `completedDate` i `time`;
+- `dnf`: `completedDate` (data podejścia) i `time` opcjonalne;
+- `dns`: `completedDate` opcjonalne, `time` niedozwolony;
+- nowe opcjonalne pole `note` (np. „zejście na 62. km”); jeden wynik na autora w biegu bez zmian;
+- `completed` wymaga co najmniej jednego wyniku `finished`.
+
+Do licznika i reguły „wspólnie” (DEC-010) liczą się wyłącznie wyniki `finished`. DNF i DNS są pokazywane na stronie biegu, liście, osi czasu i w wynikach indywidualnych, zawsze z tekstem i ikoną.
+
+### Context
+
+Właściciel podał przypadki: SGS 2025 (Damian ukończył, Grzegorz DNS) i Bieg Ultra Granią Tatr (obaj DNF). Status biegu jest wspólny, więc nie opisuje tego, co przydarzyło się każdemu z osobna.
+
+### Alternatives considered
+
+- Statusy `dnf`/`dns` na poziomie biegu: odrzucone jako zbyt grube, nie oddają przypadków, w których jeden biegacz ukończył, a drugi nie wystartował.
+- Osobna kolekcja podejść (attempts): większa zmiana modelu bez potrzeby.
+
+### Consequences
+
+- Istniejące wyniki bez `outcome` są traktowane jako `finished` (`default`), więc dane rzeczywiste przechodzą bez zmian.
+- `completedDate` i `time` są opcjonalne na poziomie pola; ich wymagalność pilnuje schemat (panel Sveltia nie ma pól zależnych, więc pola są opcjonalne z podpowiedziami; błędne dane zatrzymują budowę z czytelnym komunikatem).
+- Bieg można później ustawić z powrotem na `planned` (kolejna edycja); wcześniejsze wyniki DNF/DNS zostają w `results` do ręcznego usunięcia.
+- Nowe tokeny kolorów `status-dnf-*` i `status-dns-*` oraz ikony `circle-x` i `circle-minus`.

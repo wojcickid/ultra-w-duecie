@@ -41,6 +41,8 @@ Materiały referencyjne: brak. Inspiracja treściowa: kingrunner.com (Korona Pol
 | `status-planned-bg` / `-fg`      | `#fbe9c4` / `#6f3b00` | status „Planowany”                           |
 | `status-unplanned-bg` / `-fg`    | `#e7e5de` / `#41493f` | status „Bez planu”                           |
 | `status-withdrawn-bg` / `-fg`    | `#f2e2dc` / `#6b2a14` | status „Wycofany”                            |
+| `status-dnf-bg` / `-fg`          | `#ecdcf0` / `#4f1d63` | wynik osoby „Nie ukończył (DNF)”             |
+| `status-dns-bg` / `-fg`          | `#dbe6f3` / `#1b3a63` | wynik osoby „Nie wystartował (DNS)”          |
 
 Motyw: tylko jasny (`color-scheme: light`). Motyw ciemny — poza zakresem MVP.
 
@@ -69,12 +71,12 @@ Wszystkie w `src/components/`; podgląd wszystkich wariantów na `/styleguide` (
 - **`BaseLayout`** (`src/layouts/`): `<html lang="pl">`, link „Przejdź do treści” (pierwszy element fokusowalny), `SiteHeader`, `<main id="main">` w kontenerze, `SiteFooter`. Właściwości: `title`, `description`, `noindex`.
 - **`SiteHeader`**: logo + nawigacja (Start / Biegi / Blog), aktywna pozycja oznaczona `aria-current="page"` i podkreśleniem. Bez JS: na telefonie logo i linki w dwóch rzędach, od `sm` w jednym. Trzy krótkie pozycje mieszczą się od 320 px, więc menu „hamburger” nie jest potrzebne; jeśli pozycji przybędzie, trzeba dodać zwijanie.
 - **`SiteFooter`**: krótki opis projektu i rok.
-- **`Icon`**: `name` = `mountain | check-circle | calendar | circle-dashed | ban | arrow-right`; rozmiar przez `class` (domyślnie `size-4`). Nowe ikony dodawać w tym samym pliku i stylu.
-- **`StatusBadge`**: `status` = `completed | planned | unplanned | withdrawn` → „Ukończony” (ikona ptaszka w kółku), „Planowany” (kalendarz), „Bez planu” (przerywane kółko, przerywana ramka), „Wycofany” (przekreślone kółko). Status zawsze ma tekst i ikonę — nigdy sam kolor (WCAG 1.4.1).
+- **`Icon`**: `name` = `mountain | check-circle | calendar | circle-dashed | ban | circle-x | circle-minus | arrow-right`; rozmiar przez `class` (domyślnie `size-4`). Nowe ikony dodawać w tym samym pliku i stylu.
+- **`StatusBadge`**: `status` = `completed | planned | unplanned | withdrawn` (status biegu) albo `finished | dnf | dns` (wynik osoby, `outcome`) → „Ukończony” (ikona ptaszka w kółku), „Planowany” (kalendarz), „Bez planu” (przerywane kółko, przerywana ramka), „Wycofany” (przekreślone kółko), „Ukończył” (ptaszek, kolory jak „Ukończony”), „Nie ukończył (DNF)” (kółko z krzyżykiem, fiolet), „Nie wystartował (DNS)” (kółko z kreską, granat). Bieg ukończony i wycofany ma oba znaczniki wszędzie; lista znaczników pochodzi z `getRunBadges` (`src/lib/runs.ts`). Status zawsze ma tekst i ikonę — nigdy sam kolor (WCAG 1.4.1).
 - **`Card`**: `title?`, `headingLevel` (2–4, domyślnie 3), `href?`. Z `href` cała karta jest klikalna (rozciągnięty link na tytule) i pokazuje fokus całej karty. Treść przez slot.
 - **`ProgressBar`**: pasek postępu `role="progressbar"` (`aria-valuenow/min/max/valuetext`); segmenty pełny/pusty różnią się też obramowaniem, obok zawsze jest tekst „X z 10”. Segmenty przycięte do 10.
-- **`Timeline`**: oś czasu biegów jako `<ol>` w jednej kolumnie; bieg wycofany z przerywaną ramką i adnotacją.
-- **`RunCard`**: karta biegu (nazwa jako `h2`, `StatusBadge`, dystans/miejsce/termin w `<dl>`); brakujące pola pomijane; cała karta klikalna.
+- **`Timeline`**: oś czasu biegów jako `<ol>` w jednej kolumnie; znaczniki z `getRunBadges` (dla ukończonego wycofanego dwa), bieg wycofany z przerywaną ramką i adnotacją; gdy bieg nie jest ukończony wspólnie, pod spodem po jednej linijce na osobę (np. „Grzegorz: nie wystartował (DNS)”, z notatką po myślniku).
+- **`RunCard`**: karta biegu (nazwa jako `h2`, znaczniki z `getRunBadges`, linijki wyników osób dla biegu nieukończonego wspólnie, dystans/miejsce/termin w `<dl>`); brakujące pola pomijane; cała karta klikalna.
 - **`PostCard`**: karta wpisu (tytuł `h2`, data, autorzy „Damian i Grzegorz”, opcjonalna miniatura z altem); cała karta klikalna.
 - **`Prose`**: typografia treści Markdown wpisu (style zakresowe oparte na tokenach; bez `@tailwindcss/typography`). Bloki kodu renderuje Shiki z własnymi kolorami (poza tokenami) — akceptowane, bo wpisy raczej nie zawierają kodu.
 - **Stany puste**: każda lista ma czytelny komunikat („Jeszcze bez ukończonych biegów”, „Wpisy pojawią się wkrótce”, „Brak wpisów o tym biegu”, „Wpisów jeszcze nie ma. Zajrzyj wkrótce.”, „Jeszcze bez wyniku”).
@@ -130,6 +132,8 @@ Standard: **WCAG 2.1 AA** w zakresie praktycznym dla strony treściowej:
 | `status-planned-fg` na `-bg`               | 7,63:1       |
 | `status-unplanned-fg` na `-bg`             | 7,41:1       |
 | `status-withdrawn-fg` na `-bg`             | 8,49:1       |
+| `status-dnf-fg` na `-bg`                   | 9,51:1       |
+| `status-dns-fg` na `-bg`                   | 9,07:1       |
 | `focus` na `paper` / `surface` / `sand`    | 6,12 / 6,67 / 5,44:1 |
 | `line-strong` na `paper`                   | 3,59:1       |
 
