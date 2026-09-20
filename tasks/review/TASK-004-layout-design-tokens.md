@@ -2,7 +2,7 @@
 
 ## Status
 
-in-progress
+review
 
 ## Owner
 
@@ -63,7 +63,7 @@ Patrz `docs/ui.md`: mobile-first, Tailwind, WCAG 2.1 AA, brak drugiego systemu d
 
 ### Review
 
-- Not reviewed
+- Lead (2026-09-20): diff tylko w zakresie; build (3 strony), lint, format:check i astro check uruchomione niezależnie, bez błędów. Czeka na akceptację kierunku wizualnego przez właściciela (kryterium otwarte). `/styleguide` zostaje do czasu akceptacji, usunięcie przed publikacją w TASK-010.
 
 ## Outcome
 

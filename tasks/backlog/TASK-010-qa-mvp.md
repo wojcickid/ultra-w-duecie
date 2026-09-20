@@ -25,6 +25,7 @@ Kryterium sukcesu MVP w `docs/requirements.md`. QA nie zmienia wymagań; wady zg
 
 ## Acceptance criteria
 
+- [ ] Strona pomocnicza `/styleguide` (TASK-004) i testowy wpis (`posts/testowy-wpis.md`, TASK-003) usunięte lub niedostępne w buildzie produkcyjnym.
 - [ ] Budowa bez błędów i bez uszkodzonych linków wewnętrznych.
 - [ ] Sprawdzono szerokości od 360 px do desktopu.
 - [ ] Brak krytycznych problemów dostępności; wyniki udokumentowane.
