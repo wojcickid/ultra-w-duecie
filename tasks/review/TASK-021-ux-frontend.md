@@ -66,5 +66,5 @@ Decyzje i odstępstwa:
 - Summary: przebudowane widoki wg DEC-012 (Korona 4.0 + Historia projektu, postęp duetu z wyjaśnieniem i składem licznika, Najbliższy start, Ostatnie wpisy, lżejsze Wyniki indywidualne, karta biegu z werdyktem „Razem” i tabelą, Relacja, blog z „Dotyczy biegu”).
 - Tests: lint, format:check, astro check, build OK; weryfikacja wizualna 320/390/1280 px bez poziomego scrolla.
 - Important files: src/pages/{index,biegi/index,biegi/[id],blog/[id]}.astro, src/components/{Timeline,RunCard,PostCard,Section,RunTerm,RunFacts,RunVerdict,RunResultsTable,PostTeaser}.astro, src/lib/run-verdict.ts, src/lib/blog.ts, docs/ui.md.
-- Commit:
+- Commit: b5546f0 (branch agent/frontend/TASK-021-ux-views)
 - Follow-up tasks: TASK-022 (QA); decyzja właściciela o statusach biegów z wynikami, ale `unplanned` (SGS, Ultra Granią Tatr).
