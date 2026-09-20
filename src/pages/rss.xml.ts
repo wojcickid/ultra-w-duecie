@@ -30,6 +30,8 @@ export async function GET(context: APIContext) {
     description:
       'Wpisy z drogi dwóch biegaczy po Koronę Polskich Ultramaratonów.',
     site: context.site,
+    // Zgodnie z html_handling: drop-trailing-slash (wrangler.jsonc): adresy bez końcowego ukośnika.
+    trailingSlash: false,
     xmlns: { dc: 'http://purl.org/dc/elements/1.1/' },
     customData: '<language>pl-pl</language>',
     items,
