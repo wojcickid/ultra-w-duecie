@@ -162,7 +162,7 @@ Status: accepted
 
 ### Decision
 
-Licznik X/10 na stronie głównej obejmuje wyłącznie biegi ukończone przez oboje autorów. Wyniki indywidualne (np. SGS 2025 ukończony tylko przez Damiana) są zapisywane per osoba i pokazywane osobno, poza licznikiem.
+Licznik X/10 na stronie głównej obejmuje wyłącznie biegi ukończone przez obu autorów. Wyniki indywidualne (np. SGS 2025 ukończony tylko przez Damiana) są zapisywane per osoba i pokazywane osobno, poza licznikiem.
 
 ### Context
 

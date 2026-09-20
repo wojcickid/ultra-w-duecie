@@ -46,7 +46,7 @@ FR-1, FR-2 z `docs/requirements.md`. Dane z kolekcji `biegi` i `wpisy`. Status n
 ### Tests
 
 - `npm run build`, `lint`, `format:check`, `check` — bez błędów (0 errors/warnings/hints).
-- Logika `progress.ts` sprawdzona skryptem asercji (node, poza repo): brak biegów lub brak autorów -> 0; bieg z jednym autorem nie liczy się; bieg z obojgiem (także w odwróconej kolejności wyników, także wycofany) liczy się; brak `order` -> koniec listy; wyniki autora solo vs wspólne.
+- Logika `progress.ts` sprawdzona skryptem asercji (node, poza repo): brak biegów lub brak autorów -> 0; bieg z jednym autorem nie liczy się; bieg z wynikami obu autorów (także w odwróconej kolejności wyników, także wycofany) liczy się; brak `order` -> koniec listy; wyniki autora solo vs wspólne.
 - Dane tymczasowe (przywrócone przez `git checkout -- src/content`): wspólny ZUK, solo SGS, wspólny wycofany 7 Dolin, planowany z `plannedDate`, 5 wpisów -> 2/10, do 3 wpisów malejąco po dacie, poprawne oś czasu i sekcje wyników.
 - Dane rzeczywiste: 0/10, stany puste wyników; po tymczasowym usunięciu wpisu testowego — „Wpisy pojawią się wkrótce”.
 - Chrome headless (CDP, emulacja 360 i 1280 px): brak przewijania poziomego przy 360 px (scrollWidth = 360), układ jednokolumnowy; przy 1280 px karty wyników w dwóch kolumnach.

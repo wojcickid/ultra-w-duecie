@@ -11,7 +11,7 @@ frontend-agent
 ## Dependencies
 
 - TASK-008
-- Użytkownik: daty, czasy i linki do wyników oraz ewentualne zdjęcia dla: Biegu Rzeźnika 2024 (oboje), Biegu 7 Dolin w Piwnicznej 2024 (oboje), SGS 2025 (tylko właściciel)
+- Użytkownik: daty, czasy i linki do wyników oraz ewentualne zdjęcia dla: Biegu Rzeźnika 2024 (obaj), Biegu 7 Dolin w Piwnicznej 2024 (obaj), SGS 2025 (tylko właściciel)
 - Użytkownik: decyzja o wolnym slocie po Biegu 7 Dolin, jeśli wpływa na licznik (DEC-008)
 
 ## Description

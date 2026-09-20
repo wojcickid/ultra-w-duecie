@@ -74,7 +74,7 @@ Kryterium sukcesu MVP: strona działa publicznie (na subdomenie, DEC-006), ma ws
 - Autor wpisu pokazywany na stronie; publikować może jedna osoba za obu — zaakceptowane.
 - Na start jedno konto GitHub wystarcza — zaakceptowane.
 - Domena: MVP na subdomenie istniejącej domeny właściciela — zaakceptowane (DEC-006).
-- Ukończone przez oboje: Bieg Rzeźnika 2024 oraz Bieg 7 Dolin (Piwniczna) 2024. Ukończony solo przez właściciela: Supermaraton Gór Stołowych 2025.
+- Ukończone przez obu: Bieg Rzeźnika 2024 oraz Bieg 7 Dolin (Piwniczna) 2024. Ukończony solo przez właściciela: Supermaraton Gór Stołowych 2025.
 - Licznik „w duecie” liczy tylko biegi ukończone wspólnie; wyniki indywidualne pokazywane osobno (DEC-007).
 - Bieg 7 Dolin był w chwili ukończenia biegiem podstawowym Korony; od 2026 r. nie jest organizowany i wypadł z listy. Zostaje ukończony w statystykach, a wolnego miejsca nie zastępujemy innym biegiem na razie (DEC-008).
 - Autorzy: Damian (właściciel) i Grzegorz.
