@@ -8,7 +8,7 @@ import StatusBadge from '../components/StatusBadge.astro';
 import Timeline from '../components/Timeline.astro';
 import type { TimelineItem } from '../components/Timeline.astro';
 import { formatDate } from '../lib/format';
-import { getResultSummaries, getRunBadges } from '../lib/runs';
+import { getResultSummaries, getRunBadges, getRunTerm } from '../lib/runs';
 import {
   CROWN_TOTAL,
   countCompletedTogether,
@@ -39,14 +39,7 @@ const timelineItems: TimelineItem[] = runs.map((run) => {
   const { data } = run;
   const together = isCompletedTogether(run, authorIds);
 
-  // Data z wyników (ukończenie lub podejście DNF/DNS); w przeciwnym razie data planowana.
-  const resultDates = data.results.flatMap((result) =>
-    result.completedDate ? [result.completedDate.getTime()] : [],
-  );
-  const termDate =
-    resultDates.length > 0
-      ? new Date(Math.min(...resultDates))
-      : data.plannedDate;
+  const term = getRunTerm(data);
 
   const bothFinished =
     authorIds.length > 0 &&
@@ -80,10 +73,9 @@ const timelineItems: TimelineItem[] = runs.map((run) => {
       data.distanceKm !== undefined
         ? `${distanceFormat.format(data.distanceKm)} km`
         : undefined,
-    term: termDate
-      ? formatDate(termDate)
-      : (data.typicalMonth ?? 'Termin nieznany'),
-    isoDate: termDate?.toISOString().slice(0, 10),
+    termLabel: term?.label ?? 'Termin',
+    term: term?.value ?? 'Termin nieznany',
+    isoDate: term?.isoDate,
     note,
     results: together ? [] : getResultSummaries(data.results, authorNames),
   };

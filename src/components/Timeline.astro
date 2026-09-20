@@ -9,7 +9,8 @@ export interface TimelineItem {
   /** Znaczniki z `getRunBadges` (jedno źródło prawdy, DEC-008). */
   badges: RunStatus[];
   distance?: string;
-  /** Termin: data (z `isoDate`) lub tekst orientacyjny. */
+  /** Termin z `getRunTerm`: etykieta (np. „Ukończono”) i wartość (data z `isoDate` albo tekst orientacyjny). */
+  termLabel: string;
   term: string;
   isoDate?: string;
   /** Krótka adnotacja tekstowa, np. o biegu wycofanym lub ukończeniu wspólnym. */
@@ -48,7 +49,7 @@ const { items } = Astro.props;
         </div>
       </div>
       <p class="mt-2 text-ink-muted">
-        <span class="sr-only">Termin: </span>
+        <span class="sr-only">{item.termLabel}: </span>
         {item.isoDate ? (
           <time datetime={item.isoDate}>{item.term}</time>
         ) : (
