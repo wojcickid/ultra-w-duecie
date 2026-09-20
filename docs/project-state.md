@@ -13,7 +13,8 @@ M0 — Planowanie zakończone; oczekuje na akceptację planu przez użytkownika.
 - Użytkownik odpowiedział na pytania: GitHub login, role równorzędne, język (DEC-005), autor wpisu, subdomena na MVP, jedno konto GitHub na start (DEC-006).
 - Rozstrzygnięte: licznik „w duecie” tylko biegi wspólne (DEC-007), Bieg 7 Dolin jako wycofany z listy (DEC-008), autorzy Damian i Grzegorz, domena damianwojcicki.com w Cloudflare.
 - Otwarte: nazwa subdomeny (wybór właściciela), wolny slot po Biegu 7 Dolin (odłożone), dane ukończonych biegów (po MVP, TASK-013).
-- Implementacja nie rozpoczęta. Żadne zadanie nie jest w `tasks/ready/`.
+- Użytkownik zaakceptował TASK-001 i TASK-002; oba w `tasks/ready/`. MVP na subdomenie `korona.damianwojcicki.com` (do potwierdzenia przy TASK-009).
+- Implementacja nie rozpoczęta.
 
 ## Aktywne zadania
 
@@ -40,8 +41,8 @@ M0 — Planowanie zakończone; oczekuje na akceptację planu przez użytkownika.
 
 ## Następna zalecana akcja
 
-1. Użytkownik przegląda plan zadań w `tasks/backlog/` i odpowiada na pytania otwarte z `docs/requirements.md`.
-2. Użytkownik zakłada: repozytorium GitHub (zdalne) i konto Cloudflare oraz włącza 2FA na swoim koncie GitHub (drugie konto na start niepotrzebne).
-3. Lead przenosi TASK-001 i TASK-002 do `tasks/ready/`.
+1. Użytkownik zakłada zdalne repozytorium GitHub, włącza 2FA na koncie GitHub i wypycha `main` (oraz gałąź z dokumentacją).
+2. Start TASK-002 (szkielet Astro) — niczego nie wymaga od użytkownika.
+3. Start TASK-001 (logowanie do panelu CMS) po założeniu repozytorium GitHub.
 
 > Aktualizuj ten plik przed zakończeniem większej sesji pracy lub po istotnej zmianie stanu projektu.

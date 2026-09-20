@@ -2,7 +2,7 @@
 
 ## Status
 
-backlog
+ready
 
 ## Owner
 
@@ -27,6 +27,7 @@ Patrz `docs/architecture.md` i `docs/ui.md`. Nie dodawać zależności bez powod
 - [ ] Strona startowa renderuje się z `lang="pl"`.
 - [ ] `.gitignore` obejmuje artefakty budowy; brak sekretów w repozytorium.
 - [ ] README zawiera krótką instrukcję uruchomienia lokalnego.
+- [ ] Adres strony (`site`) jest zdefiniowany w jednym miejscu konfiguracji, a linki wewnętrzne są względne (bez wpisanej domeny), aby zmiana domeny wymagała edycji jednego miejsca.
 
 ## Implementation notes
 

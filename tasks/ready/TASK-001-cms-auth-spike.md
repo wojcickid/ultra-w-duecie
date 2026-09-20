@@ -2,7 +2,7 @@
 
 ## Status
 
-backlog
+ready
 
 ## Owner
 
