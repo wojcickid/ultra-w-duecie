@@ -3,13 +3,13 @@ import Icon from './Icon.astro';
 
 /**
  * Nagłówek z nawigacją. Na wąskich ekranach logo i linki układają się w dwóch
- * rzędach (3 krótkie pozycje mieszczą się od 320 px bez menu „hamburger” i bez JS);
+ * rzędach (4 krótkie pozycje mieszczą się od 320 px bez menu „hamburger” i bez JS);
  * od `sm` w jednym rzędzie. Aktywna pozycja: aria-current="page".
  */
-// Uwaga: /biegi i /blog to osobne zadania (TASK-005–007) — do czasu ich wdrożenia zwracają 404.
 const links = [
   { href: '/', label: 'Start' },
   { href: '/biegi', label: 'Biegi' },
+  { href: '/wyniki', label: 'Wyniki' },
   { href: '/blog', label: 'Blog' },
 ];
 

@@ -8,10 +8,8 @@ import RunFacts from '../components/RunFacts.astro';
 import Section from '../components/Section.astro';
 import StatusBadge from '../components/StatusBadge.astro';
 import Timeline from '../components/Timeline.astro';
-import { formatDate, toDayKey } from '../lib/format';
 import { getRunBadges } from '../lib/runs';
 import {
-  getAuthorResults,
   getNextRun,
   getTogetherSummary,
   sortRuns,
@@ -35,11 +33,6 @@ const { crown, history } = splitCrownAndHistory(runs);
 const summary = getTogetherSummary(runs, authorIds);
 const progressLabel = `${summary.count} z ${summary.total} biegów ukończonych razem`;
 const nextRun = getNextRun(runs, authorIds, new Date());
-
-const authorResults = authors.map((author) => ({
-  name: author.name,
-  results: getAuthorResults(runs, author.id, authorIds),
-}));
 
 const latestPosts = [...postEntries]
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
@@ -177,9 +170,13 @@ const latestPosts = [...postEntries]
         )}
       </>
     )}
-    <p class="mt-6">
+    <p class="mt-6 flex flex-wrap gap-x-6">
       <a href="/biegi" class="link inline-flex min-h-11 items-center gap-2">
         Wszystkie biegi
+        <Icon name="arrow-right" />
+      </a>
+      <a href="/wyniki" class="link inline-flex min-h-11 items-center gap-2">
+        Wyniki indywidualne
         <Icon name="arrow-right" />
       </a>
     </p>
@@ -204,59 +201,4 @@ const latestPosts = [...postEntries]
       </a>
     </p>
   </Section>
-
-  <!-- Wyniki indywidualne: celowo na dole i lżejsze wizualnie (bez ramek kart, mniejsze nagłówki). -->
-  <section
-    aria-labelledby="individual-heading"
-    class="mt-16 border-t border-line pt-8"
-  >
-    <h2 id="individual-heading" class="text-xl font-semibold">
-      Wyniki indywidualne
-    </h2>
-    <p class="mt-2 max-w-prose text-sm text-ink-muted">
-      Podejścia każdego z nas, także biegi ukończone samodzielnie oraz
-      nieukończone (DNF) i bez startu (DNS) — poza licznikiem wspólnego postępu.
-    </p>
-    <div class="mt-4 grid gap-6 sm:grid-cols-2">
-      {authorResults.map((author) => (
-        <div>
-          <h3 class="text-base font-semibold">{author.name}</h3>
-          {author.results.length === 0 ? (
-            <p class="mt-2 text-sm text-ink-muted">Jeszcze bez wyników</p>
-          ) : (
-            <ul class="mt-2 space-y-2 text-sm">
-              {author.results.map(({ run, result, together }) => (
-                <li>
-                  <a href={`/biegi/${run.id}`} class="link font-semibold">
-                    {run.data.name}
-                  </a>
-                  <p class="flex flex-wrap items-center gap-x-2 gap-y-1 text-ink-muted">
-                    {result.outcome !== 'finished' && (
-                      <StatusBadge status={result.outcome} />
-                    )}
-                    {result.completedDate && (
-                      <time datetime={toDayKey(result.completedDate)}>
-                        {formatDate(result.completedDate)}
-                      </time>
-                    )}
-                    {result.time && (
-                      <span>
-                        <span class="sr-only">Czas: </span>
-                        {result.time}
-                      </span>
-                    )}
-                    {result.place !== undefined && (
-                      <span>miejsce {result.place}</span>
-                    )}
-                    {together && <span>ukończony razem</span>}
-                  </p>
-                  {result.note && <p class="text-ink-muted">{result.note}</p>}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      ))}
-    </div>
-  </section>
 </BaseLayout>

@@ -1,0 +1,74 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import StatusBadge from '../components/StatusBadge.astro';
+import { formatDate, toDayKey } from '../lib/format';
+import { getAuthorResults, sortRuns } from '../lib/progress';
+
+const authors = (await getCollection('authors'))
+  .sort((a, b) => a.id.localeCompare(b.id))
+  .map((author) => ({ id: author.id, name: author.data.displayName }));
+const authorIds = authors.map((author) => author.id);
+const runs = sortRuns(await getCollection('runs'));
+
+const authorResults = authors.map((author) => ({
+  name: author.name,
+  results: getAuthorResults(runs, author.id, authorIds),
+}));
+---
+
+<BaseLayout
+  title="Wyniki indywidualne — Ultra w duecie"
+  description="Wyniki każdego z nas w biegach Korony Polskich Ultramaratonów: czasy, miejsca, nieukończone starty (DNF) i starty, w których ktoś nie wystartował (DNS)."
+>
+  <h1 class="text-3xl font-bold sm:text-4xl">Wyniki indywidualne</h1>
+  <p class="mt-4 max-w-prose text-lg text-ink-muted">
+    Podejścia każdego z nas, także biegi ukończone samodzielnie oraz
+    nieukończone (DNF) i bez startu (DNS). Do licznika wspólnego postępu liczą
+    się tylko biegi ukończone przez obu tego samego dnia.
+  </p>
+
+  <div class="mt-8 grid gap-6 sm:grid-cols-2">
+    {authorResults.map((author) => (
+      <section class="rounded-lg border border-line bg-surface p-5">
+        <h2 class="text-2xl font-semibold">{author.name}</h2>
+        {author.results.length === 0 ? (
+          <p class="mt-3 text-ink-muted">Jeszcze bez wyników</p>
+        ) : (
+          <ul class="mt-4 space-y-4">
+            {author.results.map(({ run, result, together }) => (
+              <li>
+                <a href={`/biegi/${run.id}`} class="link text-lg font-semibold">
+                  {run.data.name}
+                </a>
+                <p class="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-ink-muted">
+                  {result.outcome !== 'finished' && (
+                    <StatusBadge status={result.outcome} />
+                  )}
+                  {result.completedDate && (
+                    <time datetime={toDayKey(result.completedDate)}>
+                      {formatDate(result.completedDate)}
+                    </time>
+                  )}
+                  {result.time && (
+                    <span>
+                      <span class="sr-only">Czas: </span>
+                      {result.time}
+                    </span>
+                  )}
+                  {result.place !== undefined && (
+                    <span>miejsce {result.place}</span>
+                  )}
+                  {together && <span>ukończony razem</span>}
+                </p>
+                {result.note && (
+                  <p class="mt-1 text-sm text-ink-muted">{result.note}</p>
+                )}
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+    ))}
+  </div>
+</BaseLayout>

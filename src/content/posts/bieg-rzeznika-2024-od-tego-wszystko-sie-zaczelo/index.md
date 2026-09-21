@@ -31,4 +31,4 @@ Euforia powoli z nas schodziła. Błędem było picie zimnych piw bezalkoholowyc
 
 Kiedyś może to powtórzymy. Chwilę po biegu mówiliśmy, że nigdy więcej 😄 Ale najważniejsze, że ten projekt powstał właśnie po tym biegu.
 
-Wyniki oficjalne obu z nas są na [stronie biegu](vscode-webview://1i6kg8j3tsddd31r244e20thlj468tfvpqkhiv3qf5gl9nhr6d8i/biegi/bieg-rzeznika).
+Wyniki oficjalne obu z nas są na [stronie biegu](/biegi/bieg-rzeznika).

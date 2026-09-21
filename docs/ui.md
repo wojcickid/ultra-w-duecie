@@ -15,7 +15,7 @@ Materiały referencyjne: brak. Inspiracja treściowa: kingrunner.com (Korona Pol
 - Domyślna paleta kolorów Tailwinda jest wyłączona (`--color-*: initial`), więc nie da się przypadkiem użyć koloru spoza listy poniżej. Analogicznie domyślne promienie.
 - Charakter: prosty, czytelny, „outdoorowy” — ciepły „papierowy” fon, leśna zieleń jako kolor marki, rdzawy akcent, nagłówki szeryfowe (systemowe), tekst bezszeryfowy. Nacisk na czytelność treści i zdjęć.
 - Ikony: jeden zestaw inline SVG (styl linii, siatka 24x24, stroke 2) w komponencie `Icon.astro`; ikony są dekoracyjne (`aria-hidden`), znaczenie niesie tekst obok.
-- Nawigacja: Start (`/`), Biegi (`/biegi`), Blog (`/blog`). Panel `/admin` bez linku w publicznej nawigacji.
+- Nawigacja: Start (`/`), Biegi (`/biegi`), Wyniki (`/wyniki`, wyniki indywidualne każdego z nas; wcześniej sekcja na stronie głównej), Blog (`/blog`). Panel `/admin` bez linku w publicznej nawigacji.
 - Formularze i tabele: brak w części publicznej; panel CMS ma własny interfejs (nie stylizujemy go).
 - Stany: pusta lista wpisów, strona 404 (`src/pages/404.astro`), brak zdjęcia.
 
@@ -69,7 +69,7 @@ Motyw: tylko jasny (`color-scheme: light`). Motyw ciemny — poza zakresem MVP.
 Wszystkie w `src/components/`. Strona pomocnicza `/styleguide` z podglądem wszystkich wariantów została usunięta w TASK-010 (przed oficjalnym startem); jej ostatnia wersja jest w historii Git (`git log -- src/pages/styleguide.astro`). Warianty można oglądać na stronach docelowych (`/`, `/biegi`, `/biegi/<id>`).
 
 - **`BaseLayout`** (`src/layouts/`): `<html lang="pl">`, link „Przejdź do treści” (pierwszy element fokusowalny), `SiteHeader`, `<main id="main">` w kontenerze, `SiteFooter`. Właściwości: `title`, `description`, `noindex`.
-- **`SiteHeader`**: logo + nawigacja (Start / Biegi / Blog), aktywna pozycja oznaczona `aria-current="page"` i podkreśleniem. Bez JS: na telefonie logo i linki w dwóch rzędach, od `sm` w jednym. Trzy krótkie pozycje mieszczą się od 320 px, więc menu „hamburger” nie jest potrzebne; jeśli pozycji przybędzie, trzeba dodać zwijanie.
+- **`SiteHeader`**: logo + nawigacja (Start / Biegi / Wyniki / Blog), aktywna pozycja oznaczona `aria-current="page"` i podkreśleniem. Bez JS: na telefonie logo i linki w dwóch rzędach, od `sm` w jednym. Cztery krótkie pozycje mieszczą się od 320 px (sprawdzone: jeden rząd linków, brak poziomego scrolla), więc menu „hamburger” nie jest potrzebne; jeśli pozycji przybędzie, trzeba dodać zwijanie.
 - **`SiteFooter`**: krótki opis projektu i rok.
 - **`Icon`**: `name` = `mountain | check-circle | calendar | circle-dashed | ban | circle-x | circle-minus | arrow-right`; rozmiar przez `class` (domyślnie `size-4`). Nowe ikony dodawać w tym samym pliku i stylu.
 - **`StatusBadge`**: `status` = `completed | planned | unplanned | withdrawn` (status biegu) albo `finished | dnf | dns` (wynik osoby, `outcome`) → „Ukończony” (ikona ptaszka w kółku), „Zaplanowany” (kalendarz), „Do ustalenia” (przerywane kółko, przerywana ramka), „Poza listą Korony 4.0” (przekreślone kółko; wartość `withdrawn`, DEC-012), „Ukończył” (ptaszek, kolory jak „Ukończony”), „Nie ukończył (DNF)” (kółko z krzyżykiem, fiolet), „Nie wystartował (DNS)” (kółko z kreską, granat). Bieg ukończony i wycofany ma oba znaczniki wszędzie; lista znaczników pochodzi z `getRunBadges` (`src/lib/runs.ts`). Status zawsze ma tekst i ikonę — nigdy sam kolor (WCAG 1.4.1).
