@@ -37,8 +37,8 @@ M4 (lokalnie, nie wypchnięte): runda UX (TASK-020…022) scalona do `main`: str
 
 Pełna lista z krokami: `docs/todo-wlasciciel.md`.
 
-- Cloudflare: Redirect Rule HTTP→HTTPS tylko dla hosta `korona.damianwojcicki.com` (nie włączać „Always Use HTTPS” dla całej strefy; wada D-01), Web Analytics (na produkcji nie ma jeszcze skryptu `static.cloudflareinsights.com`), ewentualnie wyłączenie adresu `workers.dev` (TASK-009).
-- Zdecydować: status „Bez planu” przy biegach z wynikami solo/DNF/DNS; czy dodać canonical/Open Graph/sitemapę po starcie; poprawny czas Damiana w Biegu 7 Dolin (dane 18:43:38 vs tekst wpisu 18:43:25).
+- Cloudflare: Redirect Rule HTTP→HTTPS wymaga poprawki (curl nadal zwraca 200; szczegóły w docs/todo-wlasciciel.md), Web Analytics trzeba dodać ręcznie (hostname wpisany ręcznie + token dla Leada), 2FA na Cloudflare. `workers.dev` wyłączone (2026-09-21).
+- Zdecydować: czy dodać Open Graph (rekomendacja: tak, ok. 1 h; canonical/sitemapa nie są potrzebne). Status „Bez planu” i czas 7 Dolin załatwione (2026-09-21).
 - Sprawdzić w praktyce: przycisk „Revert” na GitHubie i „Delete entry” w panelu (TASK-011).
 - Opcjonalnie: wskazówki co do palety kolorów (TASK-015); kopia zapasowa repozytorium na Proxmoxie (TASK-012); pytanie do redakcji Kingrunera o slot Biegu 7 Dolin; Grzegorz może założyć konto GitHub (potem dodać jako współpracownika).
 

@@ -1,12 +1,14 @@
 # Lista zadań właściciela (na później)
 
-Stan na 2026-09-20. Nic z tej listy nie blokuje działania strony. Po wykonaniu punktu wystarczy napisać Leadowi, co zrobiłeś (albo co wybrałeś), a on zamknie powiązane zadania.
+Stan na 2026-09-21 (sekcje 3–6: TO DO). Nic z tej listy nie blokuje działania strony. Po wykonaniu punktu wystarczy napisać Leadowi, co zrobiłeś (albo co wybrałeś), a on zamknie powiązane zadania.
 
 Nazwy przycisków w Cloudflare i GitHubie bywają zmieniane; szukaj najbardziej podobnej opcji.
 
 ## 1. Cloudflare (zalecane przed oficjalnym startem)
 
 ### 1.1 Przekierowanie HTTP → HTTPS (wada D-01 z raportu QA, priorytet P1)
+
+**Status (2026-09-21): DO POPRAWKI.** Test `curl -I http://korona.damianwojcicki.com/` nadal zwraca `200 OK`, a nie `301`. Otwarcie adresu w przeglądarce (także w incognito) niczego nie dowodzi: nowe Chrome/Edge same podmieniają `http://` na `https://` przy wpisywanym adresie. Reguła prawdopodobnie nie została zapisana/wdrożona albo ma inny warunek; sprawdź w Rules → Redirect Rules, czy jest na liście ze statusem aktywnym (Enabled/Deployed) i czy wyrażenie zgadza się z poniższym. Do weryfikacji użyj `curl` (Lead sprawdzi po Twoim „zrobione”).
 
 Dziś `http://korona.damianwojcicki.com/` otwiera stronę zamiast przekierować na HTTPS.
 
@@ -22,29 +24,30 @@ HSTS (nagłówek wymuszający HTTPS w przeglądarce) dodamy dopiero po tej regul
 
 ### 1.2 Web Analytics (statystyki odwiedzin, DEC-002)
 
-Na produkcji nie ma jeszcze skryptu `static.cloudflareinsights.com`.
+**Status (2026-09-21):** strony nie ma na liście do wyboru (lista obejmuje tylko hosty z proxowanym rekordem DNS, a Worker z własną domeną tam nie trafia). To normalne. Skrypt statystyk trzeba dodać ręcznie:
 
 1. Cloudflare → **Analytics & Logs** → **Web Analytics** → **Add a site**.
-2. Hostname: `korona.damianwojcicki.com`, konfiguracja automatyczna (Cloudflare wstrzykuje skrypt sam).
-3. Po kilku minutach otwórz stronę → „Wyświetl źródło strony” i poszukaj `cloudflareinsights`.
-4. Jeśli skryptu nie ma, napisz Leadowi: dodamy go ręcznie w kodzie strony (mała zmiana).
+2. Zamiast wybierać z listy **wpisz ręcznie** hostname `korona.damianwojcicki.com` i zapisz.
+3. Wejdź w **Manage site** i skopiuj fragment JS (`<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "..."}'>`). Token nie jest sekretem (i tak jest widoczny w kodzie strony), więc możesz go wkleić Leadowi w wiadomości.
+4. Lead doda go do układu strony (mała zmiana, jedna linia w `BaseLayout`). Skrypt nie używa ciasteczek i nie zbiera danych osobowych (DEC-002).
 
-### 1.3 Adres `workers.dev` (opcjonalnie)
+Jeśli statystyki Ci niepotrzebne, możesz ten punkt pominąć i zamknąć TASK-009 bez nich.
+
+### 1.3 Adres `workers.dev` (opcjonalnie) — ZROBIONE (2026-09-21)
+
+Właściciel wyłączył `workers.dev`; strona działa pod `korona.damianwojcicki.com`.
 
 Strona jest dostępna także pod domyślnym adresem `ultra-w-duecie.<konto>.workers.dev` (logowanie do panelu tam nie zadziała, to zamierzone). Żeby był tylko jeden adres: Worker → **Settings** → **Domains & Routes** → wyłącz `workers.dev`. Zrób to dopiero po potwierdzeniu, że domena `korona.damianwojcicki.com` działa.
 
 ### 1.4 Bezpieczeństwo konta
 
-Włącz 2FA na koncie Cloudflare, jeśli jeszcze nie masz (steruje domeną i wdrożeniem).
+TO DO: włącz 2FA na koncie Cloudflare (steruje domeną i wdrożeniem).
 
 ## 2. Decyzje do podjęcia
 
-1. **Status „Bez planu” przy biegach z wynikami solo/DNF/DNS** (SGS, Ultra Granią Tatr). Znacznik biegu mówi „Bez planu”, mimo że macie wyniki. To Twój wybór statusu w panelu:
-   - zostawić (nie planujecie wspólnego podejścia), albo
-   - zmienić na „Planowany” tam, gdzie planujecie kolejne podejście.
-   Jeśli chcesz automatyczne zachowanie (np. inny znacznik dla biegów z wynikami), to decyzja produktowa: napisz.
-2. **SEO po starcie (canonical, Open Graph, sitemapa):** zrobić po oficjalnym starcie czy pominąć? Poprawia to wyświetlanie linków w komunikatorach i indeksowanie. Około 1–2 h pracy agenta.
-3. **Czas Damiana w Biegu 7 Dolin:** w danych jest 18:43:38, a w tekście wpisu 18:43:25 (czas brutto/netto?). Wybierz poprawny i popraw w panelu (dane) albo we wpisie.
+1. **Status „Bez planu”** — ZAŁATWIONE rundą UX (2026-09-21): etykieta to teraz „Do ustalenia”; SGS i Grań Tatr pokazują dodatkowo blok „Razem” z wyjaśnieniem, co się stało. Jeśli kiedyś zechcesz inny znacznik dla biegów z wynikami, to osobna decyzja.
+2. **SEO** — do decyzji (rekomendacja Leada): dla osobistej kroniki nie potrzebujesz pozycjonowania. Warto tylko **Open Graph** (ładny podgląd linku z tytułem i opisem w Messengerze/WhatsAppie/na Facebooku): ok. 1 h pracy, bez kosztów. Sitemapa i canonical mają tu znikome znaczenie. Napisz „OG tak” albo „pomijamy”.
+3. **Czas Damiana w Biegu 7 Dolin** — ZAŁATWIONE: w danych jest czas oficjalny (brutto) 18:43:38, a wpis zawiera czas z zegarka autora (18:43:25); różnica jest zamierzona, nic nie zmieniamy.
 
 ## 3. Do sprawdzenia w praktyce (zamknie TASK-011)
 
