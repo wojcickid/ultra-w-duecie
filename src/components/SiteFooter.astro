@@ -1,5 +1,9 @@
 ---
-const year = new Date().getFullYear();
+// Rok publikacji serwisu; w stopce zakres „2026–<bieżący rok>” (rok liczony przy budowie strony).
+const FIRST_YEAR = 2026;
+const currentYear = new Date().getFullYear();
+const years =
+  currentYear > FIRST_YEAR ? `${FIRST_YEAR}–${currentYear}` : `${FIRST_YEAR}`;
 ---
 
 <footer class="mt-16 border-t border-line bg-sand">
@@ -8,6 +12,6 @@ const year = new Date().getFullYear();
       <strong class="font-semibold text-ink">Ultra w duecie</strong> — dwóch
       biegaczy w drodze po Koronę Polskich Ultramaratonów.
     </p>
-    <p>&copy; {year} Damian i Grzegorz</p>
+    <p>&copy; {years} Damian i Grzegorz</p>
   </div>
 </footer>
