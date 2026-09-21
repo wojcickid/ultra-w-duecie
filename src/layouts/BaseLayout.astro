@@ -8,13 +8,24 @@ interface Props {
   description?: string;
   /** Ukrywa stronę przed wyszukiwarkami (np. strona 404). */
   noindex?: boolean;
+  /** Typ strony dla Open Graph: wpis bloga to `article`. */
+  ogType?: 'website' | 'article';
+  /** Obraz podglądu linku (ścieżka od korzenia serwisu); domyślnie `/og-default.png`. */
+  image?: string;
 }
 
 const {
   title = 'Ultra w duecie',
   description = 'Dwóch biegaczy w drodze po Koronę Polskich Ultramaratonów.',
   noindex = false,
+  ogType = 'website',
+  image = '/og-default.png',
 } = Astro.props;
+
+// Adres kanoniczny bez końcowego ukośnika (Worker: html_handling drop-trailing-slash).
+const path = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const canonicalUrl = new URL(path, Astro.site).href;
+const imageUrl = new URL(image, Astro.site).href;
 ---
 
 <!doctype html>
@@ -24,6 +35,15 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex" />}
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:site_name" content="Ultra w duecie" />
+    <meta property="og:locale" content="pl_PL" />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={imageUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link
       rel="alternate"

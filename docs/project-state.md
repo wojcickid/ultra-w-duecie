@@ -38,7 +38,7 @@ M4 (lokalnie, nie wypchnięte): runda UX (TASK-020…022) scalona do `main`: str
 Pełna lista z krokami: `docs/todo-wlasciciel.md`.
 
 - Cloudflare: Redirect Rule HTTP→HTTPS wymaga poprawki (curl nadal zwraca 200; szczegóły w docs/todo-wlasciciel.md), Web Analytics trzeba dodać ręcznie (hostname wpisany ręcznie + token dla Leada), 2FA na Cloudflare. `workers.dev` wyłączone (2026-09-21).
-- Zdecydować: czy dodać Open Graph (rekomendacja: tak, ok. 1 h; canonical/sitemapa nie są potrzebne). Status „Bez planu” i czas 7 Dolin załatwione (2026-09-21).
+- Open Graph i canonical dodane (DEC-013, 2026-09-21); po wdrożeniu warto wkleić link w Messengerze/WhatsAppie i sprawdzić podgląd. Status „Bez planu” i czas 7 Dolin załatwione.
 - Sprawdzić w praktyce: przycisk „Revert” na GitHubie i „Delete entry” w panelu (TASK-011).
 - Opcjonalnie: wskazówki co do palety kolorów (TASK-015); kopia zapasowa repozytorium na Proxmoxie (TASK-012); pytanie do redakcji Kingrunera o slot Biegu 7 Dolin; Grzegorz może założyć konto GitHub (potem dodać jako współpracownika).
 

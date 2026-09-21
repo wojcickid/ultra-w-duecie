@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 import { render } from 'astro:content';
 import type { GetStaticPaths } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
@@ -24,6 +24,18 @@ const { Content } = await render(post);
 const names = await getAuthorNames(post);
 const run = await getPostRun(post);
 const images = post.data.images ?? [];
+// Podgląd linku: pierwsze zdjęcie wpisu (1200x630), a bez zdjęć obraz domyślny serwisu.
+const ogImage = images[0]
+  ? (
+      await getImage({
+        src: images[0].src,
+        width: 1200,
+        height: 630,
+        fit: 'cover',
+        format: 'jpg',
+      })
+    ).src
+  : undefined;
 const description =
   excerpt(post.body) || `Wpis z bloga Ultra w duecie: ${post.data.title}.`;
 ---
@@ -31,6 +43,8 @@ const description =
 <BaseLayout
   title={`${post.data.title} — Ultra w duecie`}
   description={description}
+  ogType="article"
+  image={ogImage}
 >
   <article>
     <header class="max-w-prose">

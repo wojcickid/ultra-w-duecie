@@ -345,3 +345,9 @@ Po pierwszych wdrożeniach właściciel poprosił o dopracowanie UX i struktury:
 - Helpery: `getRunTerm` / `formatRunTerm` / `getRunFacts` (`src/lib/runs.ts`) oraz `splitCrownAndHistory`, `getTogetherSummary`, `getNextRun` (`src/lib/progress.ts`); widoki (TASK-021) korzystają z nich zamiast liczyć same.
 - Dodanie 11. aktywnego biegu albo usunięcie flagi `retired` bez zmiany reszty listy wywoła ostrzeżenie w logu budowy, a nie błąd.
 - Dane w `src/content/` nie były zmieniane w TASK-020; wartości `expectedYear`, `place` i `resultsUrl` można dopisywać osobno po potwierdzeniu w źródłach.
+
+## DEC-013 — Open Graph i adres kanoniczny (2026-09-21)
+
+Status: accepted
+
+Decyzja właściciela („OG tak”): każda strona ma tagi Open Graph (`og:title`, `og:description`, `og:url`, `og:type`, `og:image`, `og:site_name`, `og:locale`), `twitter:card=summary_large_image` oraz `<link rel="canonical">` bez końcowego ukośnika (zgodnie z `html_handling: drop-trailing-slash`). Tagi są w `src/layouts/BaseLayout.astro`. Obraz domyślny: `public/og-default.png` (1200×630, nazwa, opis i znak serwisu); wpis bloga ze zdjęciami używa pierwszego zdjęcia (kadr 1200×630, JPG), typ `article`. Sitemapy nie dodajemy (znikome znaczenie dla kroniki osobistej). Obraz domyślny można podmienić plikiem o tej samej nazwie i wymiarach.
