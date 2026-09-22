@@ -52,6 +52,12 @@ const imageUrl = new URL(image, Astro.site).href;
       href="/rss.xml"
     />
     <title>{title}</title>
+    <!-- Cloudflare Web Analytics: bez ciasteczek, bez danych osobowych (DEC-002). -->
+    <script
+      type="module"
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon='{"token": "6d07d19991934f288766568316d886e7"}'
+    ></script>
   </head>
   <body class="flex min-h-screen flex-col">
     <a

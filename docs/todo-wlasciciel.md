@@ -16,14 +16,9 @@ Po wdrożeniu Lead sprawdzi `curl -I http://korona.damianwojcicki.com/` i zamkni
 
 ### 1.2 Web Analytics (statystyki odwiedzin, DEC-002)
 
-**Status (2026-09-21):** strony nie ma na liście do wyboru (lista obejmuje tylko hosty z proxowanym rekordem DNS, a Worker z własną domeną tam nie trafia). To normalne. Skrypt statystyk trzeba dodać ręcznie:
+**Status (2026-09-22): ZROBIONE.** Witryna dodana ręcznie w Cloudflare, token przesłany, skrypt dodany do `src/layouts/BaseLayout.astro` (jedna linia w `<head>`, bez ciasteczek, bez danych osobowych — zgodnie z DEC-002). Wdroży się po najbliższym „wypychaj”.
 
-1. Cloudflare → **Analytics & Logs** → **Web Analytics** → **Add a site**.
-2. Zamiast wybierać z listy **wpisz ręcznie** hostname `korona.damianwojcicki.com` i zapisz.
-3. Wejdź w **Manage site** i skopiuj fragment JS (`<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "..."}'>`). Token nie jest sekretem (i tak jest widoczny w kodzie strony), więc możesz go wkleić Leadowi w wiadomości.
-4. Lead doda go do układu strony (mała zmiana, jedna linia w `BaseLayout`). Skrypt nie używa ciasteczek i nie zbiera danych osobowych (DEC-002).
-
-Jeśli statystyki Ci niepotrzebne, możesz ten punkt pominąć i zamknąć TASK-009 bez nich.
+Statystyki pojawią się w panelu Web Analytics z opóźnieniem (zwykle kilka minut do godziny) po pierwszych odwiedzinach strony po wdrożeniu.
 
 ### 1.3 Adres `workers.dev` (opcjonalnie) — ZROBIONE (2026-09-21)
 
