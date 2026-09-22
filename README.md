@@ -43,3 +43,7 @@ npm run format        # automatyczne formatowanie
 ```
 
 Adres strony (`site`) jest ustawiony w jednym miejscu: `astro.config.mjs`. Linki wewnętrzne są względne.
+
+## Licencja
+
+Kod źródłowy — [MIT](LICENSE). Treści w `src/content/` (wpisy bloga, zdjęcia, relacje z biegów) NIE są objęte tą licencją i pozostają zastrzeżone (© Damian i Grzegorz) — szczegóły w pliku [LICENSE](LICENSE).

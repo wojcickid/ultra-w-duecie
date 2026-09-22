@@ -381,3 +381,30 @@ Przekierowanie HTTP → HTTPS jest częścią kodu Workera (`worker/index.ts`), 
 - Worker uruchamia się teraz dla każdego żądania (nie tylko `/api/*`); dla ruchu HTTPS bez zmian funkcjonalnych, tylko dodatkowy (tani) krok w JS przed `env.ASSETS.fetch()`. Przy niskim ruchu tej strony bez znaczenia dla kosztu/wydajności.
 - `docs/architecture.md` zaktualizowane (opis `worker/index.ts` i `run_worker_first`).
 - HSTS nadal nie jest ustawiony (osobna decyzja na później, dopiero po potwierdzeniu, że przekierowanie działa stabilnie na produkcji).
+
+## DEC-015 — Licencja repozytorium: MIT dla kodu, treści zastrzeżone (2026-09-22)
+
+Status: accepted
+
+### Context
+
+Repozytorium jest publiczne na GitHubie, bez pliku `LICENSE` — domyślnie „wszystkie prawa zastrzeżone", co jest niejednoznaczne dla publicznego kodu. Właściciel zapytał o rekomendację.
+
+### Decision
+
+Plik `LICENSE` w korzeniu repozytorium:
+
+- **Kod źródłowy** (`src/components/`, `src/layouts/`, `src/lib/`, `src/pages/`, `src/styles/`, `worker/`, `scripts/`, pliki konfiguracyjne) — licencja **MIT**.
+- **Treści** w `src/content/` (wpisy bloga, zdjęcia, relacje z biegów i inne materiały osobiste) — **jawnie wyłączone** z licencji MIT, pozostają zastrzeżone: © Damian i Grzegorz, wszystkie prawa zastrzeżone. Zakres jest opisany wprost na początku pliku `LICENSE` (PL i EN), żeby nie było niejednoznaczności.
+- `README.md` ma krótką sekcję „Licencja” z odnośnikiem.
+
+### Alternatives considered
+
+- **MIT na całe repozytorium bez wyłączenia** — odrzucone: objęłoby też zdjęcia i osobiste relacje z biegów, pozwalając komukolwiek na swobodne kopiowanie/redystrybucję/użycie komercyjne treści osobistych.
+- **Brak licencji w ogóle** — odrzucone: zostawia niejednoznaczność co do statusu kodu dla osób odwiedzających publiczne repo; MIT dla kodu to standardowa, przyjazna praktyka bez kosztu.
+- **Osobna licencja treści (np. CC BY-NC) zamiast całkowitego zastrzeżenia** — odrzucone jako nadmiarowe: właściciel nie chce, by ktokolwiek rozpowszechniał te treści nawet niekomercyjnie z atrybucją; domyślne prawo autorskie już to zapewnia bez dodatkowego pliku.
+
+### Consequences
+
+- GitHub może nie wykryć automatycznie „MIT" w pasku bocznym repo (detektor licencji bywa czuły na dodatkowy tekst przed treścią licencji) — bez znaczenia prawnego, tylko kosmetyka UI.
+- Nowe pliki kodu dodawane w przyszłości poza wymienionymi katalogami wymagają świadomości tego podziału (mało prawdopodobne przy obecnej strukturze projektu).

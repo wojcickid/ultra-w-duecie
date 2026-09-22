@@ -33,8 +33,9 @@ Strona jest dostępna także pod domyślnym adresem `ultra-w-duecie.<konto>.work
 ## 2. Decyzje do podjęcia
 
 1. **Status „Bez planu”** — ZAŁATWIONE rundą UX (2026-09-21): etykieta to teraz „Do ustalenia”; SGS i Grań Tatr pokazują dodatkowo blok „Razem” z wyjaśnieniem, co się stało. Jeśli kiedyś zechcesz inny znacznik dla biegów z wynikami, to osobna decyzja.
-2. **SEO** — do decyzji (rekomendacja Leada): dla osobistej kroniki nie potrzebujesz pozycjonowania. Warto tylko **Open Graph** (ładny podgląd linku z tytułem i opisem w Messengerze/WhatsAppie/na Facebooku): ok. 1 h pracy, bez kosztów. Sitemapa i canonical mają tu znikome znaczenie. Napisz „OG tak” albo „pomijamy”.
+2. **SEO** — ZAŁATWIONE („OG tak”, 2026-09-21): Open Graph i adres kanoniczny wdrożone (DEC-013). Sitemapy nie dodano (znikome znaczenie dla kroniki osobistej, decyzja podjęta razem z OG).
 3. **Czas Damiana w Biegu 7 Dolin** — ZAŁATWIONE: w danych jest czas oficjalny (brutto) 18:43:38, a wpis zawiera czas z zegarka autora (18:43:25); różnica jest zamierzona, nic nie zmieniamy.
+4. **Licencja repozytorium** — ZAŁATWIONE (2026-09-22, rekomendacja Leada zaakceptowana): plik `LICENSE` w korzeniu repo — MIT dla kodu źródłowego, treści w `src/content/` (wpisy, zdjęcia) wyraźnie wyłączone i pozostają zastrzeżone (© Damian i Grzegorz). Szczegóły: DEC-015 w `docs/decisions.md`.
 
 ## 3. Do sprawdzenia w praktyce (zamknie TASK-011)
 
