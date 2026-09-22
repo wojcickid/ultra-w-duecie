@@ -351,3 +351,33 @@ Po pierwszych wdrożeniach właściciel poprosił o dopracowanie UX i struktury:
 Status: accepted
 
 Decyzja właściciela („OG tak”): każda strona ma tagi Open Graph (`og:title`, `og:description`, `og:url`, `og:type`, `og:image`, `og:site_name`, `og:locale`), `twitter:card=summary_large_image` oraz `<link rel="canonical">` bez końcowego ukośnika (zgodnie z `html_handling: drop-trailing-slash`). Tagi są w `src/layouts/BaseLayout.astro`. Obraz domyślny: `public/og-default.png` (1200×630, nazwa, opis i znak serwisu); wpis bloga ze zdjęciami używa pierwszego zdjęcia (kadr 1200×630, JPG), typ `article`. Sitemapy nie dodajemy (znikome znaczenie dla kroniki osobistej). Obraz domyślny można podmienić plikiem o tej samej nazwie i wymiarach.
+
+## DEC-014 — Przekierowanie HTTP → HTTPS w kodzie Workera, nie w Cloudflare (2026-09-22)
+
+Status: accepted
+
+### Context
+
+Reguła QA D-01 (P1, `docs/qa-report-ux-round.md`) wymagała przekierowania `http://korona.damianwojcicki.com/` na `https://`. Właściciel utworzył zonową regułę w Cloudflare (najpierw próba Redirect Rules — niedostępne w jego panelu, potem Page Rule: `http://korona.damianwojcicki.com/*` → Forwarding URL 301 → `https://korona.damianwojcicki.com/$1`, zapisana i aktywna). Mimo to `curl -I http://korona.damianwojcicki.com/` nadal zwracał `200 OK`.
+
+Przyczyna: strona jest Workers Custom Domain + Static Assets, a `wrangler.jsonc` miał `assets.run_worker_first: ["/api/*"]` — żądania spoza `/api/*` (czyli prawie wszystkie, w tym `/`) były serwowane wprost przez warstwę statycznych plików Workera, z pominięciem miejsca w potoku żądania, w którym działają zonowe Page/Redirect Rules Cloudflare. Ani `_redirects` (natywny w Workers Static Assets) nie pomaga — dopasowuje tylko ścieżkę, nie protokół/schemat.
+
+### Decision
+
+Przekierowanie HTTP → HTTPS jest częścią kodu Workera (`worker/index.ts`), nie ustawieniem w panelu Cloudflare:
+
+- `assets.run_worker_first` zmienione z `["/api/*"]` na `true` — Worker uruchamia się dla każdego żądania.
+- Na początku `fetch()`: jeśli `new URL(request.url).protocol === 'http:'`, zwróć `Response.redirect` (301) na ten sam adres (ścieżka + query) ze schematem `https:`. W przeciwnym razie leć dalej: `/api/*` do handlerów, reszta do `env.ASSETS.fetch(request)`.
+- Zonowa Page Rule właściciela w Cloudflare zostaje (nieszkodliwa, nadmiarowa); nie trzeba jej usuwać.
+
+### Alternatives considered
+
+- **Cloudflare Redirect/Page Rules** — wypróbowane, nie działa dla tego typu wdrożenia (patrz Context).
+- **„Always Use HTTPS” na cały zone** `damianwojcicki.com` — odrzucone: ustawienie jest per-zone, nie per-host, zepsułoby inne subdomeny (np. na mikr.us) działające po HTTP.
+- **`_redirects`** — odrzucone: dopasowuje tylko ścieżkę, nie umie warunkować po protokole.
+
+### Consequences
+
+- Worker uruchamia się teraz dla każdego żądania (nie tylko `/api/*`); dla ruchu HTTPS bez zmian funkcjonalnych, tylko dodatkowy (tani) krok w JS przed `env.ASSETS.fetch()`. Przy niskim ruchu tej strony bez znaczenia dla kosztu/wydajności.
+- `docs/architecture.md` zaktualizowane (opis `worker/index.ts` i `run_worker_first`).
+- HSTS nadal nie jest ustawiony (osobna decyzja na później, dopiero po potwierdzeniu, że przekierowanie działa stabilnie na produkcji).

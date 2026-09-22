@@ -9,8 +9,9 @@
     "binding": "ASSETS",
     "not_found_handling": "404-page",
     "html_handling": "drop-trailing-slash",
-    // Do Workera trafia wyłącznie /api/*; reszta idzie prosto ze statycznych plików.
-    "run_worker_first": ["/api/*"],
+    // Worker uruchamia się dla każdego żądania (sprawdza HTTP -> HTTPS), a resztę
+    // (poza /api/*) i tak oddaje dalej do statycznych plików przez env.ASSETS.fetch().
+    "run_worker_first": true,
   },
   // Jawne zmienne. GITHUB_CLIENT_ID i GITHUB_CLIENT_SECRET NIE są tutaj: to Secrets wpisywane w panelu Cloudflare.
   "vars": {

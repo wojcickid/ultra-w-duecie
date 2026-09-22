@@ -1,6 +1,6 @@
 # Lista zadań właściciela (na później)
 
-Stan na 2026-09-21 (sekcje 3–6: TO DO). Nic z tej listy nie blokuje działania strony. Po wykonaniu punktu wystarczy napisać Leadowi, co zrobiłeś (albo co wybrałeś), a on zamknie powiązane zadania.
+Stan na 2026-09-22 (sekcje 3–6: TO DO). Nic z tej listy nie blokuje działania strony. Po wykonaniu punktu wystarczy napisać Leadowi, co zrobiłeś (albo co wybrałeś), a on zamknie powiązane zadania.
 
 Nazwy przycisków w Cloudflare i GitHubie bywają zmieniane; szukaj najbardziej podobnej opcji.
 
@@ -8,19 +8,11 @@ Nazwy przycisków w Cloudflare i GitHubie bywają zmieniane; szukaj najbardziej 
 
 ### 1.1 Przekierowanie HTTP → HTTPS (wada D-01 z raportu QA, priorytet P1)
 
-**Status (2026-09-21): DO POPRAWKI.** Test `curl -I http://korona.damianwojcicki.com/` nadal zwraca `200 OK`, a nie `301`. Otwarcie adresu w przeglądarce (także w incognito) niczego nie dowodzi: nowe Chrome/Edge same podmieniają `http://` na `https://` przy wpisywanym adresie. Reguła prawdopodobnie nie została zapisana/wdrożona albo ma inny warunek; sprawdź w Rules → Redirect Rules, czy jest na liście ze statusem aktywnym (Enabled/Deployed) i czy wyrażenie zgadza się z poniższym. Do weryfikacji użyj `curl` (Lead sprawdzi po Twoim „zrobione”).
+**Status (2026-09-22): ROZWIĄZANE inaczej, niż planowano — nic nie musisz robić.** Twoja reguła Page Rule w Cloudflare (`http://korona.damianwojcicki.com/*` → Forwarding URL 301) nie zadziałała, bo strona jest Workers Custom Domain + statyczne pliki — ten typ wdrożenia omija miejsce w potoku Cloudflare, gdzie działają Page/Redirect Rules. To nie Twój błąd w konfiguracji, tylko ograniczenie tej architektury (opisane w DEC-014 w `docs/decisions.md`).
 
-Dziś `http://korona.damianwojcicki.com/` otwiera stronę zamiast przekierować na HTTPS.
+Przekierowanie jest teraz w kodzie Workera (`worker/index.ts`) — wdroży się razem z najbliższym „wypychaj”. Twoją Page Rule możesz zostawić (nieszkodliwa, nadmiarowa) albo usunąć, jak wolisz — bez znaczenia dla działania strony.
 
-**Nie włączaj „Always Use HTTPS” dla całej strefy** `damianwojcicki.com`: ustawienie działa na wszystkie subdomeny i mogłoby zepsuć inne usługi na tej domenie (np. te na mikr.us), które działają po HTTP. Zrób regułę tylko dla tego hosta:
-
-1. dash.cloudflare.com → wybierz domenę `damianwojcicki.com` → **Rules** → **Redirect Rules** → **Create rule** (jest też szablon „Redirect from HTTP to HTTPS”; jeśli go użyjesz, ogranicz go do hosta).
-2. Warunek (When): `Hostname` równa się `korona.damianwojcicki.com` **oraz** żądanie nie jest po HTTPS (w edytorze wyrażeń: `(http.host eq "korona.damianwojcicki.com" and not ssl)`).
-3. Akcja (Then): przekierowanie dynamiczne na `concat("https://", http.host, http.request.uri.path)`, kod **301**, zaznaczone „Preserve query string”.
-4. Zapisz i wdróż (Deploy).
-5. Test: `curl -I http://korona.damianwojcicki.com/` powinno zwrócić `301` z adresem `https://...`.
-
-HSTS (nagłówek wymuszający HTTPS w przeglądarce) dodamy dopiero po tej regule, wyłącznie dla tego hosta, bez `includeSubDomains`. Daj znać, gdy reguła działa.
+Po wdrożeniu Lead sprawdzi `curl -I http://korona.damianwojcicki.com/` i zamknie ten punkt.
 
 ### 1.2 Web Analytics (statystyki odwiedzin, DEC-002)
 
