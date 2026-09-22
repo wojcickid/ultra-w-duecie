@@ -28,7 +28,7 @@ Strona jest dostępna także pod domyślnym adresem `ultra-w-duecie.<konto>.work
 
 ### 1.4 Bezpieczeństwo konta
 
-TO DO: włącz 2FA na koncie Cloudflare (steruje domeną i wdrożeniem).
+**Status (2026-09-22): ZROBIONE.** 2FA na koncie Cloudflare aktywne w dwóch wariantach: klucz sprzętowy (security key) i e-mail.
 
 ## 2. Decyzje do podjęcia
 
