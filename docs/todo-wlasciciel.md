@@ -40,7 +40,7 @@ Strona jest dostępna także pod domyślnym adresem `ultra-w-duecie.<konto>.work
 
 1. **Przycisk „Revert” na GitHubie** — SPRAWDZONE (2026-09-22): nie ma go przy commitach z panelu (widoczny tylko przy scalonych pull requestach, a panel commituje wprost na `main`). Cofanie zmian wciąż możliwe trzema opisanymi w `docs/authors-guide.md` sposobami.
 2. **„Delete entry” w panelu** — SPRAWDZONE (2026-09-22): commit usuwa cały folder wpisu, razem ze zdjęciami (nie zostają osierocone pliki w repozytorium).
-3. Przeczytaj `docs/authors-guide.md` i zgłoś fragmenty, które są niejasne.
+3. **Przeczytaj `docs/authors-guide.md`** — ZROBIONE (2026-09-22): przeczytane, bez niejasności.
 
 ## 4. Opcjonalne (bez pośpiechu)
 

@@ -45,6 +45,8 @@ Do potwierdzenia na żywo przez Leada z właścicielem (NIE wpisane w instrukcji
 8. Ostrzeżenia w logu Cloudflare: czy log budowy wyświetla blok „Ostrzeżenia (src/content)” tak samo jak lokalnie (Workers Builds pokazuje standardowe wyjście, ale nie sprawdzano).
 9. Wykonanie każdego kroku w praktyce (kryterium 2) wymaga sesji z właścicielem na produkcji.
 
+**Lektura całości przez właściciela** — ZROBIONE (2026-09-22): przeczytał `docs/authors-guide.md` pobieżnie, bez zastrzeżeń co do jasności treści. To nie zastępuje wykonania każdego kroku (kryterium 2, punkty 4–9 wyżej nadal otwarte), ale potwierdza, że tekst sam w sobie jest zrozumiały.
+
 ## Validation
 
 ### Tests
