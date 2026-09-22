@@ -1,5 +1,5 @@
 ---
-title: Czy zmiana tytułu istniejącego wpisu
+title: Czy zmiana na nowy coś zmieniła?
 date: 2026-09-22
 authors:
   - damian
