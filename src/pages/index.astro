@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import { Image } from 'astro:assets';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Icon from '../components/Icon.astro';
 import PostTeaser from '../components/PostTeaser.astro';
@@ -37,15 +38,36 @@ const nextRun = getNextRun(runs, authorIds, new Date());
 const latestPosts = [...postEntries]
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
   .slice(0, 3);
+
+// Zdjęcie przy wstępie: to samo zdjęcie co we wpisie o Biegu Rzeźnika 2024,
+// który zapoczątkował ten projekt (patrz akapit wstępu poniżej).
+const heroPost = postEntries.find(
+  (post) => post.id === 'bieg-rzeznika-2024-od-tego-wszystko-sie-zaczelo',
+);
+const heroImage = heroPost?.data.images?.[0];
 ---
 
 <BaseLayout>
-  <h1 class="text-3xl font-bold sm:text-4xl">Ultra w duecie</h1>
-  <p class="mt-4 max-w-prose text-lg text-ink-muted">
-    Damian i Grzegorz wspólnie realizują Koronę Polskich Ultramaratonów 4.0 —
-    dziesięć biegów ultra, które chcą ukończyć obaj, razem. Pomysł zrodził się
-    po wspólnym Biegu Rzeźnika w 2024 roku.
-  </p>
+  <div class="flex flex-col gap-6 sm:flex-row sm:items-center">
+    <div class="min-w-0">
+      <h1 class="text-3xl font-bold sm:text-4xl">Ultra w duecie</h1>
+      <p class="mt-4 max-w-prose text-lg text-ink-muted">
+        Damian i Grzegorz wspólnie realizują Koronę Polskich Ultramaratonów 4.0
+        — dziesięć biegów ultra, które chcą ukończyć obaj, razem. Pomysł zrodził
+        się po wspólnym Biegu Rzeźnika w 2024 roku.
+      </p>
+    </div>
+    {heroImage && (
+      <Image
+        src={heroImage.src}
+        alt={heroImage.alt}
+        width={192}
+        height={192}
+        densities={[1, 2]}
+        class="aspect-square w-32 shrink-0 self-start rounded-lg object-cover sm:w-48"
+      />
+    )}
+  </div>
 
   <Section id="progress" title="Postęp duetu">
     <div class="mt-4 rounded-lg border border-line bg-surface p-5">
