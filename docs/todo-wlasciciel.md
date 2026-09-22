@@ -47,11 +47,12 @@ Strona jest dostępna także pod domyślnym adresem `ultra-w-duecie.<konto>.work
 
 - **Blokada force-push na `main`:** GitHub → Settings → Branches → Add rule dla `main`: zaznacz blokadę force-push (bez wymogu pull requesta, bo panel zapisuje wprost na `main`).
 - ~~**Odwołanie autoryzacji na koncie testowym**~~ — ZROBIONE (2026-09-22): autoryzacja konta `dwojcickitest-tech` odwołana.
-- **Konto GitHub dla Grzegorza:** gdy je założy (z 2FA), dodaj go jako współpracownika z prawem zapisu (repozytorium → Settings → Collaborators). Wtedy sam loguje się do `/admin/`. Do tego czasu przesyła Ci treść, a Ty ją publikujesz z jego autorstwem.
+- **Konto GitHub dla Grzegorza** (zostaje w todo): gdy je założy (z 2FA), dodaj go jako współpracownika z prawem zapisu (repozytorium → Settings → Collaborators). Wtedy sam loguje się do `/admin/`. Do tego czasu przesyła Ci treść, a Ty ją publikujesz z jego autorstwem.
 - ~~**Pytanie do redakcji Kingrunera**~~ — POMINIĘTE (2026-09-22, decyzja właściciela): nieistotne na tym etapie (2/10 biegów ukończonych). Można wrócić do tego bliżej końca Korony.
-- **Paleta kolorów (TASK-015):** gdy będziesz wiedział, co Ci się podoba, napisz (nastrój, przykład strony). Zmiana to kilkanaście wartości w jednym miejscu.
+- **Paleta kolorów (TASK-015)** (zostaje w todo, 2026-09-22: na razie nic nie zmieniamy): gdy będziesz wiedział, co Ci się podoba, napisz (nastrój, przykład strony). Zmiana to kilkanaście wartości w jednym miejscu.
 - **Kopia zapasowa repozytorium na Proxmoxie (TASK-012):** świadomie odłożone na później (2026-09-22) — nie chroni przed awarią GitHuba (mało prawdopodobna), tylko przed incydentem na koncie (przejęcie, przypadkowe usunięcie, zawieszenie) i utratą treści (zdjęcia, relacje z biegów), których nie ma nigdzie indziej. Gdy zechcesz wrócić: okresowy `git clone --mirror` na Proxmox (cron); Lead przygotuje gotowy skrypt/instrukcję na hasło.
-- **Dystans Biegu 7 Dolin:** w danych 100,7 km to długość obecnej trasy; trasy z 2024 r. nie sprawdzono. Zostaw albo wróć do 100 km w panelu.
+- ~~**Dystans Biegu 7 Dolin**~~ — ZROBIONE (2026-09-22): zostaje 100 km (decyzja właściciela — „kosmetyka, wygląda ok"), `distanceKm` w `src/content/runs/bieg-7-dolin.json` poprawione ze 100,7 na 100.
+- ~~**Terminy z niską pewnością**~~ (Bieg Ultra Granią Tatr, Kaliska Setka, ZUK 2027, Chudy Wawrzyniec 2027) — POMINIĘTE (2026-09-22, decyzja właściciela): to terminy przyszłych edycji biegów, nieistotne na tym etapie. Strona i tak pokazuje „Do ustalenia" bez potwierdzonej daty — nic nie trzeba robić.
 - **Terminy z niską pewnością** (Bieg Ultra Granią Tatr, Kaliska Setka, ZUK 2027, Chudy Wawrzyniec 2027): do potwierdzenia u organizatorów, jeśli chcesz mieć je na stronie (szczegóły w `docs/run-data-proposals.md`).
 
 ## 5. Praca na co dzień
