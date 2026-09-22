@@ -38,8 +38,8 @@ Strona jest dostępna także pod domyślnym adresem `ultra-w-duecie.<konto>.work
 
 ## 3. Do sprawdzenia w praktyce (zamknie TASK-011)
 
-1. **Przycisk „Revert” na GitHubie:** repozytorium → **Commits** → wybrany commit z panelu. Czy widzisz przycisk „Revert”? (Z mojej wiedzy jest tylko przy scalonych pull requestach; instrukcja opisuje trzy alternatywy.) Napisz, co widzisz.
-2. **„Delete entry” w panelu:** przy usuwaniu wpisu sprawdź w GitHubie, czy commit usuwa cały folder wpisu (razem ze zdjęciami), czy tylko `index.md`.
+1. **Przycisk „Revert” na GitHubie** — SPRAWDZONE (2026-09-22): nie ma go przy commitach z panelu (widoczny tylko przy scalonych pull requestach, a panel commituje wprost na `main`). Cofanie zmian wciąż możliwe trzema opisanymi w `docs/authors-guide.md` sposobami.
+2. **„Delete entry” w panelu** — SPRAWDZONE (2026-09-22): commit usuwa cały folder wpisu, razem ze zdjęciami (nie zostają osierocone pliki w repozytorium).
 3. Przeczytaj `docs/authors-guide.md` i zgłoś fragmenty, które są niejasne.
 
 ## 4. Opcjonalne (bez pośpiechu)
