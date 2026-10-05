@@ -3,8 +3,27 @@
   "distanceKm": 106,
   "location": "Supraśl (Podlasie)",
   "typicalMonth": "październik",
-  "status": "planned",
+  "status": "completed",
   "retired": false,
   "plannedDate": "2026-10-03",
-  "order": 9
+  "resultsUrl": "https://wyniki.b4sport.pl/bison-ultra-trail-100/e7891.html",
+  "order": 9,
+  "results": [
+    {
+      "author": "damian",
+      "outcome": "finished",
+      "completedDate": "2026-10-03",
+      "time": "15:44:19",
+      "place": 323,
+      "resultsUrl": "https://wyniki.b4sport.pl/bison-ultra-trail-100/wojcicki-damian/e7891/chip_0500105.html"
+    },
+    {
+      "author": "grzegorz",
+      "outcome": "finished",
+      "completedDate": "2026-10-03",
+      "time": "15:44:20",
+      "place": 324,
+      "resultsUrl": "https://wyniki.b4sport.pl/bison-ultra-trail-100/kudrej-grzegorz/e7891/chip_0500151.html"
+    }
+  ]
 }
