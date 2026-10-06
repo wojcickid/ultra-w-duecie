@@ -7,20 +7,6 @@ run: bison-ultra-trail
 images:
   - src: 20261003_025318.jpg
     alt: Na starcie do Bison Ultra-Trail 100km
-  - src: 20261003_024104.jpg
-    alt: Przed wyjsciem
-  - src: 20261002_155817.jpg
-    alt: Po odbiorze pakietów
-  - src: 20261003_060706.jpg
-    alt: Wschód
-  - src: 20261003_071025.jpg
-    alt: Mgła
-  - src: 20261003_071603.jpg
-    alt: W lesie
-  - src: 20261003_091655.jpg
-    alt: Cerkiew
-  - src: 20261003_111035.jpg
-    alt: Wyspa
   - src: 20261003_185721.jpg
     alt: Z medalami
 ---
