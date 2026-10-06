@@ -6,25 +6,7 @@ authors:
 run: bison-ultra-trail
 images:
   - src: 20261003_025318.jpg
-    alt: Na starcie Bison Ultra-Trail 100km
-  - src: 20261003_024104.jpg
-    alt: Przed wyjściem
-  - src: 20261002_155817.jpg
-    alt: Pakiety odebrane
-  - src: 20261003_060706.jpg
-    alt: Wschód słońca
-  - src: 20261003_071025.jpg
-    alt: Mgła
-  - src: 20261003_071603.jpg
-    alt: Na trasie
-  - src: 20261003_091655.jpg
-    alt: Cerkiew
-  - src: 20261003_111035.jpg
-    alt: Wysepka
-  - src: 20261003_185721.jpg
-    alt: Na mecie z medalmi
-  - src: GarminConnect_20261006-231216.png
-    alt: Mapa
+    alt: Na starcie do Bison Ultra-Trail 100km
 ---
 
 3 października 2026 roku stanęliśmy z Grzesiem na starcie Bison Ultra-Trail na dystansie 100 km (który w rzeczywistości liczył około 106 km). Cel był jeden: ukończyć bieg wspólnie, jako duet, mieszcząc się w czasie poniżej 16 godzin. Udało się! Zameldowaliśmy się na mecie z czasem **15:44:19**. Tym samym dopisaliśmy trzeci ukończony bieg do naszego wspólnego projektu Korony Polskich Ultramaratonów 4.0 (3/10).
@@ -57,7 +39,7 @@ Ostatnie 25 kilometrów biegłem wyłącznie głową. Paradoksalnie pomogła mi 
 
 Największy kryzys dopadł mnie na 95. kilometrze, na punkcie Galeria Rzeźb. Wpadłem na punkt, szybko wypiłem dwa kubeczki zimnej coli i chciałem jeszcze zjeść zupę, ale wtedy zaczęło mną potężnie telepać z wychłodzenia. Jeden z wolontariuszy pomógł mi się ubrać i ruszyliśmy dalej. Na drogę nalałem jeszcze coli do softflaska – i to był błąd. Kilkaset metrów za punktem napiłem się znowu i dreszcze wróciły – tak silne, że uniemożliwiały normalny marsz. Rzuciłem do Grzesia krótko:
 
-> *„Grzesiu, musimy biec, bo mną telepie! Jak idziemy, zamarzam.”*
+> _„Grzesiu, musimy biec, bo mną telepie! Jak idziemy, zamarzam.”_
 
 I tak oto, mając w nogach niemal 100 kilometrów, większość końcówki pokonaliśmy biegiem w tempie około 7:00 min/km! W słabszych momentach przechodziliśmy w marsz po około 9:40 min/km, ale potem znów zaczynaliśmy biec.
 
@@ -65,11 +47,11 @@ I tak oto, mając w nogach niemal 100 kilometrów, większość końcówki pokon
 
 Około 103. kilometra wiedzieliśmy już, że 16 godzin jest nasze. Do limitu o 19:00 zostało nam około pół godziny, a na trasie słyszeliśmy, że z powodu opóźnionego startu przesunięto go do 19:10. W zależności od tego, czy patrzyliśmy na stoper, czy na zegarek, wychodziło nam co innego, ale w każdym wariancie zapas był bezpieczny, więc do mety pozostało się po prostu dotoczyć. Na przedostatniej prostej, akurat w marszowym momencie, wyprzedziło nas dwóch biegaczy. Grześ rzucił z uśmiechem:
 
-> *Patrz, wyprzedzają nas ci, których tak ładnie urwaliśmy na zbiegu!*
+> _Patrz, wyprzedzają nas ci, których tak ładnie urwaliśmy na zbiegu!_
 
 Spojrzałem na niego i odpowiedziałem ze spokojem:
 
->*Nie z nimi się dzisiaj ścigamy.*
+>_Nie z nimi się dzisiaj ścigamy._
 
 I to była esencja tego startu. Nie miało dla nas żadnego znaczenia, czy na metę wbiegniemy na 321. czy 323. miejscu. Ścigaliśmy się wyłącznie z własnym planem, z dystansem i z chłodem.
 
@@ -80,6 +62,7 @@ Gdy na ostatnich kilometrach dotarło do nas, że cel jest w kieszeni, całe nap
 Pisząc te słowa dzień po biegu, wciąż nie mogę pojąć, jak to możliwe, że po 100 km można finiszować w tempie 7:00 min/km, a kilkanaście minut po przekroczeniu mety człowiek nie jest w stanie zrobić samodzielnie kroku z powodu obolałych stóp i zesztywniałych mięśni.
 
 Ogromne podziękowania należą się:
+
 * **Wolontariuszom** – za cierpliwość, uśmiech i serce. Szczególne ukłony dla ekipy z punktu Galeria Rzeźb (95 km), która pomogła mi ogarnąć ubranie, gdy zęby dzwoniły mi z zimna.
 * **Organizatorom** – za profesjonalną trasę i za to, że punkty odżywcze były dokładnie tam, gdzie zapowiadano na mapie (15, 27, 41, 59, 80 i 95 km). W biegach ultra to wcale nie jest regułą!
 * **Ekipie z Lublina** – za cierpliwe czekanie na mecie i bezcenną pomoc w doprowadzeniu się do ładu po biegu.
