@@ -13,6 +13,10 @@ images:
     alt: Przed wyjściem
   - src: 20261002_155817.jpg
     alt: Po odebraniu pakietów
+  - src: 20261003_060706.jpg
+    alt: O wschodzie słońca
+  - src: 20261003_071025.jpg
+    alt: We mgle
 ---
 
 3 października 2026 roku stanęliśmy z Grzesiem na starcie Bison Ultra-Trail na dystansie 100 km (który w rzeczywistości liczył około 106 km). Cel był jeden: ukończyć bieg wspólnie, jako duet, mieszcząc się w czasie poniżej 16 godzin. Udało się! Zameldowaliśmy się na mecie z czasem **15:44:19**. Tym samym dopisaliśmy trzeci ukończony bieg do naszego wspólnego projektu Korony Polskich Ultramaratonów 4.0 (3/10).
